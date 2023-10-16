@@ -1,4 +1,4 @@
-baseURL: "https://imanneo.dev"
+baseURL: "https://imanneo.dev/"
 languageCode: "en-us"
 title: "imaN Neo"
 theme: hugo-profile
