@@ -59,10 +59,10 @@ params:
       enable: true
     button:
       enable: true
-      name: "Resume"
-      url: "https://www.linkedin.com/ambry/?x-li-ambry-ep=AQLZH_VyGYIDiwAAAYs5hmxYFIiih1GN_vz7Q_dLXZyvINXQaquoTzlZNybh7nIgBUoz6SNTsiWFETRx1ezcxtjBpb2ayg35M2TxbWEMSNpSLjomZgIVRxXzRd5qvskC5mtJEz56zAdGifDN2mmAhGPR99lB-avDUw-OogvvsJEfsmNABedcA69488UGhck_vdDDybQ_vNmdZtuk7oLRSGj0uIW2R_Zf48jVuuBqIlG2r3pcfyIYBevCAMVf9CvioN9-ZtehLkx1S5XpLByzw4E4QWoyK0tQPqikPG4wQNwzalWc13z0gArfV_qQbYpqe6iiE0ilkQH5qEwmla8fOQ2XeRMGhZ59utEDcIg-SEldadKxrx7ctfizWkgXFLg9-lABxl2ZiYGhGIjFORWuO08M0D68KhgjefGcBurBMPHuncjLiBMr9DmKm6WJQCKGGEChkRmEJkVlcoTrOMipVeaGVdrlELEXON8JxhU6Qvj8sw9ZSrUc8_-gysSG2NFTZAKp8rop76WEa8dE6SiJ7xrHrOfGTyCxbX2Bte5qgLfFbC68gH9i9L9ALbamhzekq86e"
-      download: true
-      newPage: true
+      name: "Get in Touch"
+      url: "./#contact"
+      download: false
+      newPage: false
     socialLinks:
       fontAwesomeIcons:
         - icon: fab fa-youtube
