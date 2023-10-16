@@ -1,0 +1,108 @@
+baseURL: "https://imanneo.dev"
+languageCode: "en-us"
+title: "imaN Neo"
+theme: hugo-profile
+
+outputs:
+  home:
+    - "HTML"
+    - "RSS"
+    - "JSON"
+  page:
+    - "HTML"
+    - "RSS"
+
+enableRobotsTXT: true
+# disqusShortname: your-disqus-shortname
+# googleAnalytics: G-MEASUREMENT_ID
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+params:
+  title: "imaN Neo"
+  description: This is my personal website, where you can find Iman Khoshabi (imaN Neo) projects, experiences, and more.
+  favicon: "/fav.png"
+  useBootstrapCDN: false
+  animate: true
+
+  theme:
+  font:
+    fontSize: 1rem
+    fontWeight: 400
+    lineHeight: 1.5
+    textAlign: left
+
+  navbar:
+    align: ms-auto
+    brandName: "imaN Neo"
+    disableSearch: true
+    menus:
+      disableAbout: false
+      disableExperience: false
+      disableEducation: false
+      disableProjects: false
+      disableAchievements: false
+      disableContact: false
+
+  # Hero
+  hero:
+    enable: true
+    intro: "Hi, my name is"
+    title: "Iman Khoshabi"
+    subtitle: "AKA. imaN Neo"
+    content: "As a senior software engineer (focused on the mobile apps) with more than 9 years of experience, I can develop high-quality apps using Flutter for mobile, desktop and web platforms"
+    image: /images/hero.jpg
+    bottomImage:
+      enable: true
+    button:
+      enable: true
+      name: "Resume"
+      url: "https://www.linkedin.com/ambry/?x-li-ambry-ep=AQLZH_VyGYIDiwAAAYs5hmxYFIiih1GN_vz7Q_dLXZyvINXQaquoTzlZNybh7nIgBUoz6SNTsiWFETRx1ezcxtjBpb2ayg35M2TxbWEMSNpSLjomZgIVRxXzRd5qvskC5mtJEz56zAdGifDN2mmAhGPR99lB-avDUw-OogvvsJEfsmNABedcA69488UGhck_vdDDybQ_vNmdZtuk7oLRSGj0uIW2R_Zf48jVuuBqIlG2r3pcfyIYBevCAMVf9CvioN9-ZtehLkx1S5XpLByzw4E4QWoyK0tQPqikPG4wQNwzalWc13z0gArfV_qQbYpqe6iiE0ilkQH5qEwmla8fOQ2XeRMGhZ59utEDcIg-SEldadKxrx7ctfizWkgXFLg9-lABxl2ZiYGhGIjFORWuO08M0D68KhgjefGcBurBMPHuncjLiBMr9DmKm6WJQCKGGEChkRmEJkVlcoTrOMipVeaGVdrlELEXON8JxhU6Qvj8sw9ZSrUc8_-gysSG2NFTZAKp8rop76WEa8dE6SiJ7xrHrOfGTyCxbX2Bte5qgLfFbC68gH9i9L9ALbamhzekq86e"
+      download: true
+      newPage: true
+    socialLinks:
+      fontAwesomeIcons:
+        - icon: fab fa-youtube
+          url: https://www.youtube.com/@imaNNeO
+        - icon: fab fa-github
+          url: https://github.com/imaNNeo
+        - icon: fab fa-linkedin
+          url: https://www.linkedin.com/in/iman-khoshabi-7782a9114
+        - icon: fab fa-twitter
+          url: https://twitter.com/iman__neo
+      customIcons:
+        - icon: /images/flutter4fun-icon.png
+          url: https://flutter4fun.com
+
+  about:
+    enable: true
+    title: "About Me"
+    image: "/images/me.jpg"
+    content: |-
+      I have been a Software Engineer for 9 years now. This includes 8 years of Mobile Application Development. It also has been 4 years since I started working with Flutter.
+      
+      Contributing to the Flutter community has been my passion. That is why I created the [fl_chart plugin](https://pub.dev/packages/fl_chart) (which has around 6k starts). I also have published the [Flutter 4 Fun blog](https://flutter4fun.com) to solve UI Challenges in the form of blog posts.
+      
+      My Android (Kotlin, Java) Development background includes working in businesses such as Maps and Navigation, Social Media, Shopping, Fin-Tech, and E-commerce.
+
+
+  contact:
+    enable: true
+    content: My inbox is always open. Whether you have a question or just want to say hi, I’ll try my best to get back to you!
+    email: iman.neofight@gmail.com@gmail.com
+    btnName: Mail me
+
+  terms:
+    read: "Read"
+    toc: "Table Of Contents"
+    copyright: "All rights reserved"
+    pageNotFound: "Page not found"
+    emailText: "Check out this site"
+
+  datesFormat:
+    article: "Jan 2, 2006"
+    articleList: "Jan 2, 2006"
+    articleRecent: "Jan 2, 2006"
