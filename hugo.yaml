@@ -53,7 +53,7 @@ params:
     intro: "Hi, my name is"
     title: "Iman Khoshabi"
     subtitle: "AKA. imaN Neo"
-    content: "As a senior software engineer (focused on the mobile apps) with more than 9 years of experience, I can develop high-quality apps using Flutter for mobile, desktop and web platforms"
+    content: "As a senior software engineer (focused on the mobile apps) with more than 10 years of experience, I can develop high-quality apps using Flutter for mobile, desktop and web platforms"
     image: /images/hero.jpg
     bottomImage:
       enable: true
@@ -82,7 +82,7 @@ params:
     title: "About Me"
     image: "/images/me.jpg"
     content: |-
-      I have been a Software Engineer for 9 years now. This includes 8 years of Mobile Application Development. It also has been 4 years since I started working with Flutter.
+      I have been a Software Engineer for 10 years now. This includes 7 years of Mobile Application Development. It also has been 5 years since I started working with Flutter.
       
       Contributing to the Flutter community has been my passion. That is why I created the [fl_chart plugin](https://pub.dev/packages/fl_chart) (which has around 6k starts). I also have published the [Flutter 4 Fun blog](https://flutter4fun.com) to solve UI Challenges in the form of blog posts.
       
