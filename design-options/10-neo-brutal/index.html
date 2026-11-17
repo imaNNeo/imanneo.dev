@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam, maker of fl_chart and a pile of small games.">
+<meta name="theme-color" content="#fffcf2">
+<link rel="icon" href="../shared/img/n.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Unbounded:wght@700;900&display=swap">
+<style>
+/* Layout: the N logo turned into a whole page. Everything borrows three things from it:
+   a thick black outline, round corners, and a hard shadow that falls down and to the left. */
+:root{
+  color-scheme: light;
+  --ink:#0b0b12; --paper:#fffcf2; --white:#fff; --blue:#047fcd; --green:#04cd6d; --yellow:#ffd43b; --navy:#282e45; --violet:#9088f0; --lilac:#c088f8; --mute:#55586a;
+  --line:3px; --r:22px;
+  --display:"Unbounded", "Arial Black", system-ui, sans-serif;
+  --sans:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sh:-5px 5px 0 var(--ink);
+  --sh-n:-7px 7px 0 0 var(--green), -7px 7px 0 var(--line) var(--ink);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font:500 17px/1.55 var(--sans);-webkit-text-size-adjust:100%;overflow-x:clip}
+h1,h2,h3,p,ul,ol,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+img{max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:8px}
+.wrap{width:100%;max-width:1240px;margin-inline:auto;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
+section[id]{scroll-margin-top:84px}
+
+/* shared pieces */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 22px;border:var(--line) solid var(--ink);border-radius:999px;background:var(--white);color:var(--ink);font:700 16px/1 var(--sans);text-decoration:none;white-space:nowrap;box-shadow:-4px 4px 0 var(--ink);transition:transform .08s ease, box-shadow .08s ease;cursor:pointer}
+.btn:hover{transform:translate(-2px,2px);box-shadow:-2px 2px 0 var(--ink)}
+.btn:active{transform:translate(-4px,4px);box-shadow:0 0 0 var(--ink)}
+.btn svg{width:20px;height:20px;flex:none}
+.btn.y{background:var(--yellow)} .btn.g{background:var(--green)}
+.btn.k{background:var(--ink);color:var(--paper);box-shadow:-4px 4px 0 var(--green)}
+.btn.k:hover{box-shadow:-2px 2px 0 var(--green)} .btn.k:active{box-shadow:0 0 0 var(--green)}
+.btn.s{min-height:42px;padding:0 16px;font-size:15px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:var(--line) solid var(--ink);border-radius:999px;background:var(--white);color:var(--ink);font:700 12.5px/1.2 var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.eyebrow i{width:9px;height:9px;border-radius:50%;background:var(--green);border:2px solid var(--ink);flex:none}
+h2{font:900 clamp(34px, 5.6vw, 76px)/1 var(--display);letter-spacing:-.045em;margin-top:18px;text-wrap:balance}
+.lead{font-size:clamp(18px, 1.6vw, 21px);line-height:1.5;max-width:60ch;margin-top:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips li,.chip{padding:6px 12px;border:var(--line) solid var(--ink);border-radius:999px;background:var(--white);font:700 13px/1.2 var(--mono)}
+
+/* top bar */
+.top{position:sticky;top:calc(10px + env(safe-area-inset-top, 0px));z-index:50;display:flex;align-items:center;gap:6px;width:min(1200px, calc(100% - 28px));margin:10px auto 0;padding:7px 7px 7px 12px;background:var(--white);border:var(--line) solid var(--ink);border-radius:999px;box-shadow:var(--sh)}
+.brand{display:inline-flex;align-items:center;gap:8px;margin-right:auto;text-decoration:none;font:900 16px/1 var(--display);letter-spacing:-.03em;white-space:nowrap}
+.brand img{width:36px;height:36px;display:block;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.brand:hover img{transform:rotate(-14deg) scale(1.12)}
+.top nav{display:flex;gap:2px}
+.top nav a{padding:9px 13px;border-radius:999px;font:700 15px/1 var(--sans);text-decoration:none}
+.top nav a:hover{background:var(--ink);color:var(--paper)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(28px, 5vw, 72px);align-items:center;padding-block:clamp(34px, 5vw, 64px) clamp(44px, 6vw, 76px)}
+h1{font:900 clamp(40px, min(6.3vw, 10.4vh), 88px)/1.2 var(--display);letter-spacing:-.05em;margin-top:20px}
+.hl{display:inline-block;padding:0 .16em .05em;border:var(--line) solid var(--ink);border-radius:.2em;color:var(--ink);text-decoration:none;line-height:1.04;box-shadow:-.06em .06em 0 var(--ink);transition:transform .14s ease, box-shadow .14s ease}
+.hl.b{background:var(--blue);color:#fff;transform:rotate(-1.6deg)}
+.hl.g{background:var(--green);transform:rotate(1.2deg)}
+.hl.y{background:var(--yellow);transform:rotate(-1.1deg)}
+.hl:hover{transform:rotate(0deg) translate(-.03em,.03em);box-shadow:-.03em .03em 0 var(--ink)}
+.hero .lead{margin-top:22px;max-width:52ch}
+.cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 12px;margin-top:26px}
+.quick{display:flex;gap:8px;margin-left:6px}
+.quick a{display:grid;place-items:center;width:44px;height:44px;border:var(--line) solid var(--ink);border-radius:50%;background:var(--white);transition:transform .08s ease, background .08s ease}
+.quick a:hover{background:var(--green);transform:translate(-2px,2px) rotate(-8deg)}
+.quick svg{width:19px;height:19px}
+.shot{position:relative;justify-self:center;width:min(100%, 410px);transform:rotate(2.2deg)}
+.shot .ph{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border:var(--line) solid var(--ink);border-radius:30px;box-shadow:-9px 9px 0 0 var(--green), -9px 9px 0 var(--line) var(--ink)}
+.shot figcaption{position:absolute;right:-10px;bottom:-20px;transform:rotate(-5deg);padding:7px 13px;background:var(--yellow);border:var(--line) solid var(--ink);border-radius:999px;font:700 13px/1.2 var(--mono);white-space:nowrap;box-shadow:-3px 3px 0 var(--ink)}
+.shot .nlogo{position:absolute;left:-46px;bottom:-34px;width:122px;height:122px;transform:rotate(-12deg);filter:drop-shadow(2.5px 0 0 #fff) drop-shadow(-2.5px 0 0 #fff) drop-shadow(0 2.5px 0 #fff) drop-shadow(0 -2.5px 0 #fff) drop-shadow(-4px 4px 0 rgba(11,11,18,.92));transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.shot:hover .nlogo{transform:rotate(6deg) scale(1.08)}
+.badge{position:absolute;top:-34px;right:-30px;width:118px;height:118px;transform:rotate(-2.2deg)}
+.badge .spin{transform-origin:60px 60px;animation:spin 22s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ticker */
+.band{overflow:hidden;padding-block:16px;background:linear-gradient(var(--paper) 50%, var(--yellow) 50%)}
+.ticker{margin-inline:-3vw;background:var(--ink);color:var(--paper);border-block:var(--line) solid var(--ink);transform:rotate(-1.1deg)}
+.track{display:flex;width:max-content;animation:tick 46s linear infinite}
+.ticker:hover .track{animation-play-state:paused}
+.track ul{display:flex;flex:none}
+.track li{display:flex;align-items:center;gap:.5em;padding:15px 0 15px 26px;font:700 clamp(13px, 1.35vw, 17px)/1 var(--display);letter-spacing:-.01em;text-transform:uppercase;white-space:nowrap}
+.track li b{font-weight:900;color:var(--yellow)}
+.track li::after{content:"";width:16px;height:16px;margin-left:26px;background:var(--green);clip-path:polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* games */
+.games{background:var(--yellow);border-bottom:var(--line) solid var(--ink);padding-block:clamp(44px, 6vw, 84px) clamp(54px, 7vw, 96px)}
+.head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 32px;align-items:end}
+.head .btn{margin-bottom:6px}
+.four{display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:26px;margin-top:38px}
+.game{position:relative;display:flex;flex-direction:column;background:var(--white);border:var(--line) solid var(--ink);border-radius:var(--r);box-shadow:var(--sh-n);color:var(--ink);text-decoration:none;overflow:hidden;transition:transform .1s ease, box-shadow .1s ease}
+.game:hover{transform:translate(-3px,3px);box-shadow:-4px 4px 0 0 var(--green), -4px 4px 0 var(--line) var(--ink)}
+.game img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-bottom:var(--line) solid var(--ink)}
+.game .tag{position:absolute;top:12px;left:12px;padding:5px 10px;background:var(--yellow);border:var(--line) solid var(--ink);border-radius:999px;font:700 11.5px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.03em;transform:rotate(-3deg)}
+.game .in{display:flex;flex-direction:column;gap:6px;padding:16px 18px 16px;flex:1}
+.game h3{font:900 19px/1.15 var(--display);letter-spacing:-.035em}
+.game p{font-size:15.5px;line-height:1.4}
+.game .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:10px}
+.game .tech{font:700 12.5px/1.2 var(--mono);color:var(--mute)}
+.game .go{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;background:var(--ink);color:var(--paper);border-radius:999px;font:700 14px/1 var(--sans)}
+.game:hover .go{background:var(--blue)}
+.sub{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 24px;margin-top:56px}
+.sub h3{font:900 clamp(22px, 2.6vw, 32px)/1.1 var(--display);letter-spacing:-.04em}
+.filter{display:flex;flex-wrap:wrap;gap:8px}
+.filter button{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:var(--line) solid var(--ink);border-radius:999px;background:var(--white);font:700 13px/1.2 var(--mono);cursor:pointer;transition:transform .08s ease}
+.filter button:hover{transform:translate(-1px,1px)}
+.filter button b{font-weight:700;opacity:.55}
+.filter button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.more{display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:14px;margin-top:20px}
+.mini{display:grid;grid-template-columns:60px minmax(0,1fr);gap:12px;align-items:center;padding:10px 12px 10px 10px;background:var(--white);border:var(--line) solid var(--ink);border-radius:18px;color:var(--ink);text-decoration:none;box-shadow:-3px 3px 0 var(--ink);transition:transform .08s ease, box-shadow .08s ease, background .08s ease}
+.mini:hover{transform:translate(-2px,2px);box-shadow:-1px 1px 0 var(--ink);background:#eafff3}
+.mini img{display:block;width:60px;height:60px;border-radius:13px;border:2.5px solid var(--ink)}
+.mini b{display:block;font:800 16px/1.2 var(--sans)}
+.mini span span{display:block;font-size:13.5px;line-height:1.3;color:var(--mute);margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.count{font:700 13px/1.2 var(--mono);margin-top:16px}
+.count:empty{display:none}
+.all{display:none;margin-top:26px}
+
+/* fl_chart */
+.fl{background:var(--navy);color:#fff;border-bottom:var(--line) solid var(--ink);padding-block:clamp(48px, 6.5vw, 92px)}
+.fl-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(30px, 5vw, 68px);align-items:center}
+.fl h2{display:flex;align-items:center;gap:.28em}
+.fl h2 img{width:1.12em;height:1.12em;border-radius:.26em;border:var(--line) solid var(--ink);box-shadow:-4px 4px 0 var(--violet);flex:none}
+.fl .lead{color:#e9eaf5}
+.fl .chips{margin-top:22px}
+.fl .chips li{background:transparent;border-color:#9aa0c0;color:#fff}
+.fl .plat{margin-top:14px;color:#c4c8de;font-size:16px;max-width:52ch}
+.fl .btns{display:flex;flex-wrap:wrap;gap:12px 10px;margin-top:26px;max-width:430px}
+.fl .btn{box-shadow:-4px 4px 0 var(--violet)}
+.fl .btn:hover{box-shadow:-2px 2px 0 var(--violet)} .fl .btn:active{box-shadow:0 0 0 var(--violet)}
+.board{background:var(--paper);color:var(--ink);border:var(--line) solid var(--ink);border-radius:28px;padding:clamp(14px, 2vw, 22px);box-shadow:-9px 9px 0 0 var(--violet), -9px 9px 0 var(--line) var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px}
+.stat{display:grid;gap:4px;padding:14px 16px 13px;background:var(--white);border:var(--line) solid var(--ink);border-radius:18px;color:var(--ink);text-decoration:none;transition:transform .08s ease, background .08s ease}
+.stat:hover{background:#f1efff;transform:translate(-2px,2px)}
+.stat b{font:900 clamp(30px, 4vw, 50px)/1 var(--display);letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.stat b small{font-size:.5em;letter-spacing:-.03em;color:var(--mute)}
+.stat > span{font:700 13px/1.3 var(--mono);color:var(--mute)}
+.meter{display:grid;grid-template-columns:repeat(16, 1fr);gap:3px;margin-top:4px}
+.meter i{height:9px;border-radius:2px;background:#e3e0d6}
+.meter i.on{background:var(--violet)}
+.chart{margin-top:12px;padding:14px 16px 12px;background:var(--white);border:var(--line) solid var(--ink);border-radius:18px}
+.chart figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font:700 13px/1.3 var(--mono)}
+.chart figcaption span{color:var(--mute)}
+.cols{display:grid;grid-template-columns:repeat(8, minmax(0,1fr));gap:clamp(6px, 1.2vw, 14px);align-items:end;margin-top:12px}
+.cols li{position:relative;display:grid;justify-items:center;gap:5px;outline-offset:4px;cursor:default}
+.cols li b{font:700 13px/1 var(--mono)}
+.cols li i{display:block;width:100%;max-width:46px;border:var(--line) solid var(--ink);border-bottom:0;border-radius:9px 9px 0 0;background:linear-gradient(var(--lilac), var(--violet));transition:filter .1s ease}
+.cols li.now i{background:repeating-linear-gradient(-45deg, var(--violet) 0 5px, #fff 5px 10px)}
+.cols li:hover i,.cols li:focus-visible i{filter:brightness(.82) saturate(1.3)}
+.cols li span{font:500 12.5px/1 var(--mono);color:var(--mute);padding-top:6px;border-top:var(--line) solid var(--ink);width:calc(100% + clamp(6px, 1.2vw, 14px));text-align:center}
+.cols li::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:190px;padding:7px 10px;background:var(--ink);color:var(--paper);border-radius:10px;font:500 12.5px/1.35 var(--sans);text-align:center;opacity:0;pointer-events:none;transition:opacity .1s ease;z-index:3}
+.cols li:hover::after,.cols li:focus-visible::after{opacity:1}
+.cols li:nth-child(-n+2)::after{left:0;transform:none} .cols li:nth-last-child(-n+2)::after{left:auto;right:0;transform:none}
+.asof{margin-top:12px;font:500 12.5px/1.4 var(--mono);color:var(--mute)}
+.asof i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px;border:2px solid var(--ink);border-radius:3px;background:repeating-linear-gradient(-45deg, var(--violet) 0 3px, #fff 3px 6px);font-style:normal}
+
+/* about */
+.about{padding-block:clamp(52px, 7vw, 100px);border-bottom:var(--line) solid var(--ink)}
+.about-grid{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:clamp(34px, 6vw, 84px);align-items:center}
+.me2{position:relative;justify-self:center;width:min(100%, 400px);transform:rotate(-2.4deg)}
+.me2 img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border:var(--line) solid var(--ink);border-radius:30px;box-shadow:-9px 9px 0 0 var(--blue), -9px 9px 0 var(--line) var(--ink)}
+.me2 figcaption{position:absolute;left:-12px;top:-18px;transform:rotate(-4deg);padding:7px 13px;background:var(--green);border:var(--line) solid var(--ink);border-radius:999px;font:700 13px/1.2 var(--mono);box-shadow:-3px 3px 0 var(--ink)}
+.note{position:absolute;right:-26px;bottom:-40px;width:210px;padding:13px 14px 15px;background:var(--yellow);border:var(--line) solid var(--ink);border-radius:6px 18px 6px 18px;box-shadow:-4px 4px 0 var(--ink);transform:rotate(6deg);font:600 15px/1.35 var(--sans)}
+.note b{display:block;font:700 11.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.bio{margin-top:16px;font-size:clamp(17px, 1.45vw, 19.5px);max-width:58ch}
+h2 + .bio{margin-top:22px}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px 18px;align-items:start;margin-top:28px}
+.kv dt{font:700 12.5px/1.2 var(--mono);letter-spacing:.05em;text-transform:uppercase;padding-top:9px;white-space:nowrap}
+.kv dd{margin:0}
+.kv .alt li{background:#e8f5ff}
+
+/* links */
+.links{background:var(--green);padding-block:clamp(52px, 7vw, 96px);border-bottom:var(--line) solid var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:18px;margin-top:36px}
+.link{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"g a" "t t" "n n";gap:0 10px;padding:16px 16px 15px;background:var(--white);border:var(--line) solid var(--ink);border-radius:var(--r);color:var(--ink);text-decoration:none;box-shadow:var(--sh);transition:transform .08s ease, box-shadow .08s ease}
+.link:hover{transform:translate(-3px,3px);box-shadow:-2px 2px 0 var(--ink)}
+.link .gl{grid-area:g;display:grid;place-items:center;width:50px;height:50px;border:var(--line) solid var(--ink);border-radius:15px;background:var(--c, #fff)}
+.link .gl svg{width:25px;height:25px}
+.link .gl img{width:30px;height:30px;display:block}
+.link .ar{grid-area:a;justify-self:end;align-self:start;width:26px;height:26px;transition:transform .12s ease}
+.link:hover .ar{transform:translate(3px,-3px)}
+.link .tt{grid-area:t;margin-top:14px}
+.link .tt b{display:block;font:900 18px/1.15 var(--display);letter-spacing:-.035em}
+.link .tt i{display:block;font:500 13px/1.3 var(--mono);font-style:normal;color:var(--mute);margin-top:4px;overflow-wrap:anywhere}
+.link .nn{grid-area:n;margin-top:8px;font-size:15px;line-height:1.35}
+.mailto{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:26px;padding:14px 16px 14px 20px;background:var(--ink);color:var(--paper);border-radius:20px;font:500 clamp(14px, 1.5vw, 17px)/1.3 var(--mono)}
+.mailto b{font-weight:700;user-select:all;overflow-wrap:anywhere}
+.mailto .btn{margin-left:auto;box-shadow:-4px 4px 0 var(--green)}
+.mailto .btn:hover{box-shadow:-2px 2px 0 var(--green)}
+
+/* footer */
+.foot{background:var(--ink);color:var(--paper);padding-block:clamp(40px, 6vw, 72px) calc(34px + env(safe-area-inset-bottom, 0px))}
+.foot .wrap{display:grid;justify-items:center;gap:20px;text-align:center}
+.foot .mark{position:relative;isolation:isolate;font:900 clamp(44px, 10.4vw, 144px)/1 var(--display);letter-spacing:-.025em;color:var(--blue);-webkit-text-stroke:var(--line) var(--ink);paint-order:stroke fill;white-space:nowrap}
+.foot .mark::before{content:attr(data-t);position:absolute;left:-.065em;top:.07em;z-index:-1;color:var(--green);-webkit-text-stroke:var(--line) var(--ink)}
+.foot p{font:500 14px/1.5 var(--mono);color:#b9bccd}
+.foot a{color:var(--paper)}
+
+/* tablet and phone */
+@media (max-width:1080px){
+  .four{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .more{grid-template-columns:repeat(3, minmax(0,1fr))}
+  .grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+}
+@media (max-width:860px){
+  .top nav{display:none}
+  .hero{grid-template-columns:minmax(0,1fr);gap:54px}
+  h1{font-size:clamp(44px, 13.4vw, 84px);line-height:1.22}
+  .shot{width:min(78%, 360px)}
+  .fl-grid,.about-grid{grid-template-columns:minmax(0,1fr)}
+  .about-grid{gap:72px}
+  .me2{width:min(76%, 340px)}
+  .more{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .head{grid-template-columns:minmax(0,1fr)}
+  .head .btn{display:none}
+  .all{display:flex}
+}
+@media (max-width:560px){
+  body{font-size:16.5px}
+  .top{padding-left:10px}
+  .four{grid-template-columns:minmax(0,1fr);gap:22px}
+  .game{flex-direction:row;align-items:stretch}
+  .game img{width:118px;height:auto;aspect-ratio:auto;object-fit:cover;border-bottom:0;border-right:var(--line) solid var(--ink)}
+  .game .tag{position:static;align-self:flex-start;transform:none;padding:3px 8px;font-size:10.5px;border-width:2px}
+  .game .in{padding:12px 14px;gap:5px}
+  .game h3{font-size:17px}
+  .game p{font-size:14.5px}
+  .mini{grid-template-columns:46px minmax(0,1fr);gap:9px;padding:8px 9px 8px 8px;border-radius:15px}
+  .mini img{width:46px;height:46px;border-radius:10px}
+  .mini b{font-size:14.5px}
+  .mini span span{display:none}
+  .grid{grid-template-columns:minmax(0,1fr);gap:14px}
+  .link{grid-template-areas:"g t a" "g n a";grid-template-columns:auto minmax(0,1fr) auto;gap:0 12px;align-items:center;padding:12px 14px}
+  .link .tt{margin-top:0} .link .nn{margin-top:3px;font-size:14px} .link .ar{align-self:center}
+  .link .tt b{font-size:16px}
+  .kv{grid-template-columns:minmax(0,1fr);gap:8px}
+  .kv dt{padding-top:10px}
+  .note{right:-14px;width:190px;font-size:14px}
+  .shot .nlogo{left:-40px;bottom:-30px;width:92px;height:92px}
+  .shot figcaption{font-size:12px;right:-12px}
+  .badge{right:-20px;width:98px;height:98px;top:-30px}
+  .mailto .btn{margin-left:0}
+  .quick{margin-left:0}
+  .all .btn{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .badge .spin,.track{animation:none}
+  .track{width:auto;flex-wrap:wrap} .track ul{flex-wrap:wrap;justify-content:center} .track ul + ul{display:none}
+  .ticker{transform:none;margin-inline:0}
+  .btn,.hl,.game,.mini,.link,.brand img,.shot .nlogo{transition:none}
+}
+</style>
+</head>
+<body id="top">
+
+<header class="top">
+  <a class="brand" href="#top"><img src="../shared/img/n.png" alt="" width="36" height="36">imaN Neo</a>
+  <nav aria-label="Sections"><a href="#games">Games</a><a href="#fl_chart">fl_chart</a><a href="#about">About</a><a href="#links">Links</a></nav>
+  <a class="btn y s" href="https://games.imanneo.dev/"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l11.2-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z"/></svg>Play my games</a>
+</header>
+
+<main>
+  <section class="wrap hero" aria-labelledby="h-hero">
+    <div>
+      <p class="eyebrow"><i></i>Iman Khoshabi &middot; senior mobile engineer &middot; Amsterdam</p>
+      <h1 id="h-hero">I make<br><a class="hl b" href="#about">apps,</a><br><a class="hl g" href="#fl_chart">charts</a> &amp;<br><a class="hl y" href="#games">games.</a></h1>
+      <p class="lead">Also known as imaN Neo. I have been building mobile apps for more than 10 years, first native Android and now mostly Flutter. After hours I maintain fl_chart and make small games.</p>
+      <div class="cta">
+        <a class="btn y" href="https://games.imanneo.dev/"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l11.2-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z"/></svg>Play my games</a>
+        <a class="btn" href="#fl_chart">See fl_chart</a>
+        <div class="quick" id="quick" aria-label="Profiles"></div>
+      </div>
+    </div>
+    <figure class="shot">
+      <img class="ph" src="../shared/img/me.jpg" alt="Iman in a yellow t-shirt and sunglasses, smiling and pointing with both hands" width="640" height="640">
+      <svg class="badge" viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="57" fill="#ffd43b" stroke="#0b0b12" stroke-width="3"/>
+        <g class="spin"><path id="ring" d="M60 60m-42 0a42 42 0 1 1 84 0a42 42 0 1 1-84 0" fill="none"/>
+          <text font-family="JetBrains Mono, monospace" font-weight="700" font-size="10.5" fill="#0b0b12"><textPath href="#ring" textLength="258" lengthAdjust="spacing">FLUTTER * ANDROID * CHARTS * GAMES *</textPath></text></g>
+        <text x="60" y="60" text-anchor="middle" font-family="Unbounded, sans-serif" font-weight="900" font-size="25" letter-spacing="-1.5" fill="#0b0b12">10+</text>
+        <text x="60" y="76" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="10" letter-spacing="1" fill="#0b0b12">YEARS</text>
+      </svg>
+      <img class="nlogo" src="../shared/img/n.png" alt="" width="122" height="122">
+      <figcaption>the good parts are that way</figcaption>
+    </figure>
+  </section>
+
+  <div class="band">
+    <div class="ticker" aria-label="Numbers at a glance"><div class="track" id="track"></div></div>
+  </div>
+
+  <section class="games" id="games" aria-labelledby="h-games">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="eyebrow">01 / Games</p>
+          <h2 id="h-games"><span id="g-n">24</span> small games, free&nbsp;to&nbsp;play.</h2>
+          <p class="lead">They run right in your browser. I make them with Flutter and Flame, Godot, Cocos Creator and Babylon.js, and they all live at games.imanneo.dev.</p>
+        </div>
+        <a class="btn k" href="https://games.imanneo.dev/">Open games.imanneo.dev<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+      </div>
+      <div class="four" id="four"></div>
+      <div class="sub">
+        <h3>And <span id="m-n">20</span> more</h3>
+        <div class="filter" id="filter" role="group" aria-label="Filter the smaller games by genre"></div>
+      </div>
+      <div class="more" id="more"></div>
+      <p class="count" id="count" aria-live="polite"></p>
+      <p class="all"><a class="btn k" href="https://games.imanneo.dev/">Open games.imanneo.dev<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></p>
+    </div>
+  </section>
+
+  <section class="fl" id="fl_chart" aria-labelledby="h-fl">
+    <div class="wrap fl-grid">
+      <div>
+        <p class="eyebrow">02 / Open source</p>
+        <h2 id="h-fl"><img src="../shared/img/fl_chart.png" alt="">fl_chart</h2>
+        <p class="lead">A chart library for Flutter. I open-sourced it in 2019 and I still maintain it for free, in my spare time.</p>
+        <ul class="chips" id="types" aria-label="Chart types"></ul>
+        <p class="plat" id="plat"></p>
+        <div class="btns">
+          <a class="btn" href="https://github.com/imaNNeo/fl_chart" id="b-gh">GitHub</a>
+          <a class="btn" href="https://pub.dev/packages/fl_chart">pub.dev</a>
+          <a class="btn" href="https://flchart.dev">Docs</a>
+          <a class="btn" href="https://app.flchart.dev">Samples</a>
+          <a class="btn y" href="https://github.com/sponsors/imaNNeo" id="b-sp">Sponsor</a>
+        </div>
+      </div>
+      <div class="board">
+        <div class="stats">
+          <a class="stat" href="https://github.com/imaNNeo/fl_chart"><b data-count="stars">7.6k</b><span>GitHub stars</span></a>
+          <a class="stat" href="https://pub.dev/packages/fl_chart"><b data-count="downloads30">2.3M</b><span>downloads in the last 30 days</span></a>
+          <a class="stat" href="https://pub.dev/packages/fl_chart"><b data-count="likes">7.2k</b><span>likes on pub.dev</span></a>
+          <a class="stat" href="https://pub.dev/packages/fl_chart/score"><b><span data-count="points">150</span><small>/160</small></b><span>pub points</span><span class="meter" id="meter" aria-hidden="true"></span></a>
+        </div>
+        <figure class="chart">
+          <figcaption><b>Releases per year</b><span id="rel"></span></figcaption>
+          <ol class="cols" id="cols"></ol>
+        </figure>
+        <p class="asof"><i></i>2026 is still running. Numbers checked on <span id="asof"></span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about" aria-labelledby="h-about">
+    <div class="wrap about-grid">
+      <figure class="me2">
+        <img src="../shared/img/me-canyon.jpg" alt="Iman taking a selfie between sandstone walls, wearing a blue t-shirt printed with game controllers" width="720" height="720" loading="lazy">
+        <figcaption>yes, the shirt is about games</figcaption>
+        <aside class="note"><b>Fun fact</b>I picked the nickname NeO before I ever watched The Matrix.</aside>
+      </figure>
+      <div class="txt">
+        <p class="eyebrow">03 / About</p>
+        <h2 id="h-about">Hi, I'm Iman.</h2>
+        <p class="bio">I build mobile apps for a living. I started with native Android in Kotlin and Java, and these days I mostly write Flutter. I have been at it for more than 10 years.</p>
+        <p class="bio">I am picky about small UI details, and I like clean code that is not over-engineered. My work has shipped in maps and navigation, social media, shopping, fintech and e&#8209;commerce apps.</p>
+        <dl class="kv">
+          <dt>Toolbox</dt><dd><ul class="chips"><li>Flutter</li><li>Dart</li><li>Kotlin</li><li>Java</li><li>Flame</li><li>Godot</li><li>Cocos Creator</li><li>Babylon.js</li></ul></dd>
+          <dt>Based in</dt><dd><ul class="chips alt"><li>Amsterdam, the Netherlands</li></ul></dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="links" id="links" aria-labelledby="h-links">
+    <div class="wrap">
+      <p class="eyebrow">04 / Links</p>
+      <h2 id="h-links">Come say hi.</h2>
+      <p class="lead">I post Flutter and game dev things in a few places. Pick one, or just write me an email.</p>
+      <div class="grid" id="grid"></div>
+      <p class="mailto"><span>Email:</span><b id="addr"></b><button class="btn y s" type="button" id="copy">Copy address</button></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="mark" data-t="imaN Neo" aria-hidden="true">imaN Neo</p>
+    <p>&copy; 2026 Iman Khoshabi &middot; Made in Amsterdam &middot; <a href="#top">Back to top</a></p>
+  </div>
+</footer>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  var S = window.SITE, fl = S.fl, $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var day = function (iso) { var p = iso.split("-"); return +p[2] + " " + MONTHS[+p[1] - 1] + " " + p[0]; };
+  var ARROW = '<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>';
+  var ICON = {
+    youtube: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+    github: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>',
+    linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>',
+    x: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>',
+    blog: '<img src="../shared/img/flutter4fun.png" alt="">',
+    mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3.5"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg>',
+    news: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></svg>',
+    sponsor: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'
+  };
+  var TINT = { youtube: "#ff6b6b", github: "#ffffff", linkedin: "#7cc4ff", x: "#ece8dc", blog: "#dff3ff", mail: "#ffd43b", news: "#b9a7ff", sponsor: "#ff9ec4" };
+
+  /* ---------- hero ---------- */
+  $("quick").innerHTML = S.socials.slice(0, 4).map(function (l) { return '<a href="' + l.url + '" aria-label="' + esc(l.label) + '" title="' + esc(l.label) + '">' + ICON[l.id] + "</a>"; }).join("");
+
+  /* ---------- ticker: every number comes from the shared data ---------- */
+  var facts = [
+    [fl.starsLabel, "GitHub stars"], [S.fmt(fl.downloads30), "fl_chart downloads in 30 days"], [S.fmt(fl.likes), "likes on pub.dev"],
+    [fl.points + "/" + fl.maxPoints, "pub points"], [fl.releases, "releases since " + fl.since], [S.games.length, "games"], ["Flame Jam 3", "winner"], [S.me.years, "years of mobile apps"]
+  ];
+  var row = facts.map(function (f) { return "<li><b>" + esc(f[0]) + "</b> " + esc(f[1]) + "</li>"; }).join("");
+  $("track").innerHTML = "<ul>" + row + '</ul><ul aria-hidden="true">' + row + "</ul>";
+
+  /* ---------- games ---------- */
+  var big = S.games.filter(function (g) { return g.featured; }), small = S.games.filter(function (g) { return !g.featured; });
+  $("g-n").textContent = S.games.length; $("m-n").textContent = small.length;
+  $("four").innerHTML = big.map(function (g) {
+    return '<a class="game" href="' + S.gameUrl(g.id) + '"><img src="' + S.gameImg(g.id) + '" alt="" width="320" height="320" loading="lazy"><span class="in"><span class="tag">' + esc(g.tag) + "</span><h3>" + esc(g.title) + "</h3><p>" + esc(g.blurb) + '</p><span class="row"><span class="tech">' + esc(g.tech) + '</span><span class="go">Play<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l11.2-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z"/></svg></span></span></span></a>';
+  }).join("");
+  $("more").innerHTML = small.map(function (g) {
+    return '<a class="mini" href="' + S.gameUrl(g.id) + '" data-genre="' + esc(g.genre) + '"><img src="' + S.gameImg(g.id) + '" alt="" width="60" height="60" loading="lazy"><span><b>' + esc(g.title) + "</b><span>" + esc(g.blurb) + "</span></span></a>";
+  }).join("");
+  var genres = {}, order = [];
+  small.forEach(function (g) { if (!genres[g.genre]) { genres[g.genre] = 0; order.push(g.genre); } genres[g.genre]++; });
+  order.sort(function (a, b) { return genres[b] - genres[a]; });
+  $("filter").innerHTML = '<button type="button" data-g="" aria-pressed="true">All <b>' + small.length + "</b></button>" + order.map(function (g) { return '<button type="button" data-g="' + esc(g) + '" aria-pressed="false">' + esc(g) + " <b>" + genres[g] + "</b></button>"; }).join("");
+  $("filter").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var g = b.getAttribute("data-g"), shown = 0;
+    [].forEach.call($("filter").children, function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+    [].forEach.call($("more").children, function (a) { var on = !g || a.getAttribute("data-genre") === g; a.hidden = !on; if (on) shown++; });
+    $("count").textContent = g ? "Showing " + shown + " of " + small.length + ": " + g.toLowerCase() + "." : "";
+  });
+
+  /* ---------- fl_chart ---------- */
+  $("types").innerHTML = fl.types.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+  var pl = fl.platforms.map(function (p) { return p === "Web" ? "web" : p; });
+  $("plat").textContent = "Runs on " + pl.slice(0, -1).join(", ") + " and " + pl[pl.length - 1] + ". " + fl.license + " licensed. The latest release is " + fl.version + ", from " + day(fl.versionDate) + ".";
+  $("b-gh").insertAdjacentHTML("afterbegin", ICON.github); $("b-sp").insertAdjacentHTML("afterbegin", ICON.sponsor);
+  var lit = Math.round(fl.points / fl.maxPoints * 16), m = ""; for (var i = 0; i < 16; i++) m += "<i" + (i < lit ? ' class="on"' : "") + "></i>"; $("meter").innerHTML = m;
+  $("rel").textContent = fl.releases + " since " + day(fl.first).replace(/^\d+ /, "");
+  $("asof").textContent = day(S.snapshot);
+  var max = Math.max.apply(null, fl.perYear.map(function (r) { return r[1]; })), last = fl.perYear.length - 1;
+  var extra = {}; extra[fl.since] = " The first one, 0.0.1, came out on " + day(fl.first).replace(/ \d+$/, "") + "."; extra[2025] = " One of them was 1.0.0, on 8 May."; extra[+fl.versionDate.slice(0, 4)] = " The latest is " + fl.version + ", from " + day(fl.versionDate).replace(/ \d+$/, "") + ".";
+  $("cols").innerHTML = fl.perYear.map(function (r, n) {
+    var tip = r[1] + " releases in " + r[0] + (n === last ? " so far." : ".") + (extra[r[0]] || "");
+    return "<li" + (n === last ? ' class="now"' : "") + ' tabindex="0" data-tip="' + esc(tip) + '" aria-label="' + esc(tip) + '"><b aria-hidden="true">' + r[1] + '</b><i style="height:' + Math.max(8, Math.round(r[1] / max * 132)) + 'px"></i><span aria-hidden="true">' + r[0] + "</span></li>";
+  }).join("");
+
+  /* count the four big numbers up once, when the board scrolls into view */
+  var short = function (v, t) { return t >= 1e6 ? (v / 1e6).toFixed(1) + "M" : t >= 1e3 ? (v / 1e3).toFixed(1) + "k" : String(Math.round(v)); };
+  var nums = [].slice.call(document.querySelectorAll("[data-count]"));
+  nums.forEach(function (el) { var t = fl[el.getAttribute("data-count")]; el.textContent = short(t, t); });
+  if (!still && "IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return; io.disconnect();
+        var t0 = performance.now(), dur = 1100;
+        (function step(now) {
+          var k = Math.min(1, (now - t0) / dur), ease = 1 - Math.pow(1 - k, 3);
+          nums.forEach(function (el) { var t = fl[el.getAttribute("data-count")]; el.textContent = short(t * ease, t); });
+          if (k < 1) requestAnimationFrame(step);
+        })(t0);
+      });
+    }, { threshold: .35 });
+    io.observe(document.querySelector(".board"));
+  }
+
+  /* ---------- links ---------- */
+  var all = S.socials.concat([
+    { id: "news", label: "Mailing list", handle: "iman-khoshabi.kit.com", note: "One email when my next game is out", url: S.links.newsletter },
+    { id: "sponsor", label: "Sponsor", handle: "github.com/sponsors/imaNNeo", note: "Keeps fl_chart maintained", url: S.links.sponsor }
+  ]);
+  $("grid").innerHTML = all.map(function (l) {
+    return '<a class="link" href="' + l.url + '"><span class="gl" style="--c:' + TINT[l.id] + '">' + ICON[l.id] + "</span>" + ARROW + '<span class="tt"><b>' + esc(l.label) + "</b><i>" + esc(l.handle) + '</i></span><span class="nn">' + esc(l.note) + "</span></a>";
+  }).join("");
+  $("addr").textContent = S.me.email;
+  $("copy").addEventListener("click", function () {
+    var b = this, done = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy address"; }, 1600); };
+    var pick = function () { try { var r = document.createRange(); r.selectNodeContents($("addr")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {} };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(S.me.email).then(done, pick); else pick();
+  });
+})();
+</script>
+<script src="../shared/switcher.js" data-pos="br"></script>
+</body>
+</html>
