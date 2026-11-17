@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam, maker of fl_chart and a pile of small games.">
+<meta name="theme-color" content="#0b0b12">
+<link rel="icon" href="../shared/img/n.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap">
+<style>
+/* Layout: a small desktop. A menu bar on top, app icons down the left, link shortcuts down the right,
+   and draggable windows in between. On a phone the windows stack into one scrolling column. */
+:root{
+  color-scheme: light;
+  --ink:#0b0b12; --paper:#fffdf7; --desk:#cfe6fb; --blue:#047fcd; --green:#04cd6d; --yellow:#ffd84a; --red:#ff5d5d; --grey:#e9e6dc; --mid:#55586a;
+  --px:"Silkscreen", "Courier New", monospace; --sans:"DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif; --mono:"DM Mono", ui-monospace, Menlo, Consolas, monospace;
+  --bar:38px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+html{background:var(--desk)}
+body{margin:0;background:var(--desk);color:var(--ink);font:400 15px/1.5 var(--sans);-webkit-text-size-adjust:100%;overflow:hidden}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+a{color:#03609b}
+img{max-width:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* menu bar */
+.menubar{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;gap:4px;height:calc(var(--bar) + env(safe-area-inset-top, 0px));padding:env(safe-area-inset-top, 0px) max(8px, env(safe-area-inset-right, 0px)) 0 max(8px, env(safe-area-inset-left, 0px));background:var(--paper);border-bottom:2.5px solid var(--ink);font:400 13px/1 var(--px)}
+.menubar button,.menubar a{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 9px;border:0;border-radius:6px;background:transparent;color:var(--ink);text-decoration:none;cursor:pointer;white-space:nowrap}
+.menubar button:hover,.menubar a:hover,.menubar button[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
+#nbtn{font-weight:700;padding-left:5px}
+#nbtn img{width:22px;height:22px;display:block}
+.tray{margin-left:auto;display:flex;align-items:center;gap:2px}
+.tray .clock{padding:0 8px;white-space:nowrap}
+.tray b{font-weight:400;color:var(--blue)}
+.tray a:hover b{color:inherit}
+.menu{position:fixed;z-index:950;top:calc(var(--bar) + env(safe-area-inset-top, 0px) + 4px);left:max(8px, env(safe-area-inset-left, 0px));min-width:230px;background:var(--paper);border:2.5px solid var(--ink);border-radius:10px;box-shadow:6px 6px 0 var(--ink);padding:6px}
+.menu button{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;height:34px;padding:0 10px;border:0;border-radius:6px;background:transparent;font:400 13px/1 var(--px);cursor:pointer;text-align:left}
+.menu button:hover,.menu button:focus-visible{background:var(--blue);color:#fff}
+.menu hr{border:0;border-top:2px dashed var(--ink);margin:6px 4px;opacity:.35}
+.menu kbd{font:400 11px/1 var(--mono);opacity:.6}
+
+/* desktop */
+.desk{position:fixed;top:calc(var(--bar) + env(safe-area-inset-top, 0px));left:0;right:0;bottom:0;overflow:hidden;background:
+  radial-gradient(circle at 1px 1px, rgba(4,127,205,.28) 1.2px, rgba(4,127,205,0) 1.6px) 0 0 / 22px 22px,
+  radial-gradient(900px 600px at 82% 12%, #e6fff2, rgba(230,255,242,0) 70%), var(--desk)}
+.wall{position:absolute;right:6%;bottom:-6%;width:min(52vh, 44vw);opacity:.16;pointer-events:none;user-select:none}
+.icons{position:absolute;top:14px;display:grid;gap:6px;z-index:1}
+.icons.l{left:max(10px, env(safe-area-inset-left, 0px))} .icons.r{right:max(10px, env(safe-area-inset-right, 0px))}
+.icons button,.icons a{display:grid;justify-items:center;gap:5px;width:86px;padding:7px 2px 6px;border:0;border-radius:10px;background:transparent;color:var(--ink);text-decoration:none;font:400 11.5px/1.15 var(--px);text-align:center;cursor:pointer}
+.icons button:hover,.icons a:hover,.icons button:focus-visible,.icons a:focus-visible{background:rgba(255,255,255,.7)}
+.ico{position:relative;display:grid;place-items:center;width:50px;height:50px;border-radius:13px;border:2.5px solid var(--ink);background:var(--c, #fff);box-shadow:3px 3px 0 var(--ink);font:700 15px/1 var(--px);color:var(--ink)}
+.ico svg{width:26px;height:26px}
+.ico img{width:100%;height:100%;border-radius:10px;display:block;object-fit:cover}
+.icons a .ico::after{content:"";position:absolute;right:-6px;bottom:-6px;width:17px;height:17px;border-radius:5px;border:2px solid var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3.500000 8.5L8.500000 3.5M4.500000 3.5h4v4' fill='none' stroke='%230b0b12' stroke-width='1.600000'/%3E%3C/svg%3E") center/11px no-repeat}
+.icons [data-on="true"] .ico{box-shadow:3px 3px 0 var(--green)}
+
+/* windows */
+.win{position:absolute;display:flex;flex-direction:column;min-width:260px;max-width:calc(100vw - 16px);max-height:calc(100% - 14px);background:var(--paper);border:2.5px solid var(--ink);border-radius:12px;box-shadow:7px 7px 0 rgba(11,11,18,.9);overflow:hidden}
+.win[hidden]{display:none}
+.win{container-type:inline-size}
+.win.focus{box-shadow:7px 7px 0 var(--green), 7px 7px 0 2.5px var(--ink)}
+.win.max{left:8px!important;top:8px!important;width:calc(100% - 22px)!important;height:calc(100% - 22px)!important;max-height:none}
+.tbar{display:flex;align-items:center;gap:8px;flex:none;height:36px;padding:0 6px 0 10px;background:var(--grey);border-bottom:2.5px solid var(--ink);cursor:grab;user-select:none;touch-action:none}
+.win.focus .tbar{background:var(--blue);color:#fff}
+.tbar:active{cursor:grabbing}
+.tbar h2{font:700 13px/1 var(--px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;letter-spacing:.02em}
+.tbar svg.ti{width:16px;height:16px;flex:none}
+.ctl{display:flex;gap:5px;flex:none}
+.ctl button{display:grid;place-items:center;width:24px;height:24px;border:2px solid var(--ink);border-radius:6px;background:var(--paper);color:var(--ink);cursor:pointer;padding:0}
+.ctl button:hover{background:var(--yellow)}
+.ctl button[data-act="close"]:hover{background:var(--red)}
+.ctl svg{width:11px;height:11px}
+.wbody{padding:16px 18px;overflow:auto;flex:1;min-height:0}
+.wbody::-webkit-scrollbar{width:15px;height:15px}
+.wbody::-webkit-scrollbar-track{background:var(--grey);border-left:2.5px solid var(--ink)}
+.wbody::-webkit-scrollbar-thumb{background:var(--paper);border:2.5px solid var(--ink);border-right:0;box-shadow:inset -3px -3px 0 rgba(11,11,18,.14)}
+.wbody::-webkit-scrollbar-thumb:hover{background:var(--yellow)}
+@supports not selector(::-webkit-scrollbar){ .wbody{scrollbar-color:var(--ink) var(--grey)} }
+.sbar{flex:none;display:flex;justify-content:space-between;gap:12px;padding:5px 10px;border-top:2.5px solid var(--ink);background:var(--grey);font:400 11.5px/1.3 var(--mono);color:var(--mid);white-space:nowrap;overflow:hidden}
+.sbar span{overflow:hidden;text-overflow:ellipsis}
+
+.btns{display:flex;flex-wrap:wrap;gap:9px 8px;margin-top:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:0 14px;border:2.5px solid var(--ink);border-radius:9px;background:#fff;color:var(--ink);font:700 12.5px/1 var(--px);text-decoration:none;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:transform .06s, box-shadow .06s}
+.btn:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn.b{background:var(--blue);color:#fff} .btn.g{background:var(--green)} .btn.y{background:var(--yellow)}
+
+/* about */
+.who{display:grid;grid-template-columns:104px minmax(0,1fr);gap:16px;align-items:center}
+.who img{display:block;width:104px;height:104px;border-radius:14px;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--green);object-fit:cover}
+.who h3{font:700 24px/1.1 var(--sans);letter-spacing:-.01em}
+.who p{color:var(--mid);margin-top:4px;line-height:1.35}
+.txt p{margin-top:12px;max-width:58ch}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chips li{padding:3px 9px;border:2px solid var(--ink);border-radius:999px;background:#fff;font:500 12.5px/1.4 var(--mono)}
+/* fl_chart */
+.nums{display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:9px}
+.nums a{display:grid;gap:3px;padding:10px 10px 9px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink);text-decoration:none}
+.nums a:hover{background:#eaf6ff}
+.nums b{font:700 clamp(19px, 2.2vw, 24px)/1 var(--sans);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.nums span{font:400 10.5px/1.2 var(--px);color:var(--mid)}
+.meter{display:grid;grid-template-columns:repeat(16, 1fr);gap:2px;margin-top:5px}
+.meter i{height:7px;border-radius:1.5px;background:#d9d5c8}
+.meter i.on{background:var(--green)}
+.chart{margin-top:14px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;padding:10px 12px 8px}
+.chart h3{font:400 11.5px/1.2 var(--px);color:var(--mid);display:flex;justify-content:space-between;gap:8px}
+.bars{display:grid;grid-template-columns:repeat(8, minmax(0,1fr));gap:8px;align-items:end;height:112px;margin-top:8px}
+.bars div{display:grid;justify-items:center;align-content:end;gap:4px;height:100%}
+.bars b{font:500 11.5px/1 var(--mono)}
+.bars i{display:block;width:100%;border:2px solid var(--ink);border-bottom-width:2px;border-radius:5px 5px 0 0;background:var(--blue)}
+.bars div:nth-child(even) i{background:var(--green)}
+.bars span{font:400 11px/1 var(--mono);color:var(--mid)}
+.desc{margin-top:12px;max-width:60ch}
+#w-fl .btn{padding:0 11px}
+@container (max-width:430px){ .nums{grid-template-columns:repeat(2, minmax(0,1fr))} }
+/* games */
+.path{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:2.5px solid var(--ink);background:#fff;font:400 12.5px/1.2 var(--mono);flex:none}
+.path b{font-weight:500}
+.path a{margin-left:auto;font:700 11.5px/1 var(--px);color:#03609b;white-space:nowrap}
+.files{display:grid;grid-template-columns:repeat(auto-fill, minmax(92px, 1fr));gap:12px 6px}
+.files a{position:relative;display:grid;justify-items:center;gap:6px;padding:6px 2px;border-radius:9px;color:var(--ink);text-decoration:none;font:500 12px/1.2 var(--sans);text-align:center}
+.files a:hover,.files a:focus-visible{background:#dff0ff}
+.files img{display:block;width:64px;height:64px;border-radius:12px;border:2.5px solid var(--ink)}
+.files a.star img{box-shadow:3px 3px 0 var(--yellow)}
+.files a.star::before{content:"";position:absolute;top:0;left:calc(50% + 20px);width:18px;height:18px;border-radius:50%;border:2px solid var(--ink);background:var(--yellow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M6 1.2l1.4 3 3.2.4-2.400000 2.2.700000 3.200000L6 8.400000 3.100000 10l.700000-3.200000L1.400000 4.600000l3.200000-.400000z' fill='%230b0b12'/%3E%3C/svg%3E") center/11px no-repeat}
+.files em{display:block;font-style:normal;font:400 10px/1.2 var(--px);color:var(--mid);margin-top:2px}
+/* links */
+.rows{display:grid}
+.rows a{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 6px;border-radius:9px;color:var(--ink);text-decoration:none}
+.rows a + a{border-top:2px dashed rgba(11,11,18,.18)}
+.rows a:hover{background:#dff0ff}
+.rows .ico{width:40px;height:40px;border-radius:10px;box-shadow:2px 2px 0 var(--ink);font-size:12px}
+.rows strong{display:block;font:700 15px/1.2 var(--sans)}
+.rows span span{display:block;font:400 12.5px/1.3 var(--mono);color:var(--mid);overflow-wrap:anywhere}
+.rows i{font-style:normal;font:400 11px/1 var(--px);color:var(--mid)}
+.mail{margin-top:12px;padding:10px 12px;border:2.5px dashed var(--ink);border-radius:10px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font:400 13px/1.3 var(--mono)}
+.mail b{font-weight:500;user-select:all}
+.mail button{font:700 11.5px/1 var(--px);border:2px solid var(--ink);border-radius:7px;background:var(--yellow);padding:6px 9px;cursor:pointer}
+/* small things */
+.note{position:absolute;right:124px;bottom:76px;width:214px;padding:14px 14px 16px;background:var(--yellow);border:2.5px solid var(--ink);box-shadow:5px 5px 0 rgba(11,11,18,.9);transform:rotate(-2.5deg);font:500 14px/1.4 var(--sans);z-index:2}
+.note b{display:block;font:700 12px/1 var(--px);margin-bottom:7px}
+.trash li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 4px;font:400 13px/1.3 var(--mono)}
+.trash li + li{border-top:2px dashed rgba(11,11,18,.18)}
+.trash svg{width:20px;height:20px}
+.trash em{font-style:normal;color:var(--mid)}
+.sys{text-align:center}
+.sys img{width:64px;height:64px}
+.sys h3{font:700 20px/1.1 var(--px);margin-top:8px}
+.sys p{margin-top:8px;color:var(--mid);font-size:14px}
+.sys dl{margin-top:12px;display:grid;grid-template-columns:auto auto;gap:3px 14px;justify-content:center;font:400 12.5px/1.4 var(--mono);text-align:left}
+.sys dt{color:var(--mid)}
+.off{position:fixed;inset:0;z-index:2000;background:#0b0b12;color:#ffb000;display:grid;place-content:center;justify-items:center;gap:18px;text-align:center;padding:24px;font:400 clamp(15px, 3.2vw, 22px)/1.4 var(--px)}
+.off[hidden]{display:none}
+.off button{font:700 13px/1 var(--px);color:#0b0b12;background:#ffb000;border:0;border-radius:8px;padding:12px 16px;cursor:pointer}
+
+@media (max-width:900px){
+  /* the windows become one scrolling column */
+  body{overflow:auto}
+  html,body{height:auto}
+  .desk{position:static;overflow:visible;padding:calc(var(--bar) + env(safe-area-inset-top, 0px) + 14px) max(14px, env(safe-area-inset-right, 0px)) calc(90px + env(safe-area-inset-bottom, 0px)) max(14px, env(safe-area-inset-left, 0px));display:grid;gap:18px;min-height:100vh}
+  .wall,.menubar .mb-d,.menu .desk-only,.icons.r,.icons.l li:last-child{display:none}
+  .icons{position:static;grid-template-columns:repeat(4, minmax(0,1fr));gap:4px}
+  .icons button,.icons a{width:auto}
+  .icons.l{order:1} .win{order:3} .note{order:4}
+  #w-about{order:2}
+  .win{scroll-margin-top:calc(var(--bar) + env(safe-area-inset-top, 0px) + 12px);position:relative;left:auto!important;top:auto!important;width:auto!important;height:auto!important;max-width:none;max-height:none;box-shadow:5px 5px 0 rgba(11,11,18,.9)}
+  .win.focus{box-shadow:5px 5px 0 rgba(11,11,18,.9)}
+  .win .tbar{background:var(--blue);color:#fff;cursor:default}
+  .win[hidden]{display:flex}
+  #w-sys,#w-trash{display:none}
+  .ctl{display:none}
+  .wbody{overflow:visible}
+  .note{position:relative;right:auto;bottom:auto;width:auto;transform:rotate(-1deg);margin:4px 6px}
+  .nums{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .icons [data-on="true"] .ico{box-shadow:3px 3px 0 var(--ink)}
+}
+@media (max-width:420px){ .who{grid-template-columns:84px minmax(0,1fr)} .who img{width:84px;height:84px} .tray .clock span{display:none} }
+@media (prefers-reduced-motion:reduce){ .btn{transition:none} }
+</style>
+</head>
+<body>
+<header class="menubar">
+  <button type="button" id="nbtn" aria-haspopup="true" aria-expanded="false" aria-controls="nmenu"><img src="../shared/img/n.png" alt="">NeoOS</button>
+  <button type="button" class="mb-d" data-open="about">About</button>
+  <button type="button" class="mb-d" data-open="fl">fl_chart</button>
+  <button type="button" class="mb-d" data-open="games">Games</button>
+  <button type="button" class="mb-d" data-open="links">Links</button>
+  <div class="tray">
+    <a href="https://github.com/imaNNeo/fl_chart" title="fl_chart stars on GitHub"><b>&#9733;</b> <span id="t-stars">7.6k</span></a>
+    <a href="https://pub.dev/packages/fl_chart" title="fl_chart downloads in the last 30 days"><b>&darr;</b> <span id="t-dl">2.3M</span></a>
+    <span class="clock" id="clock" title="Time in Amsterdam"></span>
+  </div>
+</header>
+<div class="menu" id="nmenu" hidden>
+  <button type="button" data-open="about">About me</button>
+  <button type="button" data-open="fl">fl_chart</button>
+  <button type="button" data-open="games">Games</button>
+  <button type="button" data-open="links">Links</button>
+  <hr class="desk-only">
+  <button type="button" class="desk-only" data-open="sys">About NeoOS</button>
+  <button type="button" class="desk-only" id="tidy">Tidy up windows</button>
+  <hr>
+  <button type="button" id="shut">Shut down&hellip;</button>
+</div>
+
+<main class="desk" id="desk">
+  <img class="wall" src="../shared/img/n.png" alt="">
+
+  <ul class="icons l" aria-label="Apps">
+    <li><button type="button" data-open="about"><span class="ico" style="--c:#ffd84a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.500000 4-6 8-6s7 1.500000 8 6"/></svg></span>About me</button></li>
+    <li><button type="button" data-open="fl"><span class="ico"><img src="../shared/img/fl_chart.png" alt=""></span>fl_chart</button></li>
+    <li><button type="button" data-open="games"><span class="ico" style="--c:#ff8f6b"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 7h10a5 5 0 0 1 5 5v1a4 4 0 0 1-7.200000 2.400000L14 15h-4l-.800000.400000A4 4 0 0 1 2 13v-1a5 5 0 0 1 5-5zm0 3v1.500000H5.500000v1H7V14h1v-1.500000h1.500000v-1H8V10zm8.500000 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></span>Games</button></li>
+    <li><button type="button" data-open="links"><span class="ico" style="--c:#8fe3b5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.700000 0l3-3a4 4 0 0 0-5.700000-5.700000l-1 1M14 10a4 4 0 0 0-5.700000 0l-3 3a4 4 0 0 0 5.700000 5.700000l1-1"/></svg></span>Links</button></li>
+    <li><button type="button" data-open="trash"><span class="ico" style="--c:#e9e6dc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></span>Trash</button></li>
+  </ul>
+
+  <ul class="icons r" id="shortcuts" aria-label="Shortcuts to my profiles"></ul>
+
+  <!-- About -->
+  <section class="win" id="w-about" data-win="about" data-title="About me" aria-labelledby="h-about">
+    <header class="tbar"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.600000" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.500000 4-6 8-6s7 1.500000 8 6"/></svg><h2 id="h-about">About me</h2><span class="ctl"></span></header>
+    <div class="wbody txt">
+      <div class="who">
+        <img src="../shared/img/me-face.jpg" alt="Iman, smiling in sunglasses" width="104" height="104">
+        <div><h3>Iman Khoshabi</h3><p>Senior mobile engineer in Amsterdam.<br>Also known as imaN Neo.</p></div>
+      </div>
+      <p>I build mobile apps for a living. I started with native Android in Kotlin and Java, and now I mostly write Flutter. I have been at it for more than 10 years.</p>
+      <p>I am picky about small UI details, and I like clean code that is not over-engineered. In my spare time I maintain fl_chart and make small games.</p>
+      <ul class="chips"><li>Flutter</li><li>Dart</li><li>Kotlin</li><li>Java</li><li>Flame</li><li>Godot</li><li>Cocos Creator</li><li>Babylon.js</li></ul>
+      <div class="btns"><a class="btn y" href="https://games.imanneo.dev/">Play my games</a><button class="btn" type="button" data-open="fl">Open fl_chart</button></div>
+    </div>
+    <footer class="sbar"><span>about.txt</span><span>10+ years &middot; UTF-8</span></footer>
+  </section>
+
+  <!-- fl_chart -->
+  <section class="win" id="w-fl" data-win="fl" data-title="fl_chart" aria-labelledby="h-fl">
+    <header class="tbar"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.600000" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5.500000-6 4 3.500000L21 6"/></svg><h2 id="h-fl">fl_chart monitor</h2><span class="ctl"></span></header>
+    <div class="wbody">
+      <div class="nums">
+        <a href="https://github.com/imaNNeo/fl_chart"><b id="n-stars">7.6k</b><span>GitHub stars</span></a>
+        <a href="https://pub.dev/packages/fl_chart"><b id="n-dl">2.3M</b><span>downloads / month</span></a>
+        <a href="https://pub.dev/packages/fl_chart"><b id="n-likes">7.2k</b><span>pub.dev likes</span></a>
+        <a href="https://pub.dev/packages/fl_chart/score"><b id="n-pts">150</b><span>of 160 pub points</span><span class="meter" id="meter" aria-hidden="true"></span></a>
+      </div>
+      <div class="chart">
+        <h3><span>Releases per year</span><span id="n-rel">107 since 2019</span></h3>
+        <div class="bars" id="bars" role="img" aria-label="Bar chart of fl_chart releases per year, from 32 in 2019 to 3 so far in 2026"></div>
+      </div>
+      <p class="desc">A chart library for Flutter that I open-sourced in 2019 and still maintain for free. Line, bar, pie, scatter, radar and candlestick charts, on every platform Flutter runs on.</p>
+      <div class="btns">
+        <a class="btn b" href="https://github.com/imaNNeo/fl_chart">GitHub</a><a class="btn g" href="https://pub.dev/packages/fl_chart">pub.dev</a><a class="btn" href="https://flchart.dev">Docs</a><a class="btn" href="https://app.flchart.dev">Samples</a><a class="btn y" href="https://github.com/sponsors/imaNNeo">Sponsor</a>
+      </div>
+    </div>
+    <footer class="sbar"><span id="s-fl">v1.3.1 &middot; MIT</span><span>6 chart types &middot; 6 platforms</span></footer>
+  </section>
+
+  <!-- Games -->
+  <section class="win" id="w-games" data-win="games" data-title="Games" aria-labelledby="h-games">
+    <header class="tbar"><svg class="ti" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6h7l2 2h9v11H3z"/></svg><h2 id="h-games">Games</h2><span class="ctl"></span></header>
+    <p class="path"><b>N:/Games</b><a href="https://games.imanneo.dev/">Open games.imanneo.dev</a></p>
+    <div class="wbody"><div class="files" id="files"></div></div>
+    <footer class="sbar"><span>24 items, free to play</span><span>&#9733; the main four</span></footer>
+  </section>
+
+  <!-- Links -->
+  <section class="win" id="w-links" data-win="links" data-title="Links" aria-labelledby="h-links" hidden>
+    <header class="tbar"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.600000" stroke-linecap="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.700000 0l3-3a4 4 0 0 0-5.700000-5.700000l-1 1M14 10a4 4 0 0 0-5.700000 0l-3 3a4 4 0 0 0 5.700000 5.700000l1-1"/></svg><h2 id="h-links">Links</h2><span class="ctl"></span></header>
+    <div class="wbody">
+      <div class="rows" id="rows"></div>
+      <p class="mail"><span>Mail:</span><b id="addr"></b><button type="button" id="copy">Copy</button></p>
+    </div>
+    <footer class="sbar"><span id="s-links">8 items</span><span>all open in a new tab</span></footer>
+  </section>
+
+  <!-- Trash -->
+  <section class="win" id="w-trash" data-win="trash" data-title="Trash" aria-labelledby="h-trash" hidden>
+    <header class="tbar"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.600000" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M6 7l1 13h10l1-13"/></svg><h2 id="h-trash">Trash</h2><span class="ctl"></span></header>
+    <div class="wbody">
+      <ul class="trash">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>over_engineering.zip<em>too big</em></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>misaligned_pixel.png<em>1 px</em></li>
+      </ul>
+    </div>
+    <footer class="sbar"><span>2 items</span><span>emptied often</span></footer>
+  </section>
+
+  <!-- About NeoOS -->
+  <section class="win" id="w-sys" data-win="sys" data-title="About NeoOS" aria-labelledby="h-sys" hidden>
+    <header class="tbar"><h2 id="h-sys">About NeoOS</h2><span class="ctl"></span></header>
+    <div class="wbody sys">
+      <img src="../shared/img/n.png" alt="">
+      <h3>NeoOS 10.0</h3>
+      <p>A small desktop for one person's work.</p>
+      <dl><dt>Owner</dt><dd>Iman Khoshabi</dd><dt>Uptime</dt><dd>10+ years</dd><dt>Location</dt><dd>Amsterdam</dd><dt>Installed</dt><dd>1 chart library, 24 games</dd></dl>
+    </div>
+  </section>
+
+  <aside class="note" aria-label="Sticky note"><b>Fun fact</b>I picked the nickname NeO before I ever watched The Matrix.</aside>
+</main>
+
+<div class="off" id="off" hidden><p>It is now safe to close this tab.</p><button type="button" id="on">Turn it back on</button></div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  var S = window.SITE, fl = S.fl, $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var small = window.matchMedia("(max-width:900px)"), still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- content ---------- */
+  $("t-stars").textContent = fl.starsLabel; $("t-dl").textContent = fl.downloadsLabel;
+  $("n-stars").textContent = fl.starsLabel; $("n-dl").textContent = fl.downloadsLabel; $("n-likes").textContent = fl.likesLabel; $("n-pts").textContent = fl.points;
+  $("n-rel").textContent = fl.releases + " since " + fl.since; $("s-fl").textContent = "v" + fl.version + " · " + fl.license;
+  var lit = Math.round(fl.points / fl.maxPoints * 16), m = ""; for (var i = 0; i < 16; i++) m += '<i' + (i < lit ? ' class="on"' : "") + "></i>"; $("meter").innerHTML = m;
+  var max = Math.max.apply(null, fl.perYear.map(function (r) { return r[1]; }));
+  $("bars").innerHTML = fl.perYear.map(function (r) { return "<div><b>" + r[1] + '</b><i style="height:' + Math.max(6, Math.round(r[1] / max * 78)) + 'px"></i><span>' + String(r[0]).slice(2) + "</span></div>"; }).join("");
+  $("files").innerHTML = S.games.map(function (g) {
+    return '<a href="' + S.gameUrl(g.id) + '"' + (g.featured ? ' class="star"' : "") + ' title="' + esc(g.blurb) + '"><img src="' + S.gameImg(g.id) + '" alt="" width="64" height="64" loading="lazy"><span>' + esc(g.title) + (g.featured ? "<em>" + esc(g.tag) + "</em>" : "") + "</span></a>";
+  }).join("");
+  var tint = { youtube: "#ff8f8f", github: "#ffffff", linkedin: "#8fc7ff", x: "#d9d5c8", blog: "#8fe3ff", mail: "#ffd84a" }, glyph = { youtube: "YT", github: "GH", linkedin: "in", x: "X", blog: "4F", mail: "@" };
+  var all = S.socials.concat([{ id: "news", label: "Mailing list", handle: "One email when my next game is out", url: S.links.newsletter }, { id: "sponsor", label: "Sponsor", handle: "github.com/sponsors/imaNNeo", url: S.links.sponsor }]);
+  tint.news = "#8fe3b5"; glyph.news = "ML"; tint.sponsor = "#ffb3d1"; glyph.sponsor = "&#9829;";
+  $("shortcuts").innerHTML = S.socials.map(function (l) { return '<li><a href="' + l.url + '"><span class="ico" style="--c:' + tint[l.id] + '">' + glyph[l.id] + "</span>" + esc(l.id === "blog" ? "Blog" : l.id === "mail" ? "Mail" : l.label) + "</a></li>"; }).join("");
+  $("rows").innerHTML = all.map(function (l) { return '<a href="' + l.url + '"><span class="ico" style="--c:' + tint[l.id] + '">' + glyph[l.id] + "</span><span><strong>" + esc(l.label) + "</strong><span>" + esc(l.handle) + "</span></span><i>open</i></a>"; }).join("");
+  $("s-links").textContent = all.length + " items"; $("addr").textContent = S.me.email;
+  $("copy").addEventListener("click", function () {
+    var b = this, done = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1600); };
+    var fallback = function () { try { var r = document.createRange(); r.selectNodeContents($("addr")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {} };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(S.me.email).then(done, fallback); else fallback();
+  });
+  function clock() {
+    var d = new Date(), o = { timeZone: "Europe/Amsterdam" }, t;
+    try { t = "<span>" + d.toLocaleDateString("en-GB", { weekday: "short", timeZone: o.timeZone }) + " </span>" + d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: o.timeZone }); } catch (e) { t = d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2); }
+    $("clock").innerHTML = t;
+  }
+  clock(); setInterval(clock, 20000);
+
+  /* ---------- window manager ---------- */
+  var desk = $("desk"), wins = [].slice.call(document.querySelectorAll(".win")), z = 10;
+  var ctl = '<button type="button" data-act="max" aria-label="Maximise" title="Maximise"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1.500000" y="1.500000" width="9" height="9"/></svg></button><button type="button" data-act="close" aria-label="Close" title="Close"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.200000" stroke-linecap="round" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8"/></svg></button>';
+  wins.forEach(function (w) { w.querySelector(".ctl").innerHTML = ctl; });
+  var byId = function (id) { return $("w-" + id); };
+  function marks() { [].forEach.call(document.querySelectorAll("[data-open]"), function (b) { var w = byId(b.getAttribute("data-open")); b.setAttribute("data-on", String(!!w && !w.hidden)); }); }
+  function front(w) { w.style.zIndex = ++z; wins.forEach(function (x) { x.classList.toggle("focus", x === w); }); }
+  function topmost() { var best = null; wins.forEach(function (w) { if (!w.hidden && (!best || (+w.style.zIndex || 0) > (+best.style.zIndex || 0))) best = w; }); return best; }
+  function place(w, x, y, width, height) {
+    var W = desk.clientWidth, H = desk.clientHeight;
+    width = Math.min(width, W - 16); w.style.width = width + "px";
+    if (height) w.style.height = Math.min(height, H - 14) + "px"; else w.style.height = "";
+    w.style.left = Math.max(6, Math.min(x, W - width - 12)) + "px"; w.style.top = Math.max(6, Math.min(y, H - 120)) + "px";
+  }
+  function layout() {
+    if (small.matches) return;
+    var W = desk.clientWidth, H = desk.clientHeight, L = 112, R = W - 112, room = R - L, cl = function (a, v, b) { return Math.max(a, Math.min(b, v)); };
+    var aw = cl(280, room * .36, 480), fw = cl(340, room * .46, 600), gw = cl(400, room * .56, 760);
+    var a = byId("about"), f = byId("fl"), g = byId("games");
+    wins.forEach(function (w) { w.classList.remove("max"); });
+    place(a, L + 6, 14, aw);
+    place(f, Math.max(L + aw - 30, R - fw - 4), 30, fw);
+    /* the games folder sits under the other two and, when the screen is short, in front of them */
+    var low = Math.max(a.offsetTop + a.offsetHeight, f.offsetTop + f.offsetHeight), gh = cl(300, H - low + 26, 470);
+    place(g, L + (room - gw) * .5, H - gh - 16, gw, gh);
+    place(byId("links"), L + room * .3, 60, Math.min(440, room * .5));
+    place(byId("trash"), L + 20, H - 250, 330);
+    place(byId("sys"), (W - 330) / 2, H * .2, 330);
+    front(a); front(f); front(g);
+  }
+  function open(id) {
+    var w = byId(id); if (!w) return;
+    if (small.matches) { w.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" }); return; }
+    w.hidden = false; front(w); marks();
+    var f = w.querySelector(".wbody a, .wbody button"); if (f) f.focus({ preventScroll: true });
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target : null; if (!t) return;
+    var o = t.closest("[data-open]"), a = t.closest("[data-act]");
+    if (o) { open(o.getAttribute("data-open")); menu(false); return; }
+    if (a) {
+      var w = a.closest(".win");
+      if (a.getAttribute("data-act") === "close") { w.hidden = true; w.classList.remove("max"); var n = topmost(); if (n) front(n); marks(); }
+      else { w.classList.toggle("max"); front(w); }
+      return;
+    }
+    if (!t.closest("#nmenu") && !t.closest("#nbtn")) menu(false);
+  });
+  desk.addEventListener("pointerdown", function (e) { var w = e.target.closest(".win"); if (w && !small.matches) front(w); }, true);
+  /* drag by the title bar */
+  wins.forEach(function (w) {
+    var bar = w.querySelector(".tbar"), sx, sy, ox, oy, on = false;
+    bar.addEventListener("pointerdown", function (e) {
+      if (small.matches || e.target.closest("button") || w.classList.contains("max") || e.button > 0) return;
+      on = true; sx = e.clientX; sy = e.clientY; ox = w.offsetLeft; oy = w.offsetTop; try { bar.setPointerCapture(e.pointerId); } catch (x) {}
+    });
+    bar.addEventListener("pointermove", function (e) {
+      if (!on) return;
+      var W = desk.clientWidth, H = desk.clientHeight;
+      w.style.left = Math.max(80 - w.offsetWidth, Math.min(W - 80, ox + e.clientX - sx)) + "px";
+      w.style.top = Math.max(0, Math.min(H - 40, oy + e.clientY - sy)) + "px";
+    });
+    var end = function () { on = false; };
+    bar.addEventListener("pointerup", end); bar.addEventListener("pointercancel", end);
+    bar.addEventListener("dblclick", function (e) { if (!small.matches && !e.target.closest("button")) w.classList.toggle("max"); });
+  });
+
+  /* ---------- menu, shut down ---------- */
+  function menu(on) { $("nmenu").hidden = !on; $("nbtn").setAttribute("aria-expanded", String(on)); }
+  $("nbtn").addEventListener("click", function () { menu($("nmenu").hidden); if (!$("nmenu").hidden) $("nmenu").querySelector("button").focus(); });
+  $("tidy").addEventListener("click", function () { ["about", "fl", "games"].forEach(function (id) { byId(id).hidden = false; }); layout(); marks(); menu(false); });
+  $("shut").addEventListener("click", function () { menu(false); $("off").hidden = false; $("on").focus(); });
+  $("on").addEventListener("click", function () { $("off").hidden = true; $("nbtn").focus(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (!$("nmenu").hidden) { menu(false); $("nbtn").focus(); } } });
+
+  layout(); marks();
+  var wasSmall = small.matches;
+  window.addEventListener("resize", function () { if (small.matches !== wasSmall) { wasSmall = small.matches; if (!wasSmall) { layout(); marks(); } } });
+})();
+</script>
+<script src="../shared/switcher.js" data-pos="br"></script>
+</body>
+</html>

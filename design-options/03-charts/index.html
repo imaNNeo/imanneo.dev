@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam, maker of fl_chart and a pile of small games.">
+<meta name="theme-color" content="#282E45">
+<link rel="icon" href="../shared/img/n.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Roboto:wght@400;500&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the fl_chart sample app. A dark menu rail on the left, chart cards on a slate page. Every section is a chart. */
+:root{
+  color-scheme: dark;
+  --page:#282E45; --item:#1B2339; --menu:#090912;
+  --t1:#ffffff; --t2:rgba(255,255,255,.74); --t3:rgba(255,255,255,.54);
+  --grid:rgba(255,255,255,.1); --border:rgba(255,255,255,.14);
+  --cyan:#50E4FF; --blue:#2196F3; --yellow:#FFC300; --orange:#FF683B; --green:#3BFF49; --purple:#A27BFF; --pink:#FF3AF2; --red:#FF4D7D;
+  --display:"Sora", "Roboto", system-ui, sans-serif; --body:"Roboto", system-ui, -apple-system, "Segoe UI", sans-serif; --mono:"Roboto Mono", ui-monospace, Menlo, Consolas, monospace;
+  --r:22px;
+}
+*{box-sizing:border-box}
+html{background:var(--page)}
+body{margin:0;background:var(--page);color:var(--t2);font:400 15.5px/1.6 var(--body);-webkit-text-size-adjust:100%}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);color:var(--t1);margin:0;text-wrap:balance}
+p{margin:0}
+
+.app{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
+.menu{background:var(--menu);padding:22px 14px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;color:var(--t1);font:700 18px var(--display)}
+.brand:hover{text-decoration:none}
+.brand img{width:34px;height:34px}
+.menu nav{display:grid;gap:4px}
+.menu nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--t2);font:500 14px var(--body);letter-spacing:.02em}
+.menu nav a:hover{background:rgba(255,255,255,.06);text-decoration:none;color:var(--t1)}
+.menu nav a.on{color:var(--cyan);background:rgba(80,228,255,.1)}
+.menu nav svg{width:20px;height:20px;flex:none}
+.menu small{margin-top:auto;padding:0 10px;color:var(--t3);font:400 12px/1.5 var(--body)}
+
+main{min-width:0;padding-block:24px 40px;padding-left:max(24px, env(safe-area-inset-left, 0px));padding-right:max(24px, env(safe-area-inset-right, 0px));display:grid;gap:18px;align-content:start;max-width:1280px;width:100%;margin:0 auto}
+.card{background:var(--item);border-radius:var(--r);padding:22px 24px 24px;min-width:0}
+.card > header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.card h2{font-size:17px;font-weight:600}
+.card header p{font-size:13px;color:var(--t3)}
+.cols{display:grid;gap:18px}
+.c57{grid-template-columns:minmax(0,5fr) minmax(0,7fr)} .c75{grid-template-columns:minmax(0,7fr) minmax(0,5fr)} .c66{grid-template-columns:repeat(2, minmax(0,1fr))}
+.chart{width:100%;display:block;overflow:visible;touch-action:pan-y}
+.chart text{font-family:var(--mono);font-size:11.5px;fill:rgba(255,255,255,.62)}
+.tgl{font:500 12px var(--mono);color:var(--t2);background:transparent;border:1px solid var(--border);border-radius:999px;padding:5px 12px;cursor:pointer;white-space:nowrap}
+.tgl:hover{color:var(--t1);border-color:var(--t2)}
+.tgl[aria-pressed="true"]{color:var(--menu);background:var(--cyan);border-color:var(--cyan)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:26px;align-items:center;padding:28px}
+.eyebrow{font:500 12.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
+.hero h1{font-size:clamp(34px, 4.4vw, 54px);line-height:1.05;font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+.hero h1 span{background:linear-gradient(90deg, var(--cyan), var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lede{font-size:17px;max-width:44ch;margin-bottom:20px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:14px;font:600 14.5px var(--display);border:1px solid var(--border);color:var(--t1)}
+.btn:hover{text-decoration:none;border-color:var(--t2)}
+.btn.pri{background:linear-gradient(90deg, var(--cyan), var(--blue));border-color:transparent;color:#06121f}
+.btn.pri:hover{filter:brightness(1.08)}
+.herochart header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px}
+.herochart h2{font-size:15px}
+.card header p.big{font:700 30px/1.1 var(--display);color:var(--t1);font-variant-numeric:tabular-nums;margin-top:4px}
+.big small{font:400 13px var(--body);color:var(--t3);margin-left:8px}
+
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:18px}
+.kpi{background:var(--item);border-radius:var(--r);padding:18px 20px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;color:var(--t2)}
+.kpi:hover{text-decoration:none;box-shadow:0 0 0 1px var(--border)}
+.kpi dt{grid-column:1 / -1;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3);display:flex;align-items:center;gap:8px}
+.kpi dt i{width:10px;height:10px;border-radius:3px;background:var(--c)}
+.kpi dd{margin:0;font:700 clamp(26px, 2.6vw, 34px)/1.1 var(--display);color:var(--t1);font-variant-numeric:tabular-nums;white-space:nowrap}
+.kpi dd small{font:400 13px var(--body);color:var(--t3)}
+.kpi > span{grid-column:1;font-size:13px;color:var(--t3)}
+.kpi svg{grid-row:2 / span 2;grid-column:2;width:54px;height:54px}
+
+/* fl_chart info */
+.flhead{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.flhead img{width:56px;height:56px;border-radius:14px}
+.flhead h2{font-size:22px}
+.flhead code{font:500 12px var(--mono);color:var(--cyan);border:1px solid rgba(80,228,255,.35);border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:3px}
+.info p{margin-bottom:12px;max-width:60ch}
+.info p b{color:var(--t1);font-weight:500}
+.types{list-style:none;margin:16px 0;padding:0;display:grid;grid-template-columns:repeat(6, minmax(0,1fr));gap:8px}
+.types li{background:rgba(255,255,255,.04);border-radius:12px;padding:10px 4px 8px;text-align:center;font:500 11.5px var(--mono);color:var(--t2);min-width:0;overflow:hidden;text-overflow:ellipsis}
+.types svg{display:block;width:34px;height:26px;margin:0 auto 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0 0 16px;padding:0}
+.chips li{font:500 12px var(--mono);color:var(--t2);border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+.linkrow{display:flex;flex-wrap:wrap;gap:8px 18px;font:500 14px var(--body)}
+
+/* pie + games */
+.piewrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 18px;align-items:center}
+.legend{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.legend button{display:flex;align-items:center;gap:9px;width:100%;background:transparent;border:0;color:var(--t2);font:500 13.5px var(--body);padding:5px 8px;border-radius:8px;cursor:pointer;text-align:left}
+.legend button:hover,.legend button.on{background:rgba(255,255,255,.07);color:var(--t1)}
+.legend i{width:13px;height:13px;border-radius:4px;background:var(--c);flex:none}
+.legend b{margin-left:auto;padding-left:12px;font:500 12.5px var(--mono);color:var(--t3)}
+.hint{font-size:14px;color:var(--t2);margin:2px 0 16px;max-width:62ch}
+.games{display:grid;gap:18px}
+.built{margin-top:20px;padding-top:16px;border-top:1px solid var(--grid)}
+.built h3{font:600 14px var(--display);margin-bottom:10px}
+.stack{display:flex;height:16px;border-radius:8px;overflow:hidden;gap:2px;margin-bottom:10px}
+.stack i{display:block;background:var(--c);min-width:6px}
+.built ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13.5px}
+.built li{display:flex;align-items:center;gap:8px}
+.built li i{width:13px;height:13px;border-radius:4px;background:var(--c)}
+.built li b{font:500 12.5px var(--mono);color:var(--t3)}
+.four{list-style:none;margin:0 0 14px;padding:0;display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:10px}
+.four a{display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;align-items:center;background:rgba(255,255,255,.04);border-radius:16px;padding:8px;color:var(--t2)}
+.four a:hover{background:rgba(255,255,255,.09);text-decoration:none}
+.four img{width:72px;height:72px;border-radius:12px;display:block}
+.four strong{display:block;font:600 15px/1.25 var(--display);color:var(--t1)}
+.four em{display:inline-block;font:500 11px var(--mono);font-style:normal;color:var(--c);margin:3px 0}
+.four span{display:block;font-size:13px;line-height:1.4}
+.grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(10, minmax(0, 1fr));gap:12px}
+.grid a{display:block;color:var(--t2);font-size:12px;line-height:1.3;text-align:center}
+.grid a:hover{text-decoration:none;color:var(--t1)}
+.grid img{display:block;width:100%;height:auto;aspect-ratio:1;border-radius:14px;margin-bottom:5px;box-shadow:0 0 0 2px transparent;transition:box-shadow .15s, transform .15s}
+.grid a:hover img{box-shadow:0 0 0 2px var(--c);transform:translateY(-2px)}
+.games li[data-g]{transition:opacity .2s}
+.games.filtered li[data-g]:not(.hit){opacity:.22}
+.status{font:500 12.5px var(--mono);color:var(--t3)}
+.status b{color:var(--t1);font-weight:500}
+
+/* about + links */
+.me{display:grid;grid-template-columns:96px minmax(0,1fr);gap:18px;align-items:start}
+.me img{width:96px;height:96px;border-radius:24px;display:block}
+.me p{margin-bottom:12px;max-width:60ch}
+.find{list-style:none;margin:0;padding:0;display:grid}
+.find a{display:grid;grid-template-columns:13px minmax(0,auto) minmax(0,1fr);gap:10px;align-items:center;padding:9px 8px;border-radius:10px;color:var(--t2)}
+.find a:hover{background:rgba(255,255,255,.06);text-decoration:none}
+.find i{width:13px;height:13px;border-radius:50%;background:var(--c)}
+.find b{font:600 14.5px var(--display);color:var(--t1)}
+.find span{font-size:13.5px;text-align:right;color:var(--t3);overflow-wrap:anywhere}
+footer{font-size:12.5px;color:var(--t3);text-align:center;padding-top:6px}
+
+@media (max-width:1080px){
+  .grid{grid-template-columns:repeat(auto-fill, minmax(84px, 1fr));gap:10px}
+  .c57,.c75,.c66,.hero{grid-template-columns:minmax(0,1fr)}
+  .kpis{grid-template-columns:repeat(2, minmax(0,1fr))}
+}
+@media (max-width:820px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .menu{position:static;height:auto;flex-direction:row;align-items:center;gap:8px;padding-block:10px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));overflow-x:auto}
+  .menu nav{display:flex;gap:2px}
+  .menu nav a{padding:8px 10px;white-space:nowrap}
+  .menu nav svg{display:none}
+  .menu small{display:none}
+  .brand span{display:none}
+  main{padding-block:16px 32px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));gap:14px}
+  .cols,.kpis,.games{gap:14px}
+  .card{padding:18px 16px 20px}
+  .hero{padding:22px 18px}
+}
+@media (max-width:520px){
+  .kpi{padding:14px 14px}
+  .kpi svg{display:none}
+  .four{grid-template-columns:minmax(0,1fr)}
+  .types{grid-template-columns:repeat(3, minmax(0,1fr))}
+  .piewrap{grid-template-columns:minmax(0,1fr)}
+  .legend{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .me{grid-template-columns:64px minmax(0,1fr);gap:14px}
+  .me img{width:64px;height:64px;border-radius:18px}
+  .find span{display:none}
+}
+@media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="menu">
+    <a class="brand" href="#overview"><img src="../shared/img/n.png" alt=""><span>imaN Neo</span></a>
+    <nav aria-label="Sections">
+      <a href="#overview" class="on"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 14c3-1 3-8 6-8s3 6 5 6 3-5 5-7"/></svg>Overview</a>
+      <a href="#fl"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="3" y="9" width="3" height="8" rx="1"/><rect x="8.5" y="4" width="3" height="13" rx="1"/><rect x="14" y="11" width="3" height="6" rx="1"/></svg>fl_chart</a>
+      <a href="#games"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 3v7l5 5"/></svg>Games</a>
+      <a href="#about"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M10 2l7.6 5.5-2.9 9H5.3l-2.9-9z"/><path d="M10 6l3.6 2.8-1.2 4.4H7.6L6.4 8.8z"/></svg>About</a>
+      <a href="#links"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="5" cy="13" r="2.4"/><circle cx="10" cy="6" r="1.8"/><circle cx="15" cy="12" r="2.8"/><circle cx="14" cy="4" r="1.2"/></svg>Links</a>
+    </nav>
+    <small>Numbers from GitHub and pub.dev, <span id="snap">17 Nov 2026</span>.</small>
+  </aside>
+
+  <main>
+    <section class="card hero" id="overview">
+      <div>
+        <p class="eyebrow">Iman Khoshabi · imaN Neo</p>
+        <h1>My life, <span>in charts.</span></h1>
+        <p class="lede">I made fl_chart, so my site is a dashboard. I'm a senior mobile engineer in Amsterdam, I build Flutter and Android apps, and I make small games.</p>
+        <div class="btns">
+          <a class="btn pri" href="https://games.imanneo.dev/">&#9654; Play my games</a>
+          <a class="btn" href="https://github.com/imaNNeo/fl_chart">fl_chart on GitHub</a>
+        </div>
+      </div>
+      <div class="herochart">
+        <header>
+          <div><h2 id="line-title">fl_chart releases, added up</h2><p class="big"><span id="line-big">107</span><small id="line-sub">releases since June 2019</small></p></div>
+          <button class="tgl" id="line-tgl" type="button" aria-pressed="false">per year</button>
+        </header>
+        <svg class="chart" id="line" role="img" aria-label="Line chart of fl_chart releases added up by year: 32 by the end of 2019, 54 in 2020, 69 in 2021, 83 in 2022, 90 in 2023, 98 in 2024, 104 in 2025 and 107 so far in 2026"></svg>
+      </div>
+    </section>
+
+    <dl class="kpis" aria-label="fl_chart in numbers">
+      <a class="kpi" style="--c:var(--cyan)" href="https://github.com/imaNNeo/fl_chart"><dt><i></i>Stars</dt><dd id="k-stars">7.6k</dd><span>on GitHub</span></a>
+      <a class="kpi" style="--c:var(--pink)" href="https://pub.dev/packages/fl_chart"><dt><i></i>Likes</dt><dd id="k-likes">7,209</dd><span>on pub.dev</span></a>
+      <a class="kpi" style="--c:var(--yellow)" href="https://pub.dev/packages/fl_chart"><dt><i></i>Downloads</dt><dd id="k-dl">2.3M</dd><span>in the last 30 days</span></a>
+      <a class="kpi" style="--c:var(--green)" href="https://pub.dev/packages/fl_chart/score"><dt><i></i>Pub points</dt><dd><span id="k-pts">150</span><small> / 160</small></dd><span>on pub.dev</span>
+        <svg viewBox="0 0 54 54" aria-hidden="true"><circle cx="27" cy="27" r="21" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="7"/><circle id="ring" cx="27" cy="27" r="21" fill="none" stroke="#3BFF49" stroke-width="7" stroke-linecap="round" stroke-dasharray="123.7 131.95" transform="rotate(-90 27 27)"/></svg></a>
+    </dl>
+
+    <section class="cols c75" id="fl">
+      <article class="card">
+        <header><div><h2>Releases per year</h2><p>107 releases, from 0.0.1 in June 2019 to <span id="ver">1.3.1</span></p></div></header>
+        <svg class="chart" id="bar" role="img" aria-label="Bar chart of fl_chart releases per year: 32 in 2019, 22 in 2020, 15 in 2021, 14 in 2022, 7 in 2023, 8 in 2024, 6 in 2025 and 3 so far in 2026"></svg>
+      </article>
+      <article class="card info">
+        <div class="flhead"><img src="../shared/img/fl_chart.png" alt=""><h2>fl_chart<code id="ver2">v1.3.1</code></h2></div>
+        <p>A highly customizable chart library for Flutter. I open-sourced it in 2019 and I still maintain it in my spare time. It is free and MIT licensed.</p>
+        <ul class="types" aria-label="Chart types">
+          <li><svg viewBox="0 0 34 26" fill="none" stroke="#50E4FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20c5-1 5-13 10-13s5 10 9 10 6-9 11-12"/></svg>Line</li>
+          <li><svg viewBox="0 0 34 26" fill="#2196F3" aria-hidden="true"><rect x="3" y="12" width="5" height="12" rx="1.5"/><rect x="11" y="4" width="5" height="20" rx="1.5"/><rect x="19" y="9" width="5" height="15" rx="1.5"/><rect x="27" y="15" width="5" height="9" rx="1.5"/></svg>Bar</li>
+          <li><svg viewBox="0 0 34 26" aria-hidden="true"><path d="M17 13V2a11 11 0 0 1 10.4 14.6z" fill="#FFC300"/><path d="M17 13l10.4 3.6A11 11 0 1 1 17 2z" fill="#FF3AF2"/></svg>Pie</li>
+          <li><svg viewBox="0 0 34 26" fill="#3BFF49" aria-hidden="true"><circle cx="6" cy="18" r="3.4"/><circle cx="14" cy="8" r="2.4"/><circle cx="22" cy="16" r="4.2"/><circle cx="29" cy="6" r="2"/></svg>Scatter</li>
+          <li><svg viewBox="0 0 34 26" fill="none" stroke="#A27BFF" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l11.4 8.3-4.4 12.7H10L5.6 10.3z"/><path d="M17 7l6 5.2-3 7.3h-7l-2-8.2z" fill="rgba(162,123,255,.35)"/></svg>Radar</li>
+          <li><svg viewBox="0 0 34 26" aria-hidden="true"><g stroke="#3BFF49" stroke-width="1.6"><path d="M7 3v20"/><path d="M27 5v14"/></g><g stroke="#FF4D7D" stroke-width="1.6"><path d="M17 6v18"/></g><rect x="4.5" y="8" width="5" height="10" rx="1" fill="#3BFF49"/><rect x="14.5" y="10" width="5" height="9" rx="1" fill="#FF4D7D"/><rect x="24.5" y="8" width="5" height="7" rx="1" fill="#3BFF49"/></svg>Candle</li>
+        </ul>
+        <ul class="chips" aria-label="Platforms"><li>Android</li><li>iOS</li><li>Web</li><li>macOS</li><li>Windows</li><li>Linux</li></ul>
+        <p>It runs on every platform Flutter does, and so far it has taken <b id="commits">1,982</b> commits and <b id="forks">2.0k</b> forks to get here.</p>
+        <div class="linkrow">
+          <a href="https://github.com/imaNNeo/fl_chart">GitHub</a><a href="https://pub.dev/packages/fl_chart">pub.dev</a><a href="https://flchart.dev">Docs</a><a href="https://app.flchart.dev">Live samples</a><a href="https://github.com/sponsors/imaNNeo">Sponsor</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="games" id="games">
+      <div class="cols c57">
+        <article class="card">
+          <header><div><h2>24 games, by genre</h2><p>Touch a slice to filter the games</p></div></header>
+          <div class="piewrap">
+            <svg class="chart" id="pie" role="img" aria-label="Pie chart of 24 games by genre: 8 puzzle, 4 arcade, 4 relaxing, 2 casual, 2 kids, 2 action, 1 cooking and 1 strategy"></svg>
+            <ul class="legend" id="legend"></ul>
+          </div>
+          <div class="built">
+            <h3>Built with</h3>
+            <div class="stack" id="stack" role="img" aria-label="20 games in plain HTML5, 3 in Flutter and 1 in Babylon.js"></div>
+            <ul id="stack-legend"></ul>
+          </div>
+        </article>
+        <article class="card">
+          <header><div><h2>The main four</h2><p>Free, in your browser. Two are on the App Store and Google Play too.</p></div><a class="tgl" href="https://games.imanneo.dev/">games.imanneo.dev &rarr;</a></header>
+          <ul class="four" id="four"></ul>
+          <p class="hint">These days I also make games. If fl_chart has ever saved you some time, the nicest way to say thanks is to play one of them for a minute.</p>
+          <div class="btns"><a class="btn pri" href="https://games.imanneo.dev/">&#9654; Play all 24</a><a class="btn" href="https://iman-khoshabi.kit.com/profile">Tell me when the next one is out</a></div>
+        </article>
+      </div>
+      <article class="card">
+        <header><div><h2>And twenty small ones</h2><p class="status" id="status">Showing <b>all 24</b></p></div></header>
+        <ul class="grid" id="grid"></ul>
+      </article>
+    </section>
+
+    <section class="cols c66">
+      <article class="card" id="about">
+        <header><h2>Behind the charts</h2></header>
+        <div class="me">
+          <img src="../shared/img/me-face.jpg" alt="Iman Khoshabi" width="96" height="96">
+          <div>
+            <p>I'm Iman Khoshabi. I have been building mobile apps for more than ten years, first native Android in Kotlin and Java, now mostly Flutter. I like products that feel fast and solid, and I'm picky about UI details.</p>
+            <p>Fun fact: I picked "NeO" as my nickname before I ever watched The Matrix.</p>
+            <ul class="chips" aria-label="What I work with"><li>Flutter</li><li>Dart</li><li>Kotlin</li><li>Java</li><li>Flame</li><li>Godot</li><li>Cocos Creator</li><li>Babylon.js</li></ul>
+          </div>
+        </div>
+      </article>
+      <article class="card" id="links">
+        <header><div><h2>Legend</h2><p>Where to find me</p></div></header>
+        <ul class="find" id="find"></ul>
+      </article>
+    </section>
+
+    <footer>Drawn by hand in SVG, in the colours of the fl_chart sample app. &copy; 2026 Iman Khoshabi</footer>
+  </main>
+</div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  var S = window.SITE, fl = S.fl, $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var C = { cyan: "#50E4FF", blue: "#2196F3", yellow: "#FFC300", orange: "#FF683B", green: "#3BFF49", purple: "#A27BFF", pink: "#FF3AF2", red: "#FF4D7D" };
+
+  /* numbers */
+  $("k-stars").textContent = fl.starsLabel; $("k-likes").textContent = S.fmt(fl.likes); $("k-dl").textContent = fl.downloadsLabel; $("k-pts").textContent = fl.points;
+  $("commits").textContent = S.fmt(fl.commits); $("forks").textContent = fl.forksLabel;
+  $("ver").textContent = fl.version; $("ver2").textContent = "v" + fl.version;
+  $("ring").setAttribute("stroke-dasharray", (fl.points / fl.maxPoints * 131.95).toFixed(1) + " 131.95");
+  try { $("snap").textContent = new Date(S.snapshot + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }); } catch (e) {}
+
+  var years = fl.perYear.map(function (r) { return r[0]; }), per = fl.perYear.map(function (r) { return r[1]; }), cum = [], acc = 0;
+  per.forEach(function (v) { acc += v; cum.push(acc); });
+
+  function monotone(p) {
+    var n = p.length, d = [], m = [], i, s = "M" + p[0][0].toFixed(1) + "," + p[0][1].toFixed(1);
+    for (i = 0; i < n - 1; i++) d[i] = (p[i + 1][1] - p[i][1]) / (p[i + 1][0] - p[i][0]);
+    m[0] = d[0]; m[n - 1] = d[n - 2];
+    for (i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+    for (i = 0; i < n - 1; i++) {
+      if (d[i] === 0) { m[i] = 0; m[i + 1] = 0; continue; }
+      var a = m[i] / d[i], b = m[i + 1] / d[i], q = a * a + b * b;
+      if (q > 9) { var t = 3 / Math.sqrt(q); m[i] = t * a * d[i]; m[i + 1] = t * b * d[i]; }
+    }
+    for (i = 0; i < n - 1; i++) {
+      var dx = (p[i + 1][0] - p[i][0]) / 3;
+      s += "C" + (p[i][0] + dx).toFixed(1) + "," + (p[i][1] + m[i] * dx).toFixed(1) + " " + (p[i + 1][0] - dx).toFixed(1) + "," + (p[i + 1][1] - m[i + 1] * dx).toFixed(1) + " " + p[i + 1][0].toFixed(1) + "," + p[i + 1][1].toFixed(1);
+    }
+    return s;
+  }
+  function tip(x, y, lines, W) { /* a tooltip box that stays inside the chart */
+    var w = Math.max.apply(null, lines.map(function (l) { return l.length; })) * 7.2 + 20, h = lines.length * 16 + 12;
+    var tx = Math.min(Math.max(x - w / 2, 2), W - w - 2), ty = y - h - 14; if (ty < 2) ty = y + 14;
+    return '<g pointer-events="none"><rect x="' + tx.toFixed(1) + '" y="' + ty.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h + '" rx="9" fill="#090912" stroke="rgba(255,255,255,.28)"/>' +
+      lines.map(function (l, i) { return '<text x="' + (tx + w / 2).toFixed(1) + '" y="' + (ty + 19 + i * 16).toFixed(1) + '" text-anchor="middle" style="fill:#fff;font-weight:' + (i ? 400 : 500) + '">' + esc(l) + "</text>"; }).join("") + "</g>";
+  }
+
+  /* ---- line chart: releases added up, or per year ---- */
+  var line = { el: $("line"), vals: cum.slice(), max: 120, step: 30, mode: "cum", hot: years.length - 1, raf: 0 };
+  function drawLine() {
+    var el = line.el, W = el.clientWidth || 600, H = Math.max(230, Math.min(320, W * 0.52)), L = 38, R = 14, T = 14, B = 30;
+    el.setAttribute("viewBox", "0 0 " + W + " " + H); el.style.height = H + "px";
+    var pw = W - L - R, ph = H - T - B, n = years.length;
+    var X = function (i) { return L + pw * i / (n - 1); }, Y = function (v) { return T + ph - ph * v / line.max; };
+    var pts = line.vals.map(function (v, i) { return [X(i), Y(v)]; }), path = monotone(pts), s = "";
+    s += '<defs><linearGradient id="lg" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="' + C.cyan + '"/><stop offset="1" stop-color="' + C.blue + '"/></linearGradient>' +
+      '<linearGradient id="ag" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="' + C.cyan + '" stop-opacity=".34"/><stop offset="1" stop-color="' + C.blue + '" stop-opacity=".02"/></linearGradient></defs>';
+    for (var v = 0; v <= line.max; v += line.step) s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v).toFixed(1) + '" y2="' + Y(v).toFixed(1) + '" stroke="rgba(255,255,255,.1)"/><text x="' + (L - 8) + '" y="' + (Y(v) + 4).toFixed(1) + '" text-anchor="end">' + v + "</text>";
+    for (var i = 0; i < n; i++) s += '<line x1="' + X(i).toFixed(1) + '" x2="' + X(i).toFixed(1) + '" y1="' + T + '" y2="' + (T + ph) + '" stroke="rgba(255,255,255,.1)"/><text x="' + X(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + (i === 0 ? "start" : i === n - 1 ? "end" : "middle") + '">' + (W < 420 ? "'" + String(years[i]).slice(2) : years[i]) + "</text>";
+    s += '<path d="' + path + "L" + X(n - 1).toFixed(1) + "," + (T + ph) + "L" + X(0).toFixed(1) + "," + (T + ph) + 'Z" fill="url(#ag)"/>';
+    s += '<path d="' + path + '" fill="none" stroke="url(#lg)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+    var h = line.hot, hx = X(h), hy = Y(line.vals[h]);
+    s += '<line x1="' + hx.toFixed(1) + '" x2="' + hx.toFixed(1) + '" y1="' + hy.toFixed(1) + '" y2="' + (T + ph) + '" stroke="' + C.cyan + '" stroke-width="1.5" stroke-dasharray="4 4"/>';
+    s += '<circle cx="' + hx.toFixed(1) + '" cy="' + hy.toFixed(1) + '" r="7" fill="#1B2339" stroke="#fff" stroke-width="3"/>';
+    var shown = Math.round(line.vals[h]);
+    s += tip(hx, hy, [String(years[h]), shown + (line.mode === "cum" ? " in total" : shown === 1 ? " release" : " releases")], W);
+    s += '<rect id="line-hit" x="' + L + '" y="0" width="' + pw + '" height="' + H + '" fill="transparent"/>';
+    el.innerHTML = s;
+    line.geo = { L: L, pw: pw, n: n };
+  }
+  function lineTo(target, max, step) {
+    var from = line.vals.slice(), fromMax = line.max, t0 = null, dur = still ? 0 : 520;
+    line.step = step;
+    cancelAnimationFrame(line.raf);
+    (function tick(ts) {
+      if (t0 === null) t0 = ts || 0;
+      var k = dur ? Math.min(1, ((ts || 0) - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 3);
+      line.vals = from.map(function (v, i) { return v + (target[i] - v) * e; }); line.max = fromMax + (max - fromMax) * e;
+      if (k < 1) { line.step = max; drawLineSafe(); line.raf = requestAnimationFrame(tick); } else { line.max = max; line.step = step; drawLine(); }
+    })(still ? 0 : undefined);
+  }
+  function drawLineSafe() { try { drawLine(); } catch (e) {} }
+  function lineHover(e) {
+    var r = line.el.getBoundingClientRect(), g = line.geo; if (!g) return;
+    var i = Math.round((e.clientX - r.left - g.L) / g.pw * (g.n - 1)); i = Math.max(0, Math.min(g.n - 1, i));
+    if (i !== line.hot) { line.hot = i; drawLine(); }
+  }
+  line.el.addEventListener("pointermove", lineHover); line.el.addEventListener("pointerdown", lineHover);
+  $("line-tgl").addEventListener("click", function () {
+    var per1 = line.mode === "cum"; line.mode = per1 ? "per" : "cum"; this.setAttribute("aria-pressed", String(per1));
+    $("line-title").textContent = per1 ? "fl_chart releases, per year" : "fl_chart releases, added up";
+    $("line-big").textContent = per1 ? per[per.length - 1] : fl.releases; $("line-sub").textContent = per1 ? "so far in " + years[years.length - 1] : "releases since June 2019";
+    if (per1) lineTo(per, 40, 10); else lineTo(cum, 120, 30);
+  });
+
+  /* ---- bar chart: releases per year ---- */
+  var bar = { el: $("bar"), hot: -1 };
+  function drawBar() {
+    var el = bar.el, W = el.clientWidth || 600, H = Math.max(240, Math.min(330, W * 0.5)), L = 34, R = 8, T = 26, B = 30, max = 35;
+    el.setAttribute("viewBox", "0 0 " + W + " " + H); el.style.height = H + "px";
+    var pw = W - L - R, ph = H - T - B, n = per.length, band = pw / n, bw = Math.min(34, band * 0.56), s = "";
+    var Y = function (v) { return T + ph - ph * v / max; };
+    s += '<defs><linearGradient id="bg" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="' + C.blue + '"/><stop offset="1" stop-color="' + C.cyan + '"/></linearGradient>' +
+      '<linearGradient id="bh" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="' + C.orange + '"/><stop offset="1" stop-color="' + C.yellow + '"/></linearGradient></defs>';
+    for (var v = 0; v <= max; v += 10) s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v).toFixed(1) + '" y2="' + Y(v).toFixed(1) + '" stroke="rgba(255,255,255,.1)" stroke-dasharray="' + (v ? "4 5" : "0") + '"/><text x="' + (L - 8) + '" y="' + (Y(v) + 4).toFixed(1) + '" text-anchor="end">' + v + "</text>";
+    per.forEach(function (val, i) {
+      var cx = L + band * (i + 0.5), x = cx - bw / 2, on = i === bar.hot, top = Y(val + (on ? 1 : 0)), r = Math.min(8, bw / 2);
+      s += '<rect x="' + x.toFixed(1) + '" y="' + T + '" width="' + bw.toFixed(1) + '" height="' + ph + '" rx="' + r + '" fill="rgba(255,255,255,.05)"/>';
+      s += '<path d="M' + x.toFixed(1) + "," + (T + ph) + "V" + (top + r).toFixed(1) + "Q" + x.toFixed(1) + "," + top.toFixed(1) + " " + (x + r).toFixed(1) + "," + top.toFixed(1) + "H" + (x + bw - r).toFixed(1) + "Q" + (x + bw).toFixed(1) + "," + top.toFixed(1) + " " + (x + bw).toFixed(1) + "," + (top + r).toFixed(1) + "V" + (T + ph) + 'Z" fill="url(#' + (on ? "bh" : "bg") + ')"/>';
+      s += '<text x="' + cx.toFixed(1) + '" y="' + (top - 8).toFixed(1) + '" text-anchor="middle" style="fill:' + (on ? C.yellow : "#fff") + ';font-weight:500;font-size:' + (on ? 14 : 12.5) + 'px">' + val + "</text>";
+      s += '<text x="' + cx.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle"' + (on ? ' style="fill:#fff"' : "") + ">" + (W < 420 ? "'" + String(years[i]).slice(2) : years[i]) + "</text>";
+      s += '<rect data-i="' + i + '" x="' + (cx - band / 2).toFixed(1) + '" y="0" width="' + band.toFixed(1) + '" height="' + H + '" fill="transparent"/>';
+    });
+    el.innerHTML = s;
+  }
+  function barHover(e) { var i = e.target && e.target.getAttribute ? e.target.getAttribute("data-i") : null; i = i === null ? -1 : +i; if (i !== bar.hot) { bar.hot = i; drawBar(); } }
+  bar.el.addEventListener("pointermove", barHover); bar.el.addEventListener("pointerdown", barHover);
+  bar.el.addEventListener("pointerleave", function () { if (bar.hot !== -1) { bar.hot = -1; drawBar(); } });
+
+  /* ---- pie chart: games by genre ---- */
+  var order = ["Puzzle", "Arcade", "Relaxing", "Casual", "Kids", "Action", "Cooking", "Strategy"];
+  var gcol = { Puzzle: C.cyan, Arcade: C.blue, Relaxing: C.green, Casual: C.yellow, Kids: C.pink, Action: C.orange, Cooking: C.purple, Strategy: C.red };
+  var counts = {}; S.games.forEach(function (g) { counts[g.genre] = (counts[g.genre] || 0) + 1; });
+  var pie = { el: $("pie"), on: null, peek: null };
+  function drawPie() {
+    var el = pie.el, W = Math.min(el.parentNode.clientWidth, 300), cx = W / 2, cy = W / 2, R = W / 2 - 16, r0 = R * 0.52, total = S.games.length, a = -Math.PI / 2, s = "";
+    el.setAttribute("viewBox", "0 0 " + W + " " + W); el.style.height = W + "px"; el.style.maxWidth = W + "px";
+    var act = pie.peek || pie.on;
+    order.forEach(function (g) {
+      var frac = counts[g] / total, b = a + frac * Math.PI * 2, on = act === g, ro = R + (on ? 10 : 0), gap = 0.012;
+      var a1 = a + gap, b1 = b - gap, large = b1 - a1 > Math.PI ? 1 : 0;
+      var P = function (rad, ang) { return (cx + rad * Math.cos(ang)).toFixed(1) + "," + (cy + rad * Math.sin(ang)).toFixed(1); };
+      s += '<path data-g="' + g + '" d="M' + P(ro, a1) + "A" + ro + "," + ro + " 0 " + large + " 1 " + P(ro, b1) + "L" + P(r0, b1) + "A" + r0 + "," + r0 + " 0 " + large + " 0 " + P(r0, a1) + 'Z" fill="' + gcol[g] + '" opacity="' + (act && !on ? 0.4 : 1) + '" style="cursor:pointer"/>';
+      if (frac > 0.07) { var mid = (a + b) / 2, lr = (ro + r0) / 2; s += '<text pointer-events="none" x="' + (cx + lr * Math.cos(mid)).toFixed(1) + '" y="' + (cy + lr * Math.sin(mid) + 5).toFixed(1) + '" text-anchor="middle" style="fill:#06121f;font-weight:500;font-size:' + (on ? 17 : 14) + 'px">' + counts[g] + "</text>"; }
+      a = b;
+    });
+    s += '<text x="' + cx + '" y="' + (cy + 2) + '" text-anchor="middle" style="fill:#fff;font-family:Sora,sans-serif;font-weight:700;font-size:34px">' + (act ? counts[act] : total) + '</text><text x="' + cx + '" y="' + (cy + 22) + '" text-anchor="middle" style="font-size:12px">' + (act ? act.toLowerCase() : "games") + "</text>";
+    el.innerHTML = s;
+    [].forEach.call($("legend").querySelectorAll("button"), function (b) { b.classList.toggle("on", b.getAttribute("data-g") === act); b.setAttribute("aria-pressed", String(b.getAttribute("data-g") === pie.on)); });
+    var box = $("games"); box.classList.toggle("filtered", !!act);
+    [].forEach.call(box.querySelectorAll("[data-g]"), function (n) { if (n.tagName === "LI") n.classList.toggle("hit", n.getAttribute("data-g") === act); });
+    $("status").innerHTML = act ? "Showing <b>" + counts[act] + " " + act.toLowerCase() + "</b> of 24" : "Showing <b>all 24</b>";
+  }
+  $("legend").innerHTML = order.map(function (g) { return '<li><button type="button" data-g="' + g + '" style="--c:' + gcol[g] + '"><i></i>' + g + "<b>" + counts[g] + "</b></button></li>"; }).join("");
+  function pickGenre(e) { var t = e.target.closest ? e.target.closest("[data-g]") : null; if (!t) return; var g = t.getAttribute("data-g"); pie.on = pie.on === g ? null : g; pie.peek = null; drawPie(); }
+  function peekGenre(e) { var t = e.target.closest ? e.target.closest("[data-g]") : null, g = t ? t.getAttribute("data-g") : null; if (g !== pie.peek) { pie.peek = g; drawPie(); } }
+  pie.el.addEventListener("click", pickGenre); $("legend").addEventListener("click", pickGenre);
+  if (window.matchMedia && window.matchMedia("(hover:hover)").matches) {
+    pie.el.addEventListener("pointermove", peekGenre); pie.el.addEventListener("pointerleave", function () { if (pie.peek) { pie.peek = null; drawPie(); } });
+    $("legend").addEventListener("pointermove", peekGenre); $("legend").addEventListener("pointerleave", function () { if (pie.peek) { pie.peek = null; drawPie(); } });
+  }
+
+  /* ---- games ---- */
+  $("four").innerHTML = S.games.filter(function (g) { return g.featured; }).map(function (g) {
+    return '<li data-g="' + g.genre + '"><a href="' + S.gameUrl(g.id) + '" style="--c:' + gcol[g.genre] + '"><img src="' + S.gameImg(g.id) + '" alt="" width="72" height="72" loading="lazy"><div><strong>' + esc(g.title) + "</strong><em>" + esc(g.tag) + "</em><span>" + esc(g.blurb) + "</span></div></a></li>";
+  }).join("");
+  $("grid").innerHTML = S.games.filter(function (g) { return !g.featured; }).map(function (g) {
+    return '<li data-g="' + g.genre + '"><a href="' + S.gameUrl(g.id) + '" title="' + esc(g.blurb) + '" style="--c:' + gcol[g.genre] + '"><img src="' + S.gameImg(g.id) + '" alt="" width="160" height="160" loading="lazy">' + esc(g.title) + "</a></li>";
+  }).join("");
+
+  /* ---- built with: one stacked bar ---- */
+  var tech = [["Plain HTML5", 0, C.yellow], ["Flutter", 0, C.blue], ["Babylon.js", 0, C.orange]];
+  S.games.forEach(function (g) { var t = g.tech || ""; tech[/Flutter/.test(t) ? 1 : /Babylon/.test(t) ? 2 : 0][1]++; });
+  $("stack").innerHTML = tech.map(function (t) { return '<i style="--c:' + t[2] + ";flex:" + t[1] + ' 1 0"></i>'; }).join("");
+  $("stack-legend").innerHTML = tech.map(function (t) { return '<li style="--c:' + t[2] + '"><i></i>' + t[0] + "<b>" + t[1] + "</b></li>"; }).join("");
+
+  /* ---- links, as a chart legend ---- */
+  var lc = { youtube: C.red, github: "#ffffff", linkedin: C.blue, x: C.cyan, blog: C.yellow, mail: C.green };
+  $("find").innerHTML = S.socials.map(function (l) {
+    return '<li><a href="' + l.url + '" style="--c:' + lc[l.id] + '"><i></i><b>' + esc(l.label) + "</b><span>" + esc(l.handle) + "</span></a></li>";
+  }).join("") + '<li><a href="' + S.links.newsletter + '" style="--c:' + C.pink + '"><i></i><b>Mailing list</b><span>an email when my next game is out</span></a></li>';
+
+  function drawAll() { drawLine(); drawBar(); drawPie(); }
+  drawAll();
+  var rz; window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(drawAll, 100); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawAll);
+
+  /* menu follows the scroll */
+  var nav = [].slice.call(document.querySelectorAll(".menu nav a"));
+  if ("IntersectionObserver" in window) {
+    var secs = ["overview", "fl", "games", "about", "links"].map($), seen = {};
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
+      var first = secs.filter(function (s) { return seen[s.id]; })[0];
+      if (first) nav.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + first.id); });
+    }, { rootMargin: "-15% 0px -65% 0px" });
+    secs.forEach(function (s) { io.observe(s); });
+  }
+})();
+</script>
+<script src="../shared/switcher.js" data-pos="br"></script>
+</body>
+</html>

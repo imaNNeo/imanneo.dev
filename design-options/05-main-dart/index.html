@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam, maker of fl_chart and a pile of small games.">
+<meta name="theme-color" content="#1e1f22">
+<link rel="icon" href="../shared/img/n.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* Layout: one screen. An IDE (files, code, debug console) on the left and the running app in a phone on the right.
+   On a phone-sized screen the IDE folds away and the app itself is the site. */
+:root{
+  color-scheme: dark;
+  --ide:#1e1f22; --panel:#2b2d30; --edge:#393b40; --text:#dfe1e5; --dim:#9da0a8; --sel:#2e436e; --run:#57965c; --bolt:#f2c55c; --link:#6cacf7;
+  --kw:#cf8e6d; --st:#6aab73; --nu:#2aacb8; --cm:#7f848e; --ty:#6cacf7; --fn:#e0c46c; --np:#c77dbb; --an:#b3ae60;
+  --ui:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif; --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; --app:"Roboto", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+html{background:var(--ide)}
+body{margin:0;background:var(--ide);color:var(--text);font:400 13px/1.4 var(--ui);overflow:hidden;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--link);outline-offset:1px}
+.ide{height:100%;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+
+/* top bar */
+.tb{display:flex;align-items:center;gap:10px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--edge);min-height:44px}
+.dots{display:flex;gap:7px;margin-right:6px}
+.dots i{width:11px;height:11px;border-radius:50%;background:#5b5e66}
+.proj{display:flex;align-items:center;gap:8px;font-weight:600}
+.proj img{width:20px;height:20px}
+.proj span{color:var(--dim);font-weight:400}
+.runbar{margin-left:auto;display:flex;align-items:center;gap:6px}
+.dev{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;background:var(--ide);border:1px solid var(--edge);color:var(--text)}
+.dev svg{width:14px;height:14px}
+.tbtn{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border-radius:6px;border:1px solid transparent;background:transparent;cursor:pointer}
+.tbtn:hover{background:#3a3d42}
+.tbtn svg{width:16px;height:16px}
+.tbtn.run svg{color:var(--run)} .tbtn.bolt svg{color:var(--bolt)}
+.tbtn[aria-pressed="true"]{background:var(--sel);border-color:#3f5c99}
+.tbtn kbd{font:500 11px var(--mono);color:var(--dim);border:1px solid var(--edge);border-radius:4px;padding:0 4px}
+
+.work{display:grid;grid-template-columns:226px minmax(0,1fr) 448px;min-height:0}
+/* explorer */
+.explorer{background:var(--panel);border-right:1px solid var(--edge);padding:8px 0;overflow:auto}
+.explorer h2{margin:0 0 6px;padding:4px 14px;font:600 11px var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.tree{list-style:none;margin:0;padding:0}
+.tree .dir{padding:3px 14px;color:var(--text);display:flex;align-items:center;gap:6px}
+.tree .dir::before{content:"";border:4px solid transparent;border-top-color:var(--dim);margin-top:4px}
+.tree button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:transparent;border:0;padding:4px 14px 4px var(--pad, 44px);cursor:pointer;color:var(--text)}
+.tree button:hover{background:#34363b}
+.tree button[aria-current="true"]{background:var(--sel)}
+.fi{width:12px;height:12px;border-radius:3px;background:#54c5f8;flex:none}
+.fi.y{background:#e06c75}
+/* editor */
+.editor{display:grid;grid-template-rows:auto minmax(0,1fr) 172px;min-width:0;min-height:0}
+.tabs{display:flex;background:var(--panel);border-bottom:1px solid var(--edge);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{display:flex;align-items:center;gap:8px;padding:9px 14px;background:transparent;border:0;border-bottom:2px solid transparent;cursor:pointer;color:var(--dim);white-space:nowrap}
+.tabs button:hover{color:var(--text)}
+.tabs button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--link);background:var(--ide)}
+.code{overflow:auto;padding:10px 0 24px;font:400 13px/1.62 var(--mono);counter-reset:ln;tab-size:2}
+.ln{display:flex;padding-right:24px;counter-increment:ln}
+.ln > span{white-space:pre}
+.ln::before{content:counter(ln);flex:none;width:46px;padding-right:16px;text-align:right;color:#5a5d65;user-select:none}
+.ln[data-w]{cursor:default}
+.ln[data-w]:hover,.ln.hot{background:rgba(108,172,247,.12)}
+.ln.hit{background:rgba(242,197,92,.22)}
+.kw{color:var(--kw)} .st{color:var(--st)} .nu{color:var(--nu)} .cm{color:var(--cm)} .ty{color:var(--ty)} .fn{color:var(--fn)} .np{color:var(--np)} .an{color:var(--an)}
+.console{border-top:1px solid var(--edge);background:var(--ide);display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0}
+.console h2{margin:0;padding:6px 14px;font:600 11px var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--edge);background:var(--panel)}
+.log{margin:0;padding:8px 14px;overflow:auto;font:400 12.5px/1.55 var(--mono);color:var(--dim);white-space:pre-wrap}
+.log .ok{color:#6aab73} .log .hot{color:var(--bolt)} .log .err{color:#f1777f}
+/* device */
+.device{display:grid;grid-template-rows:auto minmax(0,1fr);background:var(--panel);border-left:1px solid var(--edge);min-height:0}
+.device > h2{margin:0;padding:8px 14px;font:600 11px var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);display:flex;justify-content:space-between;gap:8px}
+.stage{display:grid;place-items:center;min-height:0;min-width:0;padding:6px 14px 16px;overflow:hidden}
+.fit{width:392px;height:800px}
+.phone{width:392px;height:800px;transform-origin:0 0;border-radius:44px;background:#0d0e10;padding:9px;box-shadow:0 0 0 1.5px #55585f, 0 24px 60px rgba(0,0,0,.5)}
+.status{display:flex;gap:6px 18px;flex-wrap:wrap;align-items:center;padding:4px 12px;background:var(--panel);border-top:1px solid var(--edge);font-size:12px;color:var(--dim)}
+.status a{color:var(--dim);text-decoration:none}
+.status a:hover{color:var(--text)}
+.status .sp{margin-left:auto}
+
+/* ---------- the app ---------- */
+.screen{--seed:#0b7fd3;--pri:var(--seed);--pri-c:color-mix(in srgb, var(--seed) 16%, white);--on-pri-c:color-mix(in srgb, var(--seed) 62%, black);--surf:color-mix(in srgb, var(--seed) 3%, white);--surf-c:color-mix(in srgb, var(--seed) 8%, white);--outline:color-mix(in srgb, var(--seed) 16%, #b9bcc4);--on:#1a1c1e;--on-v:#454950;
+  position:relative;height:100%;border-radius:36px;overflow:hidden;background:var(--surf);color:var(--on);font:400 14px/1.45 var(--app);display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;color-scheme:light}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:10px 22px 2px;font:500 13px var(--app)}
+.sb svg{width:44px;height:12px}
+.debug{position:absolute;top:0;right:0;width:96px;height:96px;overflow:hidden;z-index:5;border:0;background:transparent;padding:0;cursor:pointer}
+.debug span{position:absolute;top:19px;right:-31px;width:130px;transform:rotate(45deg);background:#a0002a;color:#fff;font:700 10px/18px var(--app);letter-spacing:.08em;text-align:center}
+.appbar{display:flex;align-items:center;gap:8px;padding:8px 16px 10px}
+.appbar h1{margin:0;font:400 22px/1.3 var(--app);flex:1}
+.src{display:none;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:20px;border:1px solid var(--outline);background:transparent;color:var(--pri);font:500 13px var(--mono);cursor:pointer;margin-right:70px}
+.body{overflow-y:auto;overscroll-behavior:contain;padding:4px 16px 84px}
+.page{display:grid;gap:14px}
+.page[hidden]{display:none}
+.navbar{display:grid;grid-template-columns:repeat(4, minmax(0,1fr));background:var(--surf-c);padding:10px 4px 12px}
+.navbar button{background:transparent;border:0;display:grid;justify-items:center;gap:4px;cursor:pointer;color:var(--on-v);font:500 12px var(--app);padding:0}
+.navbar i{display:grid;place-items:center;width:60px;height:30px;border-radius:15px}
+.navbar svg{width:22px;height:22px}
+.navbar button[aria-current="page"]{color:var(--on)}
+.navbar button[aria-current="page"] i{background:var(--pri-c);color:var(--on-pri-c)}
+.screen a{color:var(--pri);text-decoration:none}
+.insp{outline:2px solid #2f7cf6;outline-offset:2px;border-radius:6px;position:relative;background-color:rgba(47,124,246,.1)}
+.insp::after{content:attr(data-wl);position:absolute;left:0;top:-20px;background:#2f7cf6;color:#fff;font:500 10.5px/16px var(--mono);padding:0 6px;border-radius:4px;white-space:nowrap;z-index:6;pointer-events:none}
+.sel-on .screen [data-w]{cursor:crosshair}
+.splash{position:absolute;inset:0;z-index:7;background:var(--surf);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.splash.on{opacity:1}
+.splash img{width:84px;height:84px}
+.flash{animation:flash .5s}
+@keyframes flash{0%{filter:brightness(1.35)}100%{filter:none}}
+
+.fab{position:absolute;right:16px;bottom:96px;z-index:4;width:54px;height:54px;border-radius:16px;border:0;background:var(--pri-c);color:var(--on-pri-c);display:grid;place-items:center;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.24), 0 1px 3px rgba(0,0,0,.2)}
+.fab svg{width:24px;height:24px}
+.snack{position:absolute;left:12px;right:82px;bottom:98px;z-index:4;background:#2f3033;color:#f1f0f4;border-radius:6px;padding:12px 14px;font:400 13px/1.35 var(--app);box-shadow:0 3px 10px rgba(0,0,0,.3);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s, transform .2s}
+.snack.on{opacity:1;transform:none}
+/* home */
+.me{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.me img{width:84px;height:84px;border-radius:50%;display:block}
+.me h2{margin:0;font:400 24px/1.2 var(--app)}
+.me p{margin:2px 0 0;color:var(--on-v)}
+.bio{margin:0;font-size:15px;line-height:1.5}
+.chipsr{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--outline);border-radius:8px;padding:5px 12px;font:500 13px var(--app);color:var(--on-v)}
+.fbtn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:22px;background:var(--pri);color:#fff!important;font:500 14px var(--app);padding:0 22px}
+.obtn{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:22px;border:1px solid var(--outline);font:500 14px var(--app);padding:0 22px}
+.tbtn2{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:22px;background:var(--pri-c);color:var(--on-pri-c)!important;font:500 14px var(--app);padding:0 22px}
+.fbtn svg{width:18px;height:18px}
+.mlist{background:var(--surf-c);border-radius:14px;display:grid;overflow:hidden}
+.mlist button{display:grid;grid-template-columns:40px minmax(0,1fr) 18px;gap:14px;align-items:center;text-align:left;background:transparent;border:0;padding:10px 14px;cursor:pointer;color:var(--on);font:inherit;min-height:60px}
+.mlist button + button{border-top:1px solid color-mix(in srgb, var(--outline) 60%, transparent)}
+.mlist button:hover{background:color-mix(in srgb, var(--seed) 7%, transparent)}
+.mlist i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--pri-c);color:var(--on-pri-c)}
+.mlist i svg{width:20px;height:20px}
+.mlist strong{display:block;font:500 15px/1.3 var(--app)}
+.mlist span span{font:inherit}
+.mlist div > span{display:block;font-size:12.5px;color:var(--on-v);line-height:1.35}
+.mlist > button > svg{width:18px;height:18px;color:var(--on-v)}
+.mcard{background:var(--surf-c);border-radius:14px;padding:14px 16px;margin:0}
+.mcard b{font-weight:500;color:var(--on-pri-c)}
+/* games */
+.sub{margin:0;color:var(--on-v)}
+.tiles{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.tiles a{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center;background:var(--surf-c);border-radius:14px;padding:8px;color:var(--on)}
+.tiles img{width:64px;height:64px;border-radius:10px;display:block}
+.tiles strong{display:block;font:500 15.5px/1.25 var(--app)}
+.tiles em{font-style:normal;font:500 11px var(--app);color:var(--on-pri-c);background:var(--pri-c);border-radius:6px;padding:1px 6px}
+.tiles span{display:block;font-size:12.5px;color:var(--on-v);line-height:1.35;margin-top:2px}
+.ggrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:10px}
+.ggrid a{display:block;font:500 11px/1.25 var(--app);color:var(--on-v);text-align:center}
+.ggrid img{display:block;width:100%;height:auto;aspect-ratio:1;border-radius:12px;margin-bottom:4px}
+/* open source */
+.flh{display:grid;grid-template-columns:52px minmax(0,1fr);gap:14px;align-items:center}
+.flh img{width:52px;height:52px;border-radius:12px;display:block}
+.flh h2{margin:0;font:500 20px/1.2 var(--app)}
+.flh p{margin:0;color:var(--on-v);font-size:13px}
+.st3{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:8px;margin:0}
+.st3 div{background:var(--surf-c);border-radius:12px;padding:10px 8px;text-align:center}
+.st3 dd{margin:0;font:500 20px/1.2 var(--app);font-variant-numeric:tabular-nums}
+.st3 dt{font-size:11.5px;color:var(--on-v)}
+.chartcard{background:#282E45;border-radius:16px;padding:12px 12px 6px;color:#fff}
+.chartcard p{margin:0 0 4px;font:500 12.5px var(--app);color:rgba(255,255,255,.76)}
+.chartcard svg{display:block;width:100%;height:auto}
+.btnrow{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:8px}
+.btnrow a{padding:0 6px}
+/* links */
+.lt{list-style:none;margin:0;padding:0;display:grid}
+.lt a{display:grid;grid-template-columns:40px minmax(0,1fr) 20px;gap:14px;align-items:center;padding:9px 4px;color:var(--on);min-height:56px}
+.lt i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--pri-c);color:var(--on-pri-c);font:500 14px var(--app);font-style:normal}
+.lt strong{display:block;font:400 16px/1.25 var(--app)}
+.lt span{display:block;font-size:13px;color:var(--on-v);overflow-wrap:anywhere}
+.lt svg{width:18px;height:18px;color:var(--on-v)}
+
+.close{display:none}
+@media (max-width:1240px){ .work{grid-template-columns:minmax(0,1fr) 420px} .explorer{display:none} .tbtn span.lbl{display:none} }
+@media (max-width:900px){
+  /* the app is the site; the code is one tap away */
+  body{overflow:hidden}
+  .tb,.status,.device > h2{display:none}
+  .ide{grid-template-rows:minmax(0,1fr)}
+  .work{grid-template-columns:minmax(0,1fr)}
+  .device{border:0;grid-template-rows:minmax(0,1fr)}
+  .stage{padding:0;place-items:stretch}
+  .fit{width:auto!important;height:100%!important}
+  .phone{width:auto;height:100%;transform:none!important;border-radius:0;padding:0;box-shadow:none;background:transparent}
+  .screen{border-radius:0;grid-template-rows:auto minmax(0,1fr) auto}
+  .navbar{padding-bottom:calc(12px + env(safe-area-inset-bottom, 0px))}
+  .sb{display:none}
+  .appbar{padding-top:12px;padding-left:max(16px, env(safe-area-inset-left, 0px))}
+  .body{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+  .src{display:inline-flex}
+  .editor{position:fixed;inset:0;z-index:20;background:var(--ide);display:none;grid-template-rows:auto auto minmax(0,1fr) 120px}
+  .show-code .editor{display:grid}
+  .close{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:var(--panel);border-bottom:1px solid var(--edge);font-weight:600}
+  .close button{height:36px;padding:0 14px;border-radius:8px;border:1px solid var(--edge);background:var(--ide);cursor:pointer}
+  .code{font-size:12px}
+  .ln::before{width:34px;padding-right:10px}
+}
+@media (prefers-reduced-motion:reduce){ .flash{animation:none} .splash{transition:none} }
+</style>
+</head>
+<body>
+<div class="ide" id="ide">
+
+  <header class="tb">
+    <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="proj"><img src="../shared/img/n.png" alt="">iman_neo <span id="crumb">lib / main.dart</span></div>
+    <div class="runbar">
+      <span class="dev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>Pixel (mobile)</span>
+      <button class="tbtn run" id="run" type="button" title="Hot restart (Shift + R)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg><span class="lbl">Run</span></button>
+      <button class="tbtn bolt" id="reload" type="button" title="Hot reload (R)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg><span class="lbl">Hot reload</span> <kbd>R</kbd></button>
+      <button class="tbtn" id="select" type="button" aria-pressed="false" title="Select widget mode: click something in the app to find its code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg><span class="lbl">Select widget</span></button>
+    </div>
+  </header>
+
+  <div class="work">
+    <aside class="explorer" aria-label="Project files">
+      <h2>Project</h2>
+      <ul class="tree" id="tree">
+        <li class="dir">iman_neo</li>
+        <li class="dir" style="padding-left:28px">lib</li>
+        <li><button type="button" data-file="main.dart"><i class="fi"></i>main.dart</button></li>
+        <li><button type="button" data-file="home.dart"><i class="fi"></i>home.dart</button></li>
+        <li><button type="button" data-file="games.dart"><i class="fi"></i>games.dart</button></li>
+        <li><button type="button" data-file="open_source.dart"><i class="fi"></i>open_source.dart</button></li>
+        <li><button type="button" data-file="links.dart"><i class="fi"></i>links.dart</button></li>
+        <li><button type="button" data-file="pubspec.yaml" style="--pad:30px"><i class="fi y"></i>pubspec.yaml</button></li>
+      </ul>
+    </aside>
+
+    <section class="editor" aria-label="Source code">
+      <div class="close"><span>The code behind this screen</span><button type="button" id="closecode">Back to the app</button></div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="code" id="code" tabindex="0" aria-label="Code"></div>
+      <div class="console"><h2>Debug console</h2><pre class="log" id="log" aria-live="polite"></pre></div>
+    </section>
+
+    <section class="device" aria-label="The running app">
+      <h2><span>Running on Pixel</span><span id="mode">debug</span></h2>
+      <div class="stage" id="stage">
+        <div class="fit" id="fit"><div class="phone" id="phone">
+          <div class="screen" id="app">
+            <div class="sb" aria-hidden="true"><span id="clock">9:41</span><svg viewBox="0 0 44 12" fill="currentColor"><path d="M1 9h2v2H1zM5 7h2v4H5zM9 4h2v7H9zM13 1h2v10h-2z"/><path d="M22 3a6 6 0 0 1 8 0l-1.2 1.3a4.2 4.2 0 0 0-5.6 0zM24 6.2a3 3 0 0 1 4 0L26 8.6z"/><rect x="33" y="2" width="9" height="8" rx="1.5"/></svg></div>
+            <button class="debug" id="debug" type="button" title="debugShowCheckedModeBanner: tap to switch to a release build" aria-label="Debug banner. Tap to switch to a release build"><span>DEBUG</span></button>
+            <header class="appbar" data-w="appbar" data-wl="AppBar">
+              <h1 id="apptitle">imaN Neo</h1>
+              <button class="src" id="viewsrc" type="button">&lt;/&gt; code</button>
+            </header>
+            <div class="body" id="body">
+
+              <section class="page" id="pg-home">
+                <div class="me">
+                  <img src="../shared/img/me-face.jpg" alt="Iman Khoshabi" width="84" height="84" data-w="avatar" data-wl="CircleAvatar">
+                  <div><h2 data-w="name" data-wl="Text">Iman Khoshabi</h2><p data-w="role" data-wl="Text">Senior mobile engineer in Amsterdam</p></div>
+                </div>
+                <p class="bio" data-w="bio" data-wl="Text">I build mobile apps for a living, first native Android and now mostly Flutter. I maintain fl_chart, a chart library I open-sourced in 2019, and I make small games.</p>
+                <div class="chipsr" data-w="chips" data-wl="Wrap"><span class="chip">Flutter</span><span class="chip">Dart</span><span class="chip">Kotlin</span><span class="chip">Java</span><span class="chip">10+ years</span></div>
+                <a class="fbtn" href="https://games.imanneo.dev/" data-w="cta" data-wl="FilledButton"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Play my games</a>
+                <a class="obtn" href="https://github.com/imaNNeo/fl_chart" data-w="cta2" data-wl="OutlinedButton">fl_chart on GitHub</a>
+                <div class="mlist" data-w="shortcuts" data-wl="Card">
+                  <button type="button" data-go="oss"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5.5-6 4 3.5L21 6"/></svg></i><div><strong>fl_chart <span id="h-ver">1.3.1</span></strong><span><span id="h-stars">7.6k</span> stars · <span id="h-dl">2.3M</span> downloads a month</span></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+                  <button type="button" data-go="games"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 7h10a5 5 0 0 1 5 5v1a4 4 0 0 1-7.2 2.4L14 15h-4l-.8.4A4 4 0 0 1 2 13v-1a5 5 0 0 1 5-5zm0 3v1.5H5.5v1H7V14h1v-1.5h1.5v-1H8V10zm8.5 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></i><div><strong>24 browser games</strong><span>Flappy Dash, Save The Potato, Trickle and more</span></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+                </div>
+                <p class="mcard" data-w="fact" data-wl="Card"><b>Fun fact.</b> I picked "NeO" as my nickname before I ever watched The Matrix.</p>
+              </section>
+
+              <section class="page" id="pg-games" hidden>
+                <p class="sub">24 free games, right in your browser. No downloads, no sign-up.</p>
+                <ul class="tiles" id="tiles" data-w="featured" data-wl="SliverList"></ul>
+                <ul class="ggrid" id="ggrid" data-w="grid" data-wl="SliverGrid"></ul>
+                <a class="tbtn2" href="https://games.imanneo.dev/" data-w="all" data-wl="FilledButton.tonal">All 24 on games.imanneo.dev</a>
+              </section>
+
+              <section class="page" id="pg-oss" hidden>
+                <div class="flh" data-w="flhead" data-wl="ListTile"><img src="../shared/img/fl_chart.png" alt=""><div><h2>fl_chart <span id="o-ver" style="font-size:13px;color:var(--on-v)">1.3.1</span></h2><p>A highly customizable chart library for Flutter</p></div></div>
+                <dl class="st3" data-w="stats" data-wl="Row">
+                  <div><dd id="o-stars">7.6k</dd><dt>stars</dt></div>
+                  <div><dd id="o-likes">7,209</dd><dt>likes</dt></div>
+                  <div><dd id="o-dl">2.3M</dd><dt>downloads a month</dt></div>
+                </dl>
+                <div class="chartcard" data-w="chart" data-wl="LineChart"><p>Releases, added up: <span id="o-rel">107</span> since 2019</p><svg id="minichart" viewBox="0 0 320 130" role="img" aria-label="Line chart of fl_chart releases added up, from 32 in 2019 to 107 in 2026"></svg></div>
+                <div class="chipsr" data-w="types" data-wl="Wrap"><span class="chip">Line</span><span class="chip">Bar</span><span class="chip">Pie</span><span class="chip">Scatter</span><span class="chip">Radar</span><span class="chip">Candlestick</span></div>
+                <p class="bio">Free and MIT licensed. I maintain it in my spare time.</p>
+                <div class="btnrow" data-w="flbtns" data-wl="Row"><a class="fbtn" href="https://github.com/imaNNeo/fl_chart">GitHub</a><a class="tbtn2" href="https://pub.dev/packages/fl_chart">pub.dev</a><a class="tbtn2" href="https://flchart.dev">Docs</a></div>
+                <a class="obtn" href="https://github.com/sponsors/imaNNeo">Sponsor fl_chart</a>
+              </section>
+
+              <section class="page" id="pg-links" hidden>
+                <ul class="lt" id="lt" data-w="tiles" data-wl="ListView"></ul>
+              </section>
+            </div>
+            <nav class="navbar" id="navbar" aria-label="App sections" data-w="nav" data-wl="NavigationBar">
+              <button type="button" data-tab="home" aria-current="page"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l9 8h-2.5v9h-5v-6h-3v6h-5v-9H3z"/></svg></i>Home</button>
+              <button type="button" data-tab="games"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 7h10a5 5 0 0 1 5 5v1a4 4 0 0 1-7.2 2.4L14 15h-4l-.8.4A4 4 0 0 1 2 13v-1a5 5 0 0 1 5-5zm0 3v1.5H5.5v1H7V14h1v-1.5h1.5v-1H8V10zm8.5 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></i>Games</button>
+              <button type="button" data-tab="oss"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5.5-6 4 3.5L21 6"/></svg></i>Open source</button>
+              <button type="button" data-tab="links"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></i>Links</button>
+            </nav>
+            <button class="fab" id="fab" type="button" data-w="fab" data-wl="FloatingActionButton" title="Hot reload" aria-label="Hot reload: change the theme colour"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></button>
+            <div class="snack" id="snack" role="status"></div>
+            <div class="splash" id="splash" aria-hidden="true"><img src="../shared/img/n.png" alt=""></div>
+          </div>
+        </div></div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="status">
+    <span>main</span><span>Flutter 3.50 · Dart 3.14</span><span id="where">main.dart</span>
+    <a class="sp" href="https://github.com/imaNNeo/fl_chart" title="fl_chart stars on GitHub">&#9733; <span id="st-stars">7.6k</span></a>
+    <a href="https://pub.dev/packages/fl_chart" title="fl_chart downloads in the last 30 days">&darr; <span id="st-dl">2.3M</span>/mo</a>
+    <span>UTF-8</span><span>press R to hot reload</span>
+  </footer>
+</div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  var S = window.SITE, fl = S.fl, $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var app = $("app");
+
+  /* ---------- fill the app ---------- */
+  $("o-ver").textContent = fl.version; $("o-stars").textContent = fl.starsLabel; $("o-likes").textContent = S.fmt(fl.likes); $("o-dl").textContent = fl.downloadsLabel; $("o-rel").textContent = fl.releases;
+  $("st-stars").textContent = fl.starsLabel; $("st-dl").textContent = fl.downloadsLabel;
+  $("h-ver").textContent = fl.version; $("h-stars").textContent = fl.starsLabel; $("h-dl").textContent = fl.downloadsLabel;
+  $("tiles").innerHTML = S.games.filter(function (g) { return g.featured; }).map(function (g) {
+    return '<li><a href="' + S.gameUrl(g.id) + '"><img src="' + S.gameImg(g.id) + '" alt="" width="64" height="64" loading="lazy"><div><strong>' + esc(g.title) + "</strong><em>" + esc(g.tag) + "</em><span>" + esc(g.blurb) + "</span></div></a></li>";
+  }).join("");
+  $("ggrid").innerHTML = S.games.filter(function (g) { return !g.featured; }).map(function (g) {
+    return '<li><a href="' + S.gameUrl(g.id) + '" title="' + esc(g.blurb) + '"><img src="' + S.gameImg(g.id) + '" alt="" width="110" height="110" loading="lazy">' + esc(g.title) + "</a></li>";
+  }).join("");
+  var glyph = { mail: "@", youtube: "&#9654;", github: "{ }", linkedin: "in", x: "X", blog: "4" };
+  var open = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
+  var linkList = S.socials.slice().sort(function (a, b) { return (b.id === "mail") - (a.id === "mail"); });
+  $("lt").innerHTML = linkList.map(function (l) {
+    return '<li><a href="' + l.url + '"><i>' + glyph[l.id] + "</i><div><strong>" + esc(l.label) + "</strong><span>" + esc(l.handle) + "</span></div>" + open + "</a></li>";
+  }).join("") + '<li><a href="' + S.links.newsletter + '"><i>&#9993;</i><div><strong>Mailing list</strong><span>An email when my next game is out</span></div>' + open + "</a></li>";
+
+  /* the chart in the Open source tab: releases added up, in fl_chart's own gradient */
+  (function () {
+    var W = 320, H = 130, L = 8, R = 8, T = 10, B = 20, acc = 0, cum = fl.perYear.map(function (r) { acc += r[1]; return acc; }), n = cum.length;
+    var X = function (i) { return L + (W - L - R) * i / (n - 1); }, Y = function (v) { return T + (H - T - B) * (1 - v / 120); };
+    var d = "M" + X(0) + "," + Y(cum[0]);
+    for (var i = 1; i < n; i++) { var mx = (X(i - 1) + X(i)) / 2; d += "C" + mx + "," + Y(cum[i - 1]) + " " + mx + "," + Y(cum[i]) + " " + X(i) + "," + Y(cum[i]); }
+    var s = '<defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#50E4FF"/><stop offset="1" stop-color="#2196F3"/></linearGradient><linearGradient id="g2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#50E4FF" stop-opacity=".35"/><stop offset="1" stop-color="#2196F3" stop-opacity="0"/></linearGradient></defs>';
+    [0, 40, 80, 120].forEach(function (v) { s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="rgba(255,255,255,.1)"/>'; });
+    s += '<path d="' + d + "L" + X(n - 1) + "," + (H - B) + "L" + X(0) + "," + (H - B) + 'Z" fill="url(#g2)"/><path d="' + d + '" fill="none" stroke="url(#g1)" stroke-width="3.5" stroke-linecap="round"/>';
+    s += '<circle cx="' + X(n - 1) + '" cy="' + Y(cum[n - 1]) + '" r="5" fill="#282E45" stroke="#fff" stroke-width="2.5"/>';
+    fl.perYear.forEach(function (r, i) { s += '<text x="' + X(i) + '" y="' + (H - 5) + '" text-anchor="' + (i === 0 ? "start" : i === n - 1 ? "end" : "middle") + '" font-size="10" fill="rgba(255,255,255,.66)" font-family="Roboto, sans-serif">' + String(r[0]).slice(2) + "</text>"; });
+    $("minichart").innerHTML = s;
+  })();
+
+  /* ---------- the source files ---------- */
+  var seeds = [["Colors.blue", "#0b7fd3"], ["Colors.teal", "#00897b"], ["Colors.deepPurple", "#673ab7"], ["Colors.deepOrange", "#d84a1b"], ["Colors.pink", "#d81b60"], ["Colors.green", "#2e7d32"]], si = 0, release = false;
+  var FILES = {
+    "main.dart": { lang: "dart", src: function () { return [
+      "import 'package:flutter/material.dart';",
+      "",
+      "import 'games.dart';",
+      "import 'home.dart';",
+      "import 'links.dart';",
+      "import 'open_source.dart';",
+      "",
+      "void main() => runApp(const ImanNeoApp());",
+      "",
+      "class ImanNeoApp extends StatelessWidget {",
+      "  const ImanNeoApp({super.key});",
+      "",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return MaterialApp(",
+      "      title: 'imaN Neo',",
+      "      debugShowCheckedModeBanner: " + (release ? "false" : "true") + ", // tap the banner //@debug",
+      "      theme: ThemeData(",
+      "        colorSchemeSeed: " + seeds[si][0] + ", // press hot reload //@seed",
+      "      ),",
+      "      home: const Shell(),",
+      "    );",
+      "  }",
+      "}",
+      "",
+      "class Shell extends StatelessWidget {",
+      "  const Shell({super.key, this.tab = 0});",
+      "  final int tab;",
+      "",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return Scaffold(",
+      "      appBar: AppBar(title: const Text('imaN Neo')), //@appbar",
+      "      body: const [Home(), Games(), OpenSource(), Links()][tab], //@.",
+      "      floatingActionButton: FloatingActionButton( //@fab",
+      "        onPressed: hotReload, // or press R",
+      "        child: const Icon(Icons.bolt),",
+      "      ), //@.",
+      "      bottomNavigationBar: NavigationBar( //@nav",
+      "        selectedIndex: tab,",
+      "        destinations: const [",
+      "          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),",
+      "          NavigationDestination(icon: Icon(Icons.sports_esports), label: 'Games'),",
+      "          NavigationDestination(icon: Icon(Icons.show_chart), label: 'Open source'),",
+      "          NavigationDestination(icon: Icon(Icons.link), label: 'Links'),",
+      "        ],",
+      "      ), //@.",
+      "    );",
+      "  }",
+      "}"
+    ]; } },
+    "home.dart": { lang: "dart", tab: "home", src: function () { return [
+      "import 'package:flutter/material.dart';",
+      "",
+      "class Home extends StatelessWidget {",
+      "  const Home({super.key});",
+      "",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    final text = Theme.of(context).textTheme;",
+      "    return ListView(",
+      "      padding: const EdgeInsets.all(16),",
+      "      children: [",
+      "        const CircleAvatar( //@avatar",
+      "          radius: 42,",
+      "          backgroundImage: AssetImage('assets/me.jpg'),",
+      "        ), //@.",
+      "        Text('Iman Khoshabi', style: text.headlineSmall), //@name",
+      "        const Text('Senior mobile engineer in Amsterdam'), //@role",
+      "        const Text( //@bio",
+      "          'I build mobile apps for a living, first native '",
+      "          'Android and now mostly Flutter. I maintain fl_chart, '",
+      "          'a chart library I open-sourced in 2019, and I make '",
+      "          'small games.',",
+      "        ), //@.",
+      "        const Wrap(spacing: 8, children: [ //@chips",
+      "          Chip(label: Text('Flutter')),",
+      "          Chip(label: Text('Dart')),",
+      "          Chip(label: Text('Kotlin')),",
+      "          Chip(label: Text('Java')),",
+      "          Chip(label: Text('10+ years')),",
+      "        ]), //@.",
+      "        FilledButton.icon( //@cta",
+      "          onPressed: () => launchUrl(gamesUrl),",
+      "          icon: const Icon(Icons.play_arrow),",
+      "          label: const Text('Play my games'),",
+      "        ), //@.",
+      "        OutlinedButton( //@cta2",
+      "          onPressed: () => launchUrl(flChartRepo),",
+      "          child: const Text('fl_chart on GitHub'),",
+      "        ), //@.",
+      "        Card( //@shortcuts",
+      "          child: Column(children: [",
+      "            ListTile(",
+      "              leading: const Icon(Icons.show_chart),",
+      "              title: const Text('fl_chart " + fl.version + "'),",
+      "              subtitle: const Text('" + fl.starsLabel + " stars · " + fl.downloadsLabel + " downloads a month'),",
+      "              onTap: () => goTo(2),",
+      "            ),",
+      "            ListTile(",
+      "              leading: const Icon(Icons.sports_esports),",
+      "              title: const Text('24 browser games'),",
+      "              subtitle: const Text('Flappy Dash, Save The Potato, Trickle and more'),",
+      "              onTap: () => goTo(1),",
+      "            ),",
+      "          ]),",
+      "        ), //@.",
+      "        const Card( //@fact",
+      "          child: Text('Fun fact. I picked \"NeO\" as my nickname '",
+      "              'before I ever watched The Matrix.'),",
+      "        ), //@.",
+      "      ],",
+      "    );",
+      "  }",
+      "}"
+    ]; } },
+    "games.dart": { lang: "dart", tab: "games", src: function () { return [
+      "import 'package:flutter/material.dart';",
+      "",
+      "import 'data/games.dart'; // 24 of them",
+      "",
+      "class Games extends StatelessWidget {",
+      "  const Games({super.key});",
+      "",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return CustomScrollView(",
+      "      slivers: [",
+      "        SliverList.list(children: [ //@featured",
+      "          // Flappy Dash, Through The Galaxies,",
+      "          // Save The Potato and Trickle",
+      "          for (final game in games.where((g) => g.featured))",
+      "            GameTile(game),",
+      "        ]), //@.",
+      "        SliverGrid.count( //@grid",
+      "          crossAxisCount: 3,",
+      "          children: [",
+      "            // twenty small ones",
+      "            for (final game in games.where((g) => !g.featured))",
+      "              GameThumb(game),",
+      "          ],",
+      "        ), //@.",
+      "        FilledButton.tonal( //@all",
+      "          onPressed: () => launchUrl('https://games.imanneo.dev'),",
+      "          child: const Text('All 24 on games.imanneo.dev'),",
+      "        ), //@.",
+      "      ],",
+      "    );",
+      "  }",
+      "}"
+    ]; } },
+    "open_source.dart": { lang: "dart", tab: "oss", src: function () { return [
+      "import 'package:fl_chart/fl_chart.dart';",
+      "import 'package:flutter/material.dart';",
+      "",
+      "class OpenSource extends StatelessWidget {",
+      "  const OpenSource({super.key});",
+      "",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return ListView(children: [",
+      "      const ListTile( //@flhead",
+      "        leading: FlChartLogo(),",
+      "        title: Text('fl_chart " + fl.version + "'),",
+      "        subtitle: Text('A highly customizable chart library'),",
+      "      ), //@.",
+      "      const Row(children: [ //@stats",
+      "        Stat('" + fl.starsLabel + "', 'stars'),",
+      "        Stat('" + S.fmt(fl.likes) + "', 'likes'),",
+      "        Stat('" + fl.downloadsLabel + "', 'downloads a month'),",
+      "      ]), //@.",
+      "      LineChart( //@chart",
+      "        LineChartData(lineBarsData: [",
+      "          LineChartBarData(",
+      "            spots: releasesAddedUp, // " + fl.releases + " since 2019",
+      "            isCurved: true,",
+      "            barWidth: 4,",
+      "            gradient: const LinearGradient(",
+      "              colors: [Color(0xFF50E4FF), Color(0xFF2196F3)],",
+      "            ),",
+      "            belowBarData: BarAreaData(show: true),",
+      "          ),",
+      "        ]),",
+      "      ), //@.",
+      "      Wrap(spacing: 8, children: [ //@types",
+      "        for (final type in chartTypes) Chip(label: Text(type)),",
+      "      ]), //@.",
+      "      Row(children: [ //@flbtns",
+      "        FilledButton(onPressed: openGitHub, child: Text('GitHub')),",
+      "        FilledButton.tonal(onPressed: openPub, child: Text('pub.dev')),",
+      "        FilledButton.tonal(onPressed: openDocs, child: Text('Docs')),",
+      "      ]), //@.",
+      "    ]);",
+      "  }",
+      "}"
+    ]; } },
+    "links.dart": { lang: "dart", tab: "links", src: function () {
+      var rows = linkList.map(function (l) { return "  Link('" + l.label + "', '" + l.handle + "'),"; });
+      return ["import 'package:flutter/material.dart';", "import 'package:url_launcher/url_launcher.dart';", "", "const links = ["].concat(rows, [
+      "  Link('Mailing list', 'An email when my next game is out'),",
+      "];",
+      "",
+      "class Links extends StatelessWidget {",
+      "  const Links({super.key});",
+      "",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return ListView( //@tiles",
+      "      children: [",
+      "        for (final link in links)",
+      "          ListTile(",
+      "            leading: CircleAvatar(child: link.icon),",
+      "            title: Text(link.name),",
+      "            subtitle: Text(link.handle),",
+      "            trailing: const Icon(Icons.open_in_new),",
+      "            onTap: () => launchUrl(link.url),",
+      "          ),",
+      "      ],",
+      "    ); //@.",
+      "  }",
+      "}"
+    ]); } },
+    "pubspec.yaml": { lang: "yaml", src: function () { return [
+      "name: iman_neo",
+      "description: Senior mobile engineer. Flutter, Android, charts and games.",
+      "version: 10.0.0",
+      "homepage: https://imanneo.dev",
+      "",
+      "environment:",
+      "  sdk: ^3.14.0",
+      "  flutter: \">=3.50.0\"",
+      "",
+      "dependencies:",
+      "  flutter:",
+      "    sdk: flutter",
+      "  fl_chart: ^" + fl.version + "   # mine, " + fl.starsLabel + " stars",
+      "  flame: any          # Save The Potato",
+      "  url_launcher: any",
+      "  kotlin: any",
+      "  java: any",
+      "",
+      "dev_dependencies:",
+      "  godot: any          # game prototypes",
+      "  cocos_creator: any",
+      "  babylon_js: any     # Trickle",
+      "",
+      "flutter:",
+      "  uses-material-design: true",
+      "  assets:",
+      "    - assets/me.jpg"
+    ]; } }
+  };
+  var ORDER = ["main.dart", "home.dart", "games.dart", "open_source.dart", "links.dart", "pubspec.yaml"];
+  var TAB_FILE = { home: "home.dart", games: "games.dart", oss: "open_source.dart", links: "links.dart" };
+  var TITLES = { home: "imaN Neo", games: "Games", oss: "Open source", links: "Links" };
+  var W_FILE = { appbar: "main.dart", nav: "main.dart", fab: "main.dart" };
+
+  var DART = /(\/\/.*$)|('(?:[^'\\]|\\.)*')|(@\w+)|\b(import|void|final|const|class|extends|return|super|true|false|null|for|in|if|else|this|var)\b|\b(0x[0-9A-Fa-f]+|\d+(?:\.\d+)?)\b|\b([A-Z][A-Za-z0-9]*)\b|\b([a-z_][A-Za-z0-9_]*)(?=\()|\b([a-z_][A-Za-z0-9_]*)(?=:)/g;
+  var YAML = /(#.*$)|("(?:[^"\\]|\\.)*")|(^\s*-?\s*[\w.-]+(?=:))|(\^?\b\d[\w.]*\b|\bany\b|\btrue\b)/g;
+  var CLS = { dart: [null, "cm", "st", "an", "kw", "nu", "ty", "fn", "np"], yaml: [null, "cm", "st", "np", "nu"] };
+  function paint(line, lang) {
+    var re = lang === "yaml" ? YAML : DART, cls = CLS[lang], out = "", last = 0, m;
+    re.lastIndex = 0;
+    while ((m = re.exec(line))) {
+      out += esc(line.slice(last, m.index));
+      for (var g = 1; g < m.length; g++) if (m[g] !== undefined) { out += '<span class="' + cls[g] + '">' + esc(m[g]) + "</span>"; break; }
+      last = m.index + m[0].length;
+      if (m[0].length === 0) re.lastIndex++;
+    }
+    return out + esc(line.slice(last));
+  }
+  var current = "main.dart", tab = "home";
+  function renderCode() {
+    var f = FILES[current], w = null, html = "";
+    f.src().forEach(function (raw) {
+      var mk = raw.match(/\s*\/\/@([\w.-]+)\s*$/), line = mk ? raw.slice(0, mk.index) : raw, mine = w, end = false;
+      if (mk) { if (mk[1] === ".") { end = true; } else { w = mk[1]; mine = w; if (!/[\(\[\{]\s*$/.test(line) || /\)[,;]\s*$/.test(line)) end = true; } }
+      html += '<div class="ln"' + (mine ? ' data-w="' + mine + '"' : "") + "><span>" + (paint(line, f.lang) || " ") + "</span></div>";
+      if (end) w = null;
+    });
+    $("code").innerHTML = html;
+  }
+  function openFile(name, quiet) {
+    current = name;
+    [].forEach.call(document.querySelectorAll("[data-file]"), function (b) { var on = b.getAttribute("data-file") === name; b.setAttribute(b.getAttribute("role") === "tab" ? "aria-selected" : "aria-current", String(on)); });
+    $("crumb").textContent = (name === "pubspec.yaml" ? "" : "lib / ") + name; $("where").textContent = name;
+    renderCode(); $("code").scrollTop = 0;
+    var tb = $("tabs").querySelector('[data-file="' + name + '"]'); if (tb) $("tabs").scrollLeft = Math.max(0, tb.offsetLeft - 40);
+    if (!quiet && FILES[name].tab) showTab(FILES[name].tab, true);
+  }
+  function showTab(t, quiet) {
+    tab = t;
+    ["home", "games", "oss", "links"].forEach(function (k) { $("pg-" + k).hidden = k !== t; });
+    [].forEach.call($("navbar").querySelectorAll("button"), function (b) { if (b.getAttribute("data-tab") === t) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+    $("apptitle").textContent = TITLES[t]; $("body").scrollTop = 0;
+    if (!quiet) openFile(TAB_FILE[t], true);
+  }
+  $("tabs").innerHTML = ORDER.map(function (n) { return '<button type="button" role="tab" data-file="' + n + '"><i class="fi' + (FILES[n].lang === "yaml" ? " y" : "") + '"></i>' + n + "</button>"; }).join("");
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("[data-file]") : null; if (b) openFile(b.getAttribute("data-file"));
+  });
+  $("navbar").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b && !selecting) showTab(b.getAttribute("data-tab")); });
+
+  /* ---------- code <-> app: the inspector ---------- */
+  var selecting = false;
+  function clearInsp() { [].forEach.call(app.querySelectorAll(".insp"), function (n) { n.classList.remove("insp"); }); }
+  $("code").addEventListener("mouseover", function (e) {
+    var ln = e.target.closest ? e.target.closest(".ln[data-w]") : null; clearInsp(); if (!ln) return;
+    var w = ln.getAttribute("data-w"), el = app.querySelector('[data-w="' + w + '"]');
+    if (el && el.offsetParent !== null) { el.classList.add("insp"); if (el.closest("#body")) el.scrollIntoView({ block: "nearest" }); }
+  });
+  $("code").addEventListener("mouseleave", clearInsp);
+  $("select").addEventListener("click", function () {
+    selecting = !selecting; this.setAttribute("aria-pressed", String(selecting)); $("ide").classList.toggle("sel-on", selecting); clearInsp();
+    log(selecting ? "Select widget mode: click something in the app to jump to its code." : "Select widget mode off.");
+  });
+  app.addEventListener("click", function (e) {
+    if (!selecting) return;
+    var el = e.target.closest("[data-w]"); e.preventDefault(); e.stopPropagation(); if (!el) return;
+    var w = el.getAttribute("data-w"), file = W_FILE[w] || TAB_FILE[tab];
+    if (file !== current) openFile(file, true);
+    clearInsp(); el.classList.add("insp");
+    var lines = [].slice.call($("code").querySelectorAll('.ln[data-w="' + w + '"]'));
+    if (lines.length) { lines[0].scrollIntoView({ block: "center" }); lines.forEach(function (l) { l.classList.add("hit"); }); setTimeout(function () { lines.forEach(function (l) { l.classList.remove("hit"); }); }, 1800); }
+  }, true);
+
+  /* ---------- run, hot reload, debug banner ---------- */
+  var logEl = $("log");
+  function log(text, cls) { var s = document.createElement("span"); if (cls) s.className = cls; s.textContent = text + "\n"; logEl.appendChild(s); logEl.scrollTop = logEl.scrollHeight; }
+  function boot() {
+    logEl.textContent = "";
+    log("Launching lib/main.dart on Pixel in " + (release ? "release" : "debug") + " mode...");
+    log("✓ Built build/app/outputs/flutter-apk/app-" + (release ? "release" : "debug") + ".apk", "ok");
+    log("Syncing files to device Pixel...");
+    log("Flutter run key commands.  r Hot reload.  R Hot restart.");
+  }
+  var reloads = 0, snackT;
+  function snack(text) { var el = $("snack"); el.textContent = text; el.classList.add("on"); clearTimeout(snackT); snackT = setTimeout(function () { el.classList.remove("on"); }, 2400); }
+  function hotReload() {
+    si = (si + 1) % seeds.length; reloads++;
+    app.style.setProperty("--seed", seeds[si][1]);
+    if (!still) { app.classList.remove("flash"); void app.offsetWidth; app.classList.add("flash"); }
+    if (current === "main.dart") { renderCode(); var l = $("code").querySelector('.ln[data-w="seed"]'); if (l) { l.classList.add("hit"); l.scrollIntoView({ block: "nearest" }); setTimeout(function () { l.classList.remove("hit"); }, 1400); } }
+    var ms = 140 + Math.floor(Math.random() * 120);
+    log("Performing hot reload...");
+    log("Reloaded 1 of 987 libraries in " + ms + "ms.  colorSchemeSeed: " + seeds[si][0], "hot");
+    snack("Reloaded 1 of 987 libraries in " + ms + "ms. Theme: " + seeds[si][0]);
+    if (reloads === 4) log("Another exception was thrown: A RenderFlex overflowed by 10+ years on the bottom.", "err");
+  }
+  function hotRestart() {
+    var sp = $("splash"); sp.classList.add("on"); boot(); log("Performing hot restart...", "hot");
+    setTimeout(function () { showTab("home"); openFile("main.dart", true); sp.classList.remove("on"); log("Restarted application in " + (600 + Math.floor(Math.random() * 300)) + "ms.", "ok"); }, still ? 0 : 700);
+  }
+  $("reload").addEventListener("click", hotReload); $("run").addEventListener("click", hotRestart);
+  $("fab").addEventListener("click", function () { if (!selecting) hotReload(); });
+  $("body").addEventListener("click", function (e) { var b = e.target.closest("[data-go]"); if (b && !selecting) showTab(b.getAttribute("data-go")); });
+  $("debug").addEventListener("click", function () {
+    release = true; this.hidden = true; $("mode").textContent = "release"; if (current === "main.dart") renderCode();
+    log("flutter run --release"); log("✓ Built build/app/outputs/flutter-apk/app-release.apk. The banner is gone, the jank too.", "ok");
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey || /INPUT|TEXTAREA|SELECT/.test((e.target.tagName || ""))) return;
+    if (e.key === "r") hotReload(); else if (e.key === "R") hotRestart();
+  });
+
+  /* the code sheet on small screens */
+  $("viewsrc").addEventListener("click", function () { $("ide").classList.add("show-code"); });
+  $("closecode").addEventListener("click", function () { $("ide").classList.remove("show-code"); });
+
+  /* the phone is laid out at 392 x 800 and scaled to fit, like an emulator window */
+  var stage = $("stage"), fit = $("fit"), phone = $("phone"), small = window.matchMedia("(max-width:900px)");
+  function fitPhone() {
+    if (small.matches) { fit.style.width = fit.style.height = ""; phone.style.transform = ""; return; }
+    var cs = getComputedStyle(stage), h = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom), w = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var k = Math.max(.45, Math.min(1.12, h / 800, w / 392));
+    fit.style.width = 392 * k + "px"; fit.style.height = 800 * k + "px"; phone.style.transform = "scale(" + k + ")";
+  }
+  fitPhone(); window.addEventListener("resize", fitPhone);
+  if (window.ResizeObserver) new ResizeObserver(fitPhone).observe(stage);
+
+  function clock() { var d = new Date(); $("clock").textContent = d.getHours() + ":" + (d.getMinutes() < 10 ? "0" : "") + d.getMinutes(); }
+  clock(); setInterval(clock, 30000);
+  boot(); openFile("main.dart", true);
+})();
+</script>
+<script src="../shared/switcher.js" data-pos="bl" data-lift="84"></script>
+</body>
+</html>
