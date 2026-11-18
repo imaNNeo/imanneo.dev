@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam. Mobile apps, open source and small games.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1c1d" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../shared/img/n.png">
+<script>try{var t=localStorage.getItem("s34-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+<style>
+/*
+ * Sample 34, in the style of al-folio (a Jekyll theme for academics): thin Roboto, a lowercase menu on the right,
+ * the first name in bold, a photo floated to the right with address lines, work listed like publications
+ * with a badge or a preview and small outlined buttons, cards for the fun projects and big icons at the end.
+ */
+:root{
+  --bg:#ffffff; --text:#000000; --light:#6f6f6f; --theme:#b509ac; --divider:rgba(0,0,0,.1); --card:#ffffff; --card-line:rgba(0,0,0,.125);
+  --foot-bg:#1c1c1d; --foot-text:#c8c8c8; --foot-link:#ffffff; --code:rgba(181,9,172,.05);
+  --sans:"Roboto",system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --gut:15px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1c1c1d; --text:#c8c8c8; --light:#9a9a9a; --theme:#2ea8cc; --divider:#424246; --card:#212529; --card-line:#424246;
+    --foot-bg:#c8c8c8; --foot-text:#1c1c1d; --foot-link:#000000; --code:#2c3237; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1c1c1d; --text:#c8c8c8; --light:#9a9a9a; --theme:#2ea8cc; --divider:#424246; --card:#212529; --card-line:#424246;
+  --foot-bg:#c8c8c8; --foot-text:#1c1c1d; --foot-link:#000000; --code:#2c3237; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;padding-top:calc(57px + env(safe-area-inset-top,0px));background:var(--bg);color:var(--text);font:300 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100vh}
+h1,h2,h3{margin:0;font-weight:300;line-height:1.2;scroll-margin-top:66px}
+p{margin:0 0 1rem}
+ul,ol{margin:0;padding:0;list-style:none}
+img{max-width:100%;display:block}
+svg{width:1em;height:1em;flex:none}
+a{color:var(--theme);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+b,strong{font-weight:500}
+:focus-visible{outline:2px solid var(--theme);outline-offset:2px;border-radius:2px}
+.skip{position:absolute;left:-999px;top:8px;z-index:100;background:var(--theme);color:#fff;padding:6px 12px}
+.skip:focus{left:12px}
+.container{width:100%;max-width:930px;margin-inline:auto;padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+
+/* Menu */
+.navbar{position:fixed;inset:0 0 auto;z-index:20;background:var(--bg);border-bottom:1px solid var(--divider);padding-top:env(safe-area-inset-top,0px)}
+.navbar .container{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;min-height:56px}
+.brand{font-size:1.25rem;color:var(--text);opacity:0;transition:opacity .2s;pointer-events:none}
+.brand.on{opacity:1;pointer-events:auto}
+.brand:hover{text-decoration:none;color:var(--theme)}
+.nav-links{display:flex;align-items:center;margin-left:auto}
+.nav-links a,.nav-links button{display:block;padding:.5rem;color:var(--text)}
+.nav-links a:hover,.nav-links button:hover{color:var(--theme);text-decoration:none}
+.nav-links a.active{color:var(--theme);font-weight:500}
+.toggle{font-size:1.05rem;line-height:1;margin-left:.25rem}
+.toggle span{display:none}
+.toggle[data-now="light"] .i-moon,.toggle[data-now="dark"] .i-sun{display:block}
+.toggler{display:none;margin-left:auto;width:44px;height:44px;margin-right:-10px;position:relative}
+.toggler i{position:absolute;left:11px;width:22px;height:2px;background:var(--text);border-radius:1px;transition:transform .25s,opacity .25s,top .25s}
+.toggler i:nth-child(1){top:14px} .toggler i:nth-child(2){top:21px} .toggler i:nth-child(3){top:28px}
+.toggler[aria-expanded="true"] i:nth-child(1){top:21px;transform:rotate(45deg)}
+.toggler[aria-expanded="true"] i:nth-child(2){opacity:0}
+.toggler[aria-expanded="true"] i:nth-child(3){top:21px;transform:rotate(-45deg)}
+
+main{flex:1 0 auto;padding-bottom:3rem}
+.post{padding-top:3rem}
+.post-title{font-size:2.5rem;margin-bottom:.5rem}
+.post-title b{font-weight:500}
+.desc{margin-bottom:1rem}
+article{margin-top:1.5rem}
+article::after{content:"";display:block;clear:both}
+.profile{float:right;width:30%;margin:0 0 1rem 1.5rem}
+.profile img{width:100%;height:auto;border-radius:.25rem;box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12)}
+.more-info{margin:.5rem 0;font-family:var(--mono);font-size:.875rem;font-weight:400}
+.more-info p{margin:0}
+article h2{clear:both;font-size:2rem;margin:2.5rem 0 1rem}
+article h2.first{clear:none}
+
+/* The table (al-folio uses it for news) */
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:.3rem;vertical-align:top;text-align:left}
+.table th{width:20%;font-weight:400;white-space:nowrap}
+
+/* Work, listed like publications */
+.bib li{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,8fr) minmax(0,2fr);gap:0 30px;margin-bottom:1.25rem}
+.bib .abbr abbr{display:inline-block;min-width:76px;padding:.25em 1rem;background:var(--theme);color:#fff;border-radius:.25rem;font-size:75%;font-weight:700;line-height:1.35;text-align:center;text-decoration:none}
+.bib .preview img{width:100%;min-width:80px;max-width:200px;height:auto;border-radius:.25rem;box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12)}
+.bib .preview img.logo{box-shadow:none;border-radius:16%;max-width:96px}
+.bib .title{font-weight:500}
+.bib .author em{font-style:normal;border-bottom:1px solid}
+.bib .periodical em{font-style:italic}
+.bib .links{margin-top:.25rem}
+.btn{display:inline-block;margin:.25rem .5rem .25rem 0;padding:.25rem 1rem;border:1px solid var(--text);border-radius:.125rem;color:var(--text);font-size:.7rem;font-weight:400;line-height:1.5;letter-spacing:.02em;text-transform:uppercase;transition:color .15s,border-color .15s}
+.btn:hover,.btn[aria-expanded="true"]{color:var(--theme);border-color:var(--theme);text-decoration:none}
+.btn.award{color:var(--theme);border-color:var(--theme)}
+.abstract{margin-top:.5rem;border:1px dashed var(--text);font-size:.875rem;line-height:1.5}
+.abstract p{margin:10px}
+
+/* The fun projects */
+.category{font-size:2rem;color:var(--light);border-bottom:1px solid var(--divider);padding-top:.5rem;margin:2.5rem 0 1rem;text-align:right;clear:both}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
+.card{display:flex;flex-direction:column;height:100%;background:var(--card);border:1px solid var(--card-line);border-radius:.25rem;overflow:hidden;color:var(--text);transition:box-shadow .3s}
+.card:hover{text-decoration:none;box-shadow:0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19)}
+.card img{width:100%;height:auto;aspect-ratio:1}
+.card-body{padding:1.25rem}
+.card-title{font-size:1.25rem;font-weight:400;margin-bottom:.5rem;text-transform:lowercase;transition:color .15s}
+.card:hover .card-title{color:var(--theme)}
+.card-text{font-size:.95rem}
+.more{margin:1.25rem 0 0;text-align:right}
+
+/* Icons at the end */
+.social{margin-top:3.5rem;text-align:center;clear:both}
+.icons{display:flex;flex-wrap:wrap;justify-content:center;gap:.25rem 1.1rem;font-size:2.7rem;line-height:1}
+.icons a,.icons button{display:inline-flex;padding:.35rem;color:var(--text);transition:color .15s}
+.icons a:hover,.icons button:hover,.icons button.did{color:var(--theme)}
+.note{max-width:34rem;margin:1rem auto 0;font-size:.875rem}
+.note span{font-weight:400}
+
+footer{flex:none;background:var(--foot-bg);color:var(--foot-text);font-size:.75rem}
+footer .container{padding-top:9px;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+footer a{color:var(--foot-link);text-decoration:underline}
+
+@media (max-width:768px){
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+}
+@media (max-width:575px){
+  .toggler{display:block}
+  .nav-links{display:none;flex-basis:100%;flex-direction:column;align-items:flex-end;padding-bottom:.5rem}
+  .nav-links.open{display:flex}
+  .brand{opacity:1;pointer-events:auto}
+  .post{padding-top:2rem}
+  .post-title{font-size:2.1rem}
+  .profile{float:none;width:100%;margin:0 0 1rem}
+  .more-info p{display:inline-block;margin-right:.75rem}
+  .bib li{grid-template-columns:minmax(0,1fr)}
+  .bib .abbr,.bib .preview{margin-bottom:.5rem}
+  .bib .preview img{max-width:120px}
+  .table th{width:28%}
+  .card-body{padding:.9rem}
+  .card-title{font-size:1.1rem}
+  .icons{font-size:2.2rem;gap:.25rem .6rem}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="navbar">
+  <nav class="container" aria-label="Main">
+    <a class="brand" id="brand" href="#top"><b>Iman</b> Khoshabi</a>
+    <button type="button" class="toggler" id="toggler" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><i></i><i></i><i></i></button>
+    <div class="nav-links" id="nav-links">
+      <a href="#top" class="active">about</a>
+      <a href="#work">work</a>
+      <a href="#games">games</a>
+      <a href="#contact">contact</a>
+      <button type="button" class="toggle" id="toggle"></button>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container post" id="top">
+    <header class="post-header">
+      <h1 class="post-title" id="name"><b>Iman</b> Khoshabi</h1>
+      <p class="desc">Senior mobile engineer. Flutter and native Android. <a id="d-gh">imaNNeo</a> on GitHub.</p>
+    </header>
+
+    <article>
+      <div class="profile">
+        <img src="../shared/img/me.jpg" alt="Iman Khoshabi" width="640" height="640">
+        <div class="more-info"><p>aka imaN Neo</p><p>Amsterdam</p><p>The Netherlands</p></div>
+      </div>
+      <p data-say="me.bio"></p>
+      <p data-say="me.bio2"></p>
+      <p>My Android background covers maps and navigation, social media, shopping, fintech and e-commerce. On the side I make small games with Godot, Cocos Creator and Flame.</p>
+      <p data-say="me.fun"></p>
+
+      <h2 class="first">at a glance</h2>
+      <table class="table"><tbody id="glance"></tbody></table>
+
+      <h2 id="work">selected work</h2>
+      <ol class="bib" id="bib"></ol>
+
+      <h2 class="category" id="games">fun</h2>
+      <ul class="cards" id="cards"></ul>
+      <p class="more"><a id="all-games"></a></p>
+
+      <div class="social" id="contact">
+        <div class="icons" id="icons"></div>
+        <p class="note"><span data-say="me.contact"></span><br><span id="mail-a" data-say="me.email"></span></p>
+      </div>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="container">© Copyright 2026 Iman Khoshabi. A sample in the style of <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener">al-folio</a>, a Jekyll theme by Maruan Al-Shedivat.</div>
+</footer>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/icons.js"></script>
+<script src="../shared/kit.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.SITE, K = window.KIT, F = S.fl, $ = function (id) { return document.getElementById(id); };
+  var ext = ' target="_blank" rel="noopener"';
+  K.fill();
+  var dgh = $("d-gh"); dgh.href = S.links.github; dgh.target = "_blank"; dgh.rel = "noopener";
+
+  var tg = $("toggle");
+  tg.innerHTML = '<span class="i-moon">' + K.icon("moon") + '</span><span class="i-sun">' + K.icon("sun") + "</span>";
+  K.theme(tg, "s34-theme");
+
+  $("glance").innerHTML = [
+    [S.me.years + " years", "of building mobile apps, with Android and Flutter"],
+    [F.starsLabel + " stars", 'on GitHub for <a href="' + F.repo + '"' + ext + ">fl_chart</a>, my chart library for Flutter"],
+    [F.downloadsLabel + " a month", "downloads of fl_chart on pub.dev"],
+    [F.releases + " releases", "of fl_chart since " + F.since + ". The latest is " + F.version + "."],
+    [S.games.length + " games", 'you can play in the browser at <a href="' + S.links.games + '"' + ext + ">" + K.bare(S.links.games) + "</a>"]
+  ].map(function (r) { return '<tr><th scope="row">' + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("");
+
+  /* Work, listed the way the template lists publications. "Abs" opens a short description. */
+  var g = function (id) { return S.games.filter(function (x) { return x.id === id; })[0]; };
+  var me = "<em>Iman Khoshabi</em>";
+  var bib = [
+    { left: '<div class="preview"><img class="logo" src="../shared/img/fl_chart.png" alt="" width="256" height="256"></div>', title: "fl_chart: " + F.tagline.charAt(0).toLowerCase() + F.tagline.slice(1, -1), author: me + " and contributors", where: "<em>pub.dev,</em> since " + F.since + ". " + F.license + " license.",
+      abs: F.types[0] + ", " + F.types.slice(1, -1).join(", ").toLowerCase() + " and " + F.types[F.types.length - 1].toLowerCase() + " charts on " + F.platforms.slice(0, -1).join(", ") + " and " + F.platforms[F.platforms.length - 1] + ". " + F.starsLabel + " stars, " + F.downloadsLabel + " downloads a month and " + F.releases + " releases.",
+      links: [["GitHub", F.repo], ["pub.dev", F.pub], ["Docs", F.docs], ["Demo", F.demo]] },
+    { left: '<div class="preview"><img class="logo" src="../shared/img/flutter4fun.png" alt="" width="256" height="256"></div>', title: "Flutter 4 Fun: UI challenges, solved in Flutter", author: me, where: "<em>flutter4fun.com,</em> blog.",
+      abs: "A blog where I solve UI challenges in Flutter. I also make videos about Flutter and game development on YouTube.", links: [["HTML", S.links.blog], ["Video", S.links.youtube]] }
+  ].concat(["flappy-dash", "save-the-potato"].map(function (id) {
+    var x = g(id);
+    return { left: '<div class="preview"><img src="' + S.gameImg(id) + '" alt="" width="320" height="320" loading="lazy"></div>', title: x.title + ": " + x.blurb.charAt(0).toLowerCase() + x.blurb.slice(1, -1), author: me, where: "<em>games.imanneo.dev,</em> " + x.tech + ".",
+      abs: x.blurb + " Built with " + x.tech + ".", links: [["Play", S.gameUrl(id)]], award: id === "save-the-potato" ? x.tag : "" };
+  }));
+  $("bib").innerHTML = bib.map(function (b, i) {
+    return "<li>" + b.left + '<div><div class="title">' + K.esc(b.title) + '</div><div class="author">' + b.author + '</div><div class="periodical">' + b.where + '</div><div class="links">' +
+      (b.award ? '<span class="btn award">' + K.esc(b.award) + "</span>" : "") +
+      '<button type="button" class="btn" aria-expanded="false" aria-controls="abs-' + i + '">Abs</button>' +
+      b.links.map(function (l) { return '<a class="btn" href="' + l[1] + '"' + ext + ">" + l[0] + "</a>"; }).join("") +
+      '</div><div class="abstract" id="abs-' + i + '" hidden><p>' + K.esc(b.abs) + "</p></div></div></li>";
+  }).join("");
+  $("bib").addEventListener("click", function (e) {
+    var b = e.target.closest("button[aria-controls]"); if (!b) return;
+    var on = b.getAttribute("aria-expanded") !== "true";
+    b.setAttribute("aria-expanded", on); $(b.getAttribute("aria-controls")).hidden = !on;
+  });
+
+  /* The other games as cards, under the template's own category name. */
+  var rest = S.games.filter(function (x) { return x.id !== "flappy-dash" && x.id !== "save-the-potato"; }).slice(0, 6);
+  $("cards").innerHTML = rest.map(function (x) {
+    return '<li><a class="card" href="' + S.gameUrl(x.id) + '"' + ext + '><img src="' + S.gameImg(x.id) + '" alt="" width="320" height="320" loading="lazy"><div class="card-body"><h3 class="card-title">' + K.esc(x.title) + '</h3><div class="card-text">' + K.esc(x.blurb) + "</div></div></a></li>";
+  }).join("");
+  var ag = $("all-games"); ag.href = S.links.games; ag.target = "_blank"; ag.rel = "noopener"; ag.textContent = "all " + S.games.length + " games";
+
+  $("icons").innerHTML = S.socials.map(function (s) {
+    return s.id === "mail" ? '<button type="button" data-copy="' + K.esc(S.me.email) + '" data-from="mail-a" aria-label="Copy the email address" title="Copy the email address">' + K.icon("mail") + "</button>"
+      : '<a href="' + s.url + '"' + ext + ' aria-label="' + K.esc(s.label) + '" title="' + K.esc(s.label) + '">' + K.icon(s.id) + "</a>";
+  }).join("");
+  K.copies($("icons"));
+
+  /* Small screens: the menu opens under the bar. */
+  var tgl = $("toggler"), links = $("nav-links");
+  tgl.addEventListener("click", function () { var on = !links.classList.contains("open"); links.classList.toggle("open", on); tgl.setAttribute("aria-expanded", on); });
+  links.addEventListener("click", function (e) { if (e.target.closest("a")) { links.classList.remove("open"); tgl.setAttribute("aria-expanded", "false"); } });
+
+  /* The name moves into the bar once the big one has scrolled away, as it does on the template's other pages. */
+  var brand = $("brand"), name = $("name");
+  function onScroll() { brand.classList.toggle("on", name.getBoundingClientRect().bottom < 50); }
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+})();
+</script>
+<script src="../shared/switcher.js" data-n="34"></script>
+</body>
+</html>
