@@ -1,5 +1,5 @@
 /*
- * Preview-only helper: a small pill to flip between the ten options.
+ * Preview-only helper: a small pill to flip between the options.
  * Not part of any design. It is removed when one option becomes the real site.
  * data-n="3" on the script tag says which option the page is.
  * Position: data-pos="br" (default) | "bl" | "tr" | "tl" | "bc" on the script tag.
@@ -50,7 +50,7 @@
     '</style>' +
     '<div class="bar" id="bar">' +
     '<a class="full" href="../' + prev.slug + '/index.html" title="Previous: ' + prev.name + '" aria-label="Previous option">&#8249;</a>' +
-    '<a class="full name" href="../index.html" title="Back to all ten options"><span class="num">' + pad(cur.n) + '/' + pad(opts.length) + '</span>' + cur.name + '</a>' +
+    '<a class="full name" href="../index.html" title="Back to all the options"><span class="num">' + pad(cur.n) + '/' + pad(opts.length) + '</span>' + cur.name + '</a>' +
     '<a class="full" href="../' + next.slug + '/index.html" title="Next: ' + next.name + '" aria-label="Next option">&#8250;</a>' +
     '<span class="sep full"></span>' +
     '<button id="tg" title="Hide or show this switcher" aria-label="Hide or show the option switcher">&#9776;</button>' +
