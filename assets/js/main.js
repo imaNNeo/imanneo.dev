@@ -54,8 +54,10 @@
 
   /* ---------- Background ----------
    * One full-screen fragment shader on the canvas. It looks after size, the pointer, pausing when the tab
-   * is hidden, and standing still when the system asks for less motion. If WebGL is missing or breaks,
-   * the canvas is hidden and the still colours in the CSS stay.
+   * is hidden, and standing still when the system asks for less motion. It also watches its own speed:
+   * a device that cannot keep up gets a smaller drawing first, and one still picture if that is not enough.
+   * If WebGL is missing, breaks, or could only be drawn in software, the canvas is hidden and the still
+   * colours in the CSS stay.
    */
   var canvas = $("bg");
   if (!canvas) return;
@@ -100,10 +102,17 @@
 
   var gl = null;
   try {
-    var attrs = { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: "low-power" };
+    /* failIfMajorPerformanceCaveat: no context where the browser has no graphics chip to draw with, because that is slow. */
+    var attrs = { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: "low-power", failIfMajorPerformanceCaveat: true };
     gl = canvas.getContext("webgl", attrs) || canvas.getContext("experimental-webgl", attrs);
   } catch (e) { gl = null; }
   if (!gl) { noGl(); return; }
+  /* Some browsers hand out a context that draws in software all the same. Its name gives it away. */
+  try {
+    var info = gl.getExtension("WEBGL_debug_renderer_info");
+    var chip = String(gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER));
+    if (/swiftshader|llvmpipe|software|basic render/i.test(chip)) { noGl(); return; }
+  } catch (e) {}
 
   function shader(type, src) {
     var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
@@ -137,33 +146,58 @@
   var still = mq("(prefers-reduced-motion: reduce)").matches;
   var darkMq = mq("(prefers-color-scheme: dark)"), isDark = false;
   /* The drawing is half the size of the screen: the colours are soft, so nobody sees it, and it is four times cheaper. */
-  var SCALE = .5, STILL_TIME = 31;
-  var size = { w: 0, h: 0, dpr: 1 };
+  var scale = .5, STILL_TIME = 31;
+  /* The flow is slow, so thirty pictures a second look the same as sixty and cost half. */
+  var GAP = 30;
+  var size = { w: 0, h: 0, ch: 0, dpr: 1 }, stale = true;
   var mouse = { x: -1e4, y: -1e4, tx: -1e4, ty: -1e4, hover: 0, on: 0, seen: false };
   var dead = false, raf = 0, last = 0, t0 = performance.now(), visible = true, time = STILL_TIME;
+  /* For noticing a device that cannot keep up: pictures drawn, and the time they took, since the last look. */
+  var drawn = 0, count = 0, spent = 0, tired = false;
 
   function resize() {
+    stale = false;
     var cw = canvas.clientWidth || window.innerWidth, ch = canvas.clientHeight || window.innerHeight;
-    var dpr = Math.min(window.devicePixelRatio || 1, 1) * SCALE;
+    var dpr = Math.min(window.devicePixelRatio || 1, 1) * scale;
     var w = Math.max(2, Math.round(cw * dpr)), h = Math.max(2, Math.round(ch * dpr));
+    size.ch = ch;
     if (w === size.w && h === size.h) return;
     size.w = w; size.h = h; size.dpr = dpr;
     canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h);
   }
+  /* A still picture is only drawn again when something asks for it. A tired device is left alone. */
+  function nudge() { if (still && !tired) kick(); }
   function point(e) {
-    var r = canvas.getBoundingClientRect();
-    mouse.tx = (e.clientX - r.left) * size.dpr; mouse.ty = (r.height - (e.clientY - r.top)) * size.dpr;
+    /* The canvas covers the window, so the pointer needs no measuring of the page. */
+    mouse.tx = e.clientX * size.dpr; mouse.ty = (size.ch - e.clientY) * size.dpr;
     if (!mouse.seen) { mouse.x = mouse.tx; mouse.y = mouse.ty; mouse.seen = true; }
     mouse.on = 1;
-    if (still) kick();
+    nudge();
   }
-  function leave() { mouse.on = 0; if (still) kick(); }
+  function leave() { mouse.on = 0; nudge(); }
+
+  /* Called after every 30 pictures. Under about 18 a second counts as too slow. */
+  function pace() {
+    if (spent / count > 55) {
+      if (scale > .3) { scale = .25; stale = true; mouse.seen = false; mouse.on = 0; }
+      else { still = true; tired = true; }
+    }
+    count = 0; spent = 0;
+  }
 
   function frame(now) {
     raf = 0; if (dead) return;
-    var dt = Math.min(.05, (now - last) / 1000 || .016); last = now;
-    resize();
-    if (!still) time = (now - t0) / 1000;
+    var gap = now - last;
+    /* The very first picture is drawn at once, so the canvas never shows empty. */
+    if (!still && drawn && gap < GAP) { kick(); return; }
+    var dt = Math.min(.05, Math.max(0, gap) / 1000 || .016); last = now;
+    if (stale) resize();
+    drawn++;
+    if (!still) {
+      time = (now - t0) / 1000;
+      /* The first second of a page is busy with other things, and a long gap is a pause, not a slow picture. */
+      if (drawn > 30 && gap < 500) { count++; spent += gap; if (count === 30) pace(); }
+    }
     var k = Math.min(1, dt * 9);
     mouse.x += (mouse.tx - mouse.x) * k; mouse.y += (mouse.ty - mouse.y) * k;
     mouse.hover += (mouse.on - mouse.hover) * Math.min(1, dt * 5);
@@ -173,7 +207,7 @@
     set("uRes", [size.w, size.h]); set("uTime", time); set("uMouse", [mouse.x, mouse.y]); set("uHover", mouse.hover);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     if (!still) kick();
-    else if (Math.abs(mouse.tx - mouse.x) + Math.abs(mouse.ty - mouse.y) > .5 || Math.abs(mouse.on - mouse.hover) > .01) kick();
+    else if (!tired && (Math.abs(mouse.tx - mouse.x) + Math.abs(mouse.ty - mouse.y) > .5 || Math.abs(mouse.on - mouse.hover) > .01)) kick();
   }
   function kick() { if (!raf && !dead && visible && !document.hidden) raf = requestAnimationFrame(frame); }
 
@@ -189,14 +223,14 @@
   }
 
   canvas.addEventListener("webglcontextlost", function (e) { e.preventDefault(); dead = true; if (raf) cancelAnimationFrame(raf); noGl(); });
-  window.addEventListener("resize", kick);
+  window.addEventListener("resize", function () { stale = true; kick(); });
   window.addEventListener("pointermove", point, { passive: true });
   window.addEventListener("pointerdown", point, { passive: true });
   document.addEventListener("pointerleave", leave);
   window.addEventListener("blur", leave);
   window.addEventListener("pointerup", function (e) { if (e.pointerType !== "mouse") leave(); }, { passive: true });
   window.addEventListener("pointercancel", leave, { passive: true });
-  if (still) window.addEventListener("scroll", kick, { passive: true });
+  window.addEventListener("scroll", nudge, { passive: true });
   document.addEventListener("visibilitychange", function () { if (!document.hidden) { last = performance.now(); kick(); } });
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (es) { visible = es[es.length - 1].isIntersecting; if (visible) { last = performance.now(); kick(); } }).observe(canvas);

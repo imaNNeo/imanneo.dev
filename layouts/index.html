@@ -26,8 +26,8 @@
       </ul>
     </div>
     {{- with resources.Get $p.hero.photo }}
-    {{- $small := .Resize (printf "400x %s q82" $webp) }}
-    {{- $large := .Resize (printf "640x %s q82" $webp) }}
+    {{- $small := .Resize (printf "400x %s q75" $webp) }}
+    {{- $large := .Resize (printf "640x %s q75" $webp) }}
     <figure class="photo glass">
       <img src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} 400w, {{ $large.RelPermalink }} 640w" sizes="(max-width: 860px) 280px, 360px" alt="{{ $p.hero.photoAlt }}" width="640" height="640" fetchpriority="high">
       <figcaption><span>{{ $p.name }}</span><span>a.k.a. {{ $p.aka }}</span></figcaption>
@@ -87,10 +87,12 @@
           <p class="lead">{{ $p.games.lead }}</p>
           <ul class="games">
             {{- range $p.games.featured }}
+            {{- /* The cover is shown at 76 pixels: one file for most screens, a sharper one for the sharpest phones. */}}
             {{- $cover := resources.Get (printf "images/games/%s.webp" .id) }}
-            {{- if and $cover hugo.IsExtended }}{{ $cover = $cover.Resize "228x webp q82" }}{{ end }}
+            {{- $sharp := false }}
+            {{- if and $cover hugo.IsExtended }}{{ $sharp = $cover.Resize "228x webp q82" }}{{ $cover = $cover.Resize "152x webp q82" }}{{ end }}
             <li><a class="game" href="{{ $p.games.site }}play/{{ .id }}/" target="_blank" rel="noopener">
-              {{- with $cover }}<img class="g-img" src="{{ .RelPermalink }}" alt="" width="76" height="76" loading="lazy">{{ end -}}
+              {{- with $cover }}<img class="g-img" src="{{ .RelPermalink }}"{{ with $sharp }} srcset="{{ $cover.RelPermalink }} 2x, {{ .RelPermalink }} 3x"{{ end }} alt="" width="76" height="76" loading="lazy">{{ end -}}
               <span class="g-t">{{ .title }}</span><span class="g-tag">{{ .tag }}</span><span class="g-b">{{ .text }}</span></a></li>
             {{- end }}
           </ul>
