@@ -75,7 +75,7 @@ params:
   about:
     menu: "About"
     title: "What I work on"
-    lead: "These days I mostly build native Android apps, from the first architecture sketch to the release. Next to that, I share what I learn through open source, write-ups and videos."
+    lead: "These days I mostly build Android apps, from the first architecture sketch to the release. Next to that, I share what I learn through open source, write-ups and videos."
     focus:
       - title: "Native Android first"
         text: "I'm comfortable in Flutter too."
