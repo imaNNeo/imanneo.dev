@@ -90,7 +90,7 @@ params:
     stackTitle: "Stack"
     stack: ["Android", "Kotlin", "Java", "Flutter", "Dart"]
     domainsTitle: "Worked in"
-    domains: ["Maps and navigation", "Social media", "Shopping", "Fintech", "E-commerce"]
+    domains: ["Maps and navigation", "Software agency", "Travel"]
 
   work:
     menu: "Open source"
