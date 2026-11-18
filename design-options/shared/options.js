@@ -33,5 +33,8 @@ window.OPTIONS = [
   { n: 27, round: 3, slug: "27-contours", name: "Contours", mood: "Paper, warm", line: "A map of nowhere. Contour lines drift across warm paper and the pointer raises a hill, with your name in a large serif, the coordinates of Amsterdam and a scale bar in years." },
   { n: 28, round: 3, slug: "28-life", name: "Game of Life", mood: "Dark, lavender", line: "Conway's Game of Life plays behind the page. Move the pointer to add cells, pause it or start over. Quietly the geekiest of the ten." },
   { n: 29, round: 3, slug: "29-canal", name: "Canal", mood: "Dusk, amber", line: "Your name stands on a quay at dusk and is reflected in rippling canal water, under lamps and stars. The pointer makes ripples. The Amsterdam one." },
-  { n: 30, round: 3, slug: "30-halftone", name: "Halftone", mood: "Paper, red and black", line: "Your portrait printed in two halftone screens, red and black, like a newspaper. A lens near the pointer shows the photo, and the sections open as rows." }
+  { n: 30, round: 3, slug: "30-halftone", name: "Halftone", mood: "Paper, red and black", line: "Your portrait printed in two halftone screens, red and black, like a newspaper. A lens near the pointer shows the photo, and the sections open as rows." },
+
+  /* Round four: the most popular personal site templates, written from scratch in their style and filled with the same content. tpl, by, stars, repo and lic credit the template. */
+  { n: 31, round: 4, slug: "31-simplefolio", name: "Simplefolio", mood: "Light, teal", tpl: "Simplefolio", by: "cobiwave", stars: "14.2k", repo: "https://github.com/cobiwave/simplefolio", lic: "MIT", line: "The well-known one-page portfolio: a white hello screen, slanted teal bands for About and Contact, and project rows whose pictures lean towards the pointer." }
 ];

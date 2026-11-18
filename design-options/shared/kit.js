@@ -134,6 +134,57 @@
       return '<span class="mail-a" id="' + id + '">' + KIT.esc(S.me.email) + '</span><button type="button" class="mail-b" data-copy="' + KIT.esc(S.me.email) + '" data-from="' + id + '">' + KIT.icon("copy") + "<span data-t>Copy</span></button>";
     }
   };
+  /* A wide thumbnail made from a square game cover: the cover sits on a blurred copy of itself. The page styles .th, .th-b and .th-c. */
+  KIT.html.thumb = function (id) {
+    var u = S.gameImg(id);
+    return '<span class="th"><img class="th-b" src="' + u + '" alt="" loading="lazy"><img class="th-c" src="' + u + '" alt="" width="320" height="320" loading="lazy"></span>';
+  };
+  /*
+   * A picture for fl_chart where a template wants a project image: its releases per year as bars, drawn from the data.
+   * 320 by 200. The page colours it through CSS: .fa-bg, .fa-t, .fa-s, .fa-ax, .fa-bar, .fa-l.
+   */
+  KIT.html.art = function () {
+    var py = S.fl.perYear, max = 0, i, x0 = 30, x1 = 290, y0 = 158, top = 78, out = "";
+    for (i = 0; i < py.length; i++) max = Math.max(max, py[i][1]);
+    var step = (x1 - x0) / py.length, bw = 18, r = 4;
+    for (i = 0; i < py.length; i++) {
+      var h = Math.max(3, (y0 - top) * py[i][1] / max), x = x0 + step * i + (step - bw) / 2, y = y0 - h, rr = Math.min(r, h);
+      out += '<path class="fa-bar" fill="#2a7de1" d="M' + x.toFixed(1) + " " + y0 + "V" + (y + rr).toFixed(1) + "q0 -" + rr + " " + rr + " -" + rr + "h" + (bw - 2 * rr) + "q" + rr + " 0 " + rr + " " + rr + "V" + y0 + 'Z"/>' +
+        '<text class="fa-s" fill="#6b7785" x="' + (x + bw / 2).toFixed(1) + '" y="' + (y0 + 15) + '" text-anchor="middle" font-size="9.5">\u2019' + String(py[i][0]).slice(2) + "</text>";
+      if (i === 0 || i === py.length - 1) out += '<text class="fa-l" fill="#1c2530" x="' + (x + bw / 2).toFixed(1) + '" y="' + (y - 6).toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="700">' + py[i][1] + "</text>";
+    }
+    return '<svg class="fl-art" viewBox="0 0 320 200" role="img" aria-label="fl_chart releases per year, from ' + py[0][1] + " in " + py[0][0] + " to " + py[py.length - 1][1] + " in " + py[py.length - 1][0] + '">' +
+      '<rect class="fa-bg" width="320" height="200" fill="#f4f6f9"/>' +
+      '<image href="../shared/img/fl_chart.png" x="30" y="22" width="30" height="30"/>' +
+      '<text class="fa-t" fill="#1c2530" x="70" y="36" font-size="15" font-weight="700">fl_chart</text>' +
+      '<text class="fa-s" fill="#6b7785" x="70" y="50" font-size="9.5">Releases per year</text>' +
+      '<path class="fa-ax" stroke="#c6ced8" stroke-width="1" d="M' + x0 + " " + (y0 + .5) + "H" + x1 + '"/>' + out + "</svg>";
+  };
+
+  /*
+   * A light and dark switch, for the samples whose template has one. Without a choice the page follows the system.
+   * The button gets data-now ("light" or "dark") so the page can show the right icon; the choice is kept under `key`.
+   */
+  KIT.theme = function (btn, key, done) {
+    var root = document.documentElement, mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+    function now() { var a = root.getAttribute("data-theme"); return a === "dark" || a === "light" ? a : (mq && mq.matches ? "dark" : "light"); }
+    function paint() {
+      var t = now();
+      btn.setAttribute("data-now", t);
+      btn.setAttribute("aria-label", t === "dark" ? "Switch to the light theme" : "Switch to the dark theme");
+      if (done) done(t);
+    }
+    btn.addEventListener("click", function () {
+      var t = now() === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", t);
+      try { localStorage.setItem(key, t); } catch (e) {}
+      paint();
+    });
+    if (mq) { try { mq.addEventListener("change", paint); } catch (e) { try { mq.addListener(paint); } catch (e2) {} } }
+    paint();
+    return { now: now };
+  };
+
   /* Fill every element that carries data-fill="name" with KIT.html[name](). */
   KIT.fill = function (root) {
     Array.prototype.forEach.call((root || document).querySelectorAll("[data-fill]"), function (el) {

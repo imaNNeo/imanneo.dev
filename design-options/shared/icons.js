@@ -1,5 +1,5 @@
 /*
- * Shared icon set for the modern samples (11 to 20).
+ * Shared icon set for samples 11 to 40.
  * Every icon is a 24 x 24 SVG that takes its colour from the text colour.
  */
 (function () {
@@ -41,6 +41,21 @@
     contrast: s('<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17Z" fill="currentColor"/>'),
     grid: s('<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>'),
     lock: s('<rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>'),
-    hand: s('<path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5V4.5a1.5 1.5 0 0 1 3 0V11m0-4.5a1.5 1.5 0 0 1 3 0V14a6 6 0 0 1-6 6h-.5a6 6 0 0 1-5-2.7L4 14.5a1.5 1.5 0 0 1 2.4-1.8L8 14.5"/>')
+    hand: s('<path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5V4.5a1.5 1.5 0 0 1 3 0V11m0-4.5a1.5 1.5 0 0 1 3 0V14a6 6 0 0 1-6 6h-.5a6 6 0 0 1-5-2.7L4 14.5a1.5 1.5 0 0 1 2.4-1.8L8 14.5"/>'),
+    /* Added for the template samples (31 to 40). */
+    sun: s('<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/>'),
+    moon: s('<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'),
+    up: s('<path d="M12 19V5"/><path d="m6 11 6-6 6 6"/>', 2.2),
+    menu: s('<path d="M4 7h16M4 12h16M4 17h16"/>'),
+    folder: s('<path d="M3.5 7a2 2 0 0 1 2-2h4l2.2 2.5h6.8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2Z"/>', 1.3),
+    clock: s('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+    calendar: s('<rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M8 3.5v4M16 3.5v4M4 10.5h16"/>'),
+    chevR: s('<path d="m9.5 6 6 6-6 6"/>', 2.2),
+    chevD: s('<path d="m6 9.5 6 6 6-6"/>', 2.2),
+    chevU: s('<path d="m6 14.5 6-6 6 6"/>', 2.2),
+    ext: s('<path d="M18 13.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5.5"/><path d="M14.5 3H21v6.5"/><path d="M10 14 21 3"/>'),
+    fork: s('<circle cx="6.5" cy="5.5" r="2.2"/><circle cx="17.5" cy="5.5" r="2.2"/><circle cx="12" cy="18.5" r="2.2"/><path d="M6.5 7.7V10A2.5 2.5 0 0 0 9 12.5h6a2.5 2.5 0 0 0 2.5-2.5V7.7M12 12.5v3.8"/>'),
+    globe: s('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.7 2.9 2.7 14.1 0 17M12 3.5c-2.7 2.9-2.7 14.1 0 17"/>'),
+    news: s('<path d="M4 5.5h13v13a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2Z"/><path d="M17 9h3v9.5a2 2 0 0 1-2 2"/><path d="M7.5 9.5h6M7.5 13h6M7.5 16.5h4"/>')
   };
 })();
