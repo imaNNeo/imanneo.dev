@@ -1,7 +1,8 @@
 {{- /* A short way to write a big number: 2349795 becomes "2.3M", 7600 becomes "7.6k" and 107 stays "107". */ -}}
 {{- $n := float . -}}
 {{- $out := printf "%.0f" $n -}}
-{{- if ge $n 1000000.0 -}}
+{{- /* From 999950 the thousands would round to "1000k", so the millions start there. */ -}}
+{{- if ge $n 999950.0 -}}
   {{- $out = printf "%sM" (strings.TrimSuffix ".0" (printf "%.1f" (div $n 1000000.0))) -}}
 {{- else if ge $n 1000.0 -}}
   {{- $out = printf "%sk" (strings.TrimSuffix ".0" (printf "%.1f" (div $n 1000.0))) -}}

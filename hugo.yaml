@@ -13,8 +13,11 @@ outputs:
   home:
     - "HTML"
 
-# Pictures in static/images can also be resized by the templates.
 module:
+  # The templates use "try", which Hugo has since version 0.141.
+  hugoVersion:
+    min: "0.141.0"
+  # Pictures in static/images can also be resized by the templates.
   mounts:
     - source: assets
       target: assets
@@ -35,15 +38,18 @@ params:
   handle: "imaNNeo"
   jobTitle: "Senior software engineer"
   email: "iman.neofight@gmail.com"
+  # The picture that shows when the site is shared in a chat or on social media, 1200 by 630.
+  shareImage: "images/og.jpg"
+  shareImageAlt: "Hi, I'm Iman. A photo of Iman Khoshabi, a.k.a. imaN Neo, next to the address imanneo.dev."
 
   # The first screen.
   hero:
     tag: "Senior software engineer · Amsterdam"
     greeting: "Hi, I'm"
     name: "Iman."
-    #   is a space that never breaks. It keeps the line break after the comma.
-    line: "10+ years of building software, mostly for mobile."
-    text: "I believe in open source, I'm curious about AI, and I never stop learning."
+    # \u00a0 is a space that never breaks. It keeps the line break after the comma.
+    line: "10+ years of building\u00a0software, mostly\u00a0for\u00a0mobile."
+    text: "I believe in open source, I'm curious about AI, and I like learning new things."
     photo: "images/me.jpg"
     photoAlt: "Iman in a yellow T-shirt on a sunny terrace, pointing at the camera"
 

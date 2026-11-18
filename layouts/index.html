@@ -105,7 +105,7 @@
         <div class="sec-b">
           <p class="lead">{{ $p.contact.lead }}</p>
           {{- with $p.email }}
-          <p class="mail"><a class="mail-a" id="mail-a" href="mailto:{{ . }}">{{ . }}</a><button type="button" class="mail-b" data-copy="{{ . }}" data-from="mail-a">{{ partial "icon.html" "copy" }}<span data-t>Copy</span></button></p>
+          <p class="mail"><a class="mail-a" id="mail-a" href="mailto:{{ . }}">{{ . }}</a><button type="button" class="mail-b" data-copy="{{ . }}" data-from="mail-a" data-said="The email address is copied.">{{ partial "icon.html" "copy" }}<span data-t>Copy</span><span class="vh"> the email address</span></button></p>
           {{- end }}
           <ul class="soc list">
             {{- partial "socials.html" (dict "mail" false) }}

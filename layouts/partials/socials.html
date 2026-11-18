@@ -1,12 +1,13 @@
 {{- /*
   The social links as round buttons. Pass (dict "mail" true) to add the Email button,
   which copies the address, because a mail link does nothing on a device without a mail app.
+  A screen reader hears the whole job of that button: "Email: copy the address …".
 */ -}}
 {{- range site.Params.socials }}
 <li><a class="soc-a" href="{{ .url }}" target="_blank" rel="noopener"><span class="soc-i">{{ partial "icon.html" .icon }}</span><span class="soc-l">{{ .label }}</span></a></li>
 {{- end }}
 {{- if .mail }}
 {{- with site.Params.email }}
-<li><button type="button" class="soc-a soc-mail" data-copy="{{ . }}" aria-label="Copy the email address {{ . }}"><span class="soc-i">{{ partial "icon.html" "mail" }}</span><span class="soc-l">Email</span><span class="soc-e" data-t>Copy</span></button></li>
+<li><button type="button" class="soc-a soc-mail" data-copy="{{ . }}" data-from="mail-a" data-said="The email address is copied."><span class="soc-i">{{ partial "icon.html" "mail" }}</span><span class="soc-l">Email</span><span class="vh">: copy the address {{ . }}</span><span class="soc-e" data-t aria-hidden="true">Copy</span></button></li>
 {{- end }}
 {{- end }}

@@ -9,26 +9,33 @@
   var $ = function (id) { return document.getElementById(id); };
 
   /* ---------- Copy buttons ----------
-   * A button with data-copy copies that text. Its label (the child marked data-t) says "Copied" for a moment.
-   * If the clipboard is closed, the element named by data-from gets selected instead.
+   * A button with data-copy copies that text. Its label (the child marked data-t) says "Copied" for a moment,
+   * and the line with id "said" tells a screen reader the same (the text in data-said, when there is one).
+   * If the clipboard is closed, the element named by data-from is brought into view and selected instead.
    */
+  var said = $("said");
   function copy(btn) {
     var text = btn.getAttribute("data-copy"), from = btn.getAttribute("data-from"), node = from ? $(from) : null;
     var label = btn.querySelector("[data-t]") || btn;
     if (!btn.hasAttribute("data-was")) btn.setAttribute("data-was", label.textContent);
-    function show(msg) {
+    function show(msg, tell) {
       label.textContent = msg; btn.classList.add("did");
+      if (said) said.textContent = tell || msg;
       clearTimeout(btn._t);
-      btn._t = setTimeout(function () { label.textContent = btn.getAttribute("data-was"); btn.classList.remove("did"); }, 1800);
+      btn._t = setTimeout(function () {
+        label.textContent = btn.getAttribute("data-was"); btn.classList.remove("did");
+        if (said) said.textContent = "";
+      }, 1800);
     }
     function select() {
       if (node && window.getSelection && document.createRange) {
         var r = document.createRange(); r.selectNodeContents(node);
         var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-        show("Selected");
+        if (node.scrollIntoView) node.scrollIntoView({ block: "center" });
+        show("Selected", "The address is selected. Copy it with your keyboard.");
       } else show("Copy it by hand");
     }
-    try { navigator.clipboard.writeText(text).then(function () { show("Copied"); }, select); } catch (e) { select(); }
+    try { navigator.clipboard.writeText(text).then(function () { show("Copied", btn.getAttribute("data-said")); }, select); } catch (e) { select(); }
   }
   Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"), function (b) {
     b.addEventListener("click", function () { copy(b); });

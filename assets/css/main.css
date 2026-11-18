@@ -13,13 +13,13 @@
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#06080c; --ink:#f2f5fa; --mut:#aab4c3; --dim:#7d8898; --line:rgba(255,255,255,.11); --glass:rgba(13,17,25,.6); --solid:#0d1119;
+    --bg:#06080c; --ink:#f2f5fa; --mut:#aab4c3; --dim:#8b96a6; --line:rgba(255,255,255,.11); --glass:rgba(13,17,25,.6); --solid:#0d1119;
     --acc:#6bb6ff; --acc-2:#4fe0a0; --au-a:#0f4fb0; --au-b:#0c8a55;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#06080c; --ink:#f2f5fa; --mut:#aab4c3; --dim:#7d8898; --line:rgba(255,255,255,.11); --glass:rgba(13,17,25,.6); --solid:#0d1119;
+  --bg:#06080c; --ink:#f2f5fa; --mut:#aab4c3; --dim:#8b96a6; --line:rgba(255,255,255,.11); --glass:rgba(13,17,25,.6); --solid:#0d1119;
   --acc:#6bb6ff; --acc-2:#4fe0a0; --au-a:#0f4fb0; --au-b:#0c8a55;
   color-scheme:dark;
 }
@@ -40,6 +40,8 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .nogl #bg{display:none}
 #grain{opacity:.5;mix-blend-mode:soft-light;background-size:160px 160px}
 
+/* Text for screen readers only. */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .skip{position:absolute;left:-999px;top:8px;z-index:9;background:var(--ink);color:var(--bg);padding:8px 12px;border-radius:8px;font-weight:600}
 .skip:focus{left:12px}
 :focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:6px}
@@ -71,13 +73,13 @@ h1 span{background:linear-gradient(100deg,var(--acc) 10%,var(--acc-2) 90%);-webk
 .soc-a:hover{transform:translateY(-2px);border-color:var(--acc)}
 .soc-a:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
 .soc-i{display:inline-flex;font-size:16px;color:var(--acc)}
-.soc-e{font:600 11px/1 var(--mono);color:var(--dim);padding-left:9px;border-left:1px solid var(--line)}
+.soc-e{font:600 11px/1 var(--mono);color:var(--mut);padding-left:9px;border-left:1px solid var(--line)}
 .soc-mail.did .soc-e{color:var(--acc-2)}
 
 .photo{margin:0;justify-self:center;width:min(100%,380px);padding:10px 10px 0;border-radius:32px;transform:rotate(2.2deg);box-shadow:0 30px 70px -30px rgba(10,30,70,.45)}
 .photo img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:23px}
 .photo figcaption{display:flex;justify-content:space-between;gap:10px;padding:13px 8px 14px;font-size:14px;font-weight:600}
-.photo figcaption span:last-child{color:var(--dim);font-weight:500}
+.photo figcaption span:last-child{color:var(--mut);font-weight:500}
 
 /* The four cards */
 .secs{display:grid;gap:16px;max-width:980px;margin-inline:auto;padding-bottom:20px}
@@ -136,7 +138,7 @@ h3{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.02em;color:var
 .list{display:flex;flex-wrap:wrap;gap:8px}
 .list .soc-a{background:var(--solid);-webkit-backdrop-filter:none;backdrop-filter:none;height:40px}
 
-footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;max-width:980px;margin-inline:auto;padding-block:18px calc(30px + env(safe-area-inset-bottom,0px));font-size:13.5px;color:var(--dim)}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;max-width:980px;margin-inline:auto;padding-block:18px calc(30px + env(safe-area-inset-bottom,0px));font-size:13.5px;color:var(--mut)}
 footer p{margin:0}
 
 /* The page for an address that does not exist */
