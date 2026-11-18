@@ -1,0 +1,14 @@
+<!doctype html><html><body style="margin:0;background:#111"><canvas id="c" width="640" height="400"></canvas>
+<script type="module">
+import * as THREE from "../shared/vendor/three.module.min.js";
+const r = new THREE.WebGLRenderer({ canvas: document.getElementById("c"), antialias: true });
+const s = new THREE.Scene(); s.background = new THREE.Color(0x202838);
+const cam = new THREE.PerspectiveCamera(45, 640/400, .1, 100); cam.position.set(3,3,5); cam.lookAt(0,0,0);
+s.add(new THREE.HemisphereLight(0xffffff, 0x334455, 1.2)); const d = new THREE.DirectionalLight(0xffffff, 2); d.position.set(4,6,3); d.castShadow = true; s.add(d);
+r.shadowMap.enabled = true;
+const m = new THREE.Mesh(new THREE.BoxGeometry(1.4,1.4,1.4), new THREE.MeshStandardMaterial({ color: 0x047fcd, flatShading: true })); m.castShadow = true; m.position.y = 1; s.add(m);
+const g = new THREE.Mesh(new THREE.PlaneGeometry(10,10), new THREE.MeshStandardMaterial({ color: 0x3a8f5a })); g.rotation.x = -Math.PI/2; g.receiveShadow = true; s.add(g);
+r.render(s, cam);
+const gl = r.getContext(); const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+window.__info = { rev: THREE.REVISION, webgl2: r.capabilities.isWebGL2, renderer: dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : "n/a", maxTex: gl.getParameter(gl.MAX_TEXTURE_SIZE), floatTex: !!gl.getExtension("EXT_color_buffer_float") };
+</script></body></html>
