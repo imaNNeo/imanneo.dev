@@ -20,12 +20,18 @@
   --gut:clamp(20px,5vw,56px);
   color-scheme:light;
 }
+/* Dark follows the device. A data-theme on the root element overrides it either way. */
 @media (prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme="light"]){
     --bg:#06080c; --ink:#f2f5fa; --mut:#aab4c3; --dim:#7d8898; --line:rgba(255,255,255,.11); --glass:rgba(13,17,25,.6); --solid:#0d1119;
     --acc:#6bb6ff; --acc-2:#4fe0a0; --au-a:#0f4fb0; --au-b:#0c8a55;
     color-scheme:dark;
   }
+}
+:root[data-theme="dark"]{
+  --bg:#06080c; --ink:#f2f5fa; --mut:#aab4c3; --dim:#7d8898; --line:rgba(255,255,255,.11); --glass:rgba(13,17,25,.6); --solid:#0d1119;
+  --acc:#6bb6ff; --acc-2:#4fe0a0; --au-a:#0f4fb0; --au-b:#0c8a55;
+  color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -232,7 +238,6 @@ footer p{margin:0}
 <script src="../shared/icons.js"></script>
 <script src="../shared/kit.js"></script>
 <script src="../shared/bg.js"></script>
-<script src="../shared/options.js"></script>
 <script>
 (function () {
   "use strict";
@@ -261,25 +266,29 @@ footer p{margin:0}
     "}"
   ].join("\n");
 
-  var dark = window.matchMedia("(prefers-color-scheme: dark)");
+  /* Dark when the page is told so (data-theme on the root element), otherwise when the device is. */
+  var root = document.documentElement, dark = window.matchMedia("(prefers-color-scheme: dark)"), isDark = false;
+  function readTheme() { var a = root.getAttribute("data-theme"); isDark = a === "dark" || (a !== "light" && dark.matches); }
+  readTheme();
   var bg = BG.mount($("bg"), {
     frag: FRAG, maxDpr: 1, scale: .5, stillTime: 31,
     onFrame: function (t, dt, api) {
       var s = Math.min(1, (window.pageYOffset || 0) / (window.innerHeight * .9));
-      api.set("uAmt", (dark.matches ? .8 : .95) * (1 - .4 * s));
+      api.set("uAmt", (isDark ? .8 : .95) * (1 - .4 * s));
     }
   });
   function paint() {
+    readTheme();
     if (!bg) return;
-    var d = dark.matches;
-    bg.set("uBg", BG.rgb(d ? "#06080c" : "#f6f8fb"));
-    bg.set("uA", BG.rgb(d ? "#0f55c4" : "#8fc4ff"));
-    bg.set("uB", BG.rgb(d ? "#0b9a5e" : "#8be8bd"));
-    bg.set("uC", BG.rgb(d ? "#2a1f8f" : "#c3b9ff"));
+    bg.set("uBg", BG.rgb(isDark ? "#06080c" : "#f6f8fb"));
+    bg.set("uA", BG.rgb(isDark ? "#0f55c4" : "#8fc4ff"));
+    bg.set("uB", BG.rgb(isDark ? "#0b9a5e" : "#8be8bd"));
+    bg.set("uC", BG.rgb(isDark ? "#2a1f8f" : "#c3b9ff"));
     bg.draw();
   }
   paint();
   if (dark.addEventListener) dark.addEventListener("change", paint); else if (dark.addListener) dark.addListener(paint);
+  if ("MutationObserver" in window) new MutationObserver(paint).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
 
   /* A little film grain over the colour, drawn once. */
   try {
@@ -291,6 +300,5 @@ footer p{margin:0}
   } catch (e) {}
 })();
 </script>
-<script src="../shared/switcher.js" data-n="24"></script>
 </body>
 </html>
