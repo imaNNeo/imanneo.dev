@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam. Mobile apps, open source and small games.">
+<meta name="theme-color" content="#0d0e13">
+<link rel="icon" href="../shared/img/n.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#0d0e13; --panel:rgba(18,20,27,.97); --ink:#f1f0f6; --mut:#a7a6b8; --dim:#73728a; --line:#272936; --inset:#161821;
+  --acc:#b9a2ff; --acc-ink:#150d33;
+  --sans:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"Fira Code",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+.nogl body{background:radial-gradient(circle,#2a2740 1.2px,transparent 1.6px) 0 0/14px 14px,var(--bg)}
+img{max-width:100%;display:block}
+a{color:inherit}
+svg{width:1em;height:1em;flex:none}
+.mono{font-family:var(--mono)}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+.nogl #bg{display:none}
+.skip{position:absolute;left:-999px;top:8px;z-index:9;background:var(--acc);color:var(--acc-ink);padding:8px 12px;border-radius:8px;font-weight:700}
+.skip:focus{left:12px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:5px}
+
+.wrap{width:100%;max-width:824px;margin-inline:auto;padding-left:max(22px,env(safe-area-inset-left,0px));padding-right:max(22px,env(safe-area-inset-right,0px))}
+.top{position:absolute;inset:0 0 auto;z-index:3;padding-top:calc(16px + env(safe-area-inset-top,0px))}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.brand{gap:9px;padding:6px 14px 6px 8px;font:500 13.5px/1 var(--mono);text-decoration:none}
+.brand img{width:22px;height:22px}
+.top nav{gap:2px;padding:4px}
+.top nav a{font-size:14px;font-weight:600;color:var(--mut);text-decoration:none;padding:6px 12px;border-radius:999px}
+.top nav a:hover{color:var(--ink);background:var(--inset)}
+
+main,footer{position:relative;z-index:1}
+.panel{border:1px solid var(--line);border-radius:22px;background:var(--panel)}
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-block:96px 56px}
+.hero .panel{overflow:hidden}
+.hero-in{padding:clamp(24px,5vw,48px)}
+.kick{display:flex;align-items:center;gap:9px;margin:0 0 18px;font-size:13px;color:var(--acc)}
+.kick i{width:9px;height:9px;border-radius:2.5px;background:var(--acc)}
+h1{margin:0;font-size:clamp(44px,9vw,84px);font-weight:800;line-height:.98;letter-spacing:-.05em}
+.role{margin:16px 0 0;font-size:clamp(20px,2.6vw,25px);font-weight:700;letter-spacing:-.025em;line-height:1.25}
+.bio{margin:10px 0 0;color:var(--mut);max-width:58ch}
+.soc{list-style:none;margin:0;padding:0}
+.hero .soc{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.soc-a{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--inset);font-size:14.5px;font-weight:600;transition:border-color .15s}
+.soc-a:hover{border-color:var(--acc)}
+.soc-a:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.soc-i{display:inline-flex;font-size:16px;color:var(--acc)}
+.soc-h,.soc-n,a .soc-e{display:none}
+.soc-mail .soc-e{font:500 11px/1 var(--mono);color:var(--dim);padding-left:9px;border-left:1px solid var(--line)}
+.soc-mail.did .soc-e{color:var(--acc)}
+.hud{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:12px clamp(16px,3vw,24px);border-top:1px solid var(--line);background:var(--inset);font-size:12.5px;color:var(--mut)}
+.hud output{font-variant-numeric:tabular-nums;white-space:nowrap}
+.hud output b{font-weight:500;color:var(--acc)}
+.hud div{display:flex;gap:6px}
+.hud button{all:unset;box-sizing:border-box;cursor:pointer;height:32px;min-width:64px;padding:0 12px;border:1px solid var(--line);border-radius:8px;font:500 12.5px/30px var(--mono);text-align:center;color:var(--ink)}
+.hud button:hover{border-color:var(--acc);color:var(--acc)}
+.hud button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.nogl .hud,.nogl .hint{display:none}
+.hint{margin:14px 4px 0;font-size:12.5px;color:var(--mut)}
+.hint span{background:var(--bg);box-shadow:0 0 0 5px var(--bg);border-radius:2px}
+.t-touch{display:none}
+@media (hover:none){.t-mouse{display:none}.t-touch{display:inline}}
+
+.stack{display:grid;gap:16px;padding-bottom:24px}
+.sec{padding:clamp(22px,4.4vw,40px);scroll-margin-top:16px}
+.sec-k{margin:0 0 8px;font-size:12.5px;color:var(--acc)}
+h2{margin:0 0 18px;font-size:clamp(26px,3.8vw,36px);font-weight:800;line-height:1.08;letter-spacing:-.04em;text-wrap:balance}
+.lead{margin:0 0 24px;font-size:clamp(18px,2vw,20px);line-height:1.55;color:var(--mut)}
+h3{margin:0 0 10px;font:500 12px/1.2 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--dim)}
+
+.focus{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.focus li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 12px;padding:14px 16px;border-radius:14px;background:var(--inset)}
+.focus li:last-child{grid-column:1 / -1}
+.fo-n{grid-row:span 2;font:400 12.5px/1.9 var(--mono);color:var(--acc)}
+.fo-t{font-weight:700;line-height:1.4}
+.fo-d{color:var(--mut);font-size:15px}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:26px}
+.chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.chips li{padding:6px 11px;border-radius:8px;background:var(--inset);font:400 13px/1.2 var(--mono);color:var(--mut)}
+
+.fl-h{display:flex;align-items:center;gap:14px}
+.fl-logo{width:48px;height:48px;border-radius:12px}
+.fl-n{margin:0;font:800 25px/1.1 var(--sans);letter-spacing:-.035em;text-transform:none;color:var(--ink)}
+.fl-t{margin:3px 0 0;color:var(--mut);font-size:15.5px}
+.fl-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:22px 0 0}
+.fl-nums div{display:flex;flex-direction:column-reverse;gap:5px;min-width:0;padding:16px;border-radius:14px;background:var(--inset)}
+.fl-nums dd{margin:0;font-size:clamp(28px,5vw,42px);font-weight:800;line-height:1;letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+.fl-nums dt{font-size:13.5px;color:var(--mut);line-height:1.3}
+.fl-links{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 20px}
+.fl-links a,.out{display:inline-flex;align-items:center;gap:6px;min-height:34px;font-size:15px;font-weight:700;text-decoration:none}
+.fl-links a svg,.out svg{font-size:13px;color:var(--acc)}
+.fl-links a:hover,.out:hover{color:var(--acc)}
+.more{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.more-a{display:grid;grid-template-columns:22px minmax(0,1fr);gap:0 12px;height:100%;padding:16px;border-radius:14px;background:var(--inset);border:1px solid transparent;text-decoration:none;transition:border-color .15s}
+.more-a:hover{border-color:var(--acc)}
+.more-i{grid-row:span 3;font-size:18px;color:var(--acc);display:inline-flex;padding-top:4px}
+.more-t{font-weight:700}
+.more-d{color:var(--mut);font-size:15px;line-height:1.45}
+.more-h{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font:400 12.5px/1 var(--mono);color:var(--dim)}
+
+.games{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.game{display:grid;grid-template-columns:80px minmax(0,1fr);gap:1px 14px;align-content:center;height:100%;padding:10px;border-radius:16px;background:var(--inset);border:1px solid transparent;text-decoration:none;transition:border-color .15s}
+.game:hover{border-color:var(--acc)}
+.g-img{grid-row:1 / span 3;width:80px;height:80px;border-radius:10px;object-fit:cover}
+.g-t{font-weight:700;line-height:1.25;align-self:end}
+.g-tag{font:400 11.5px/1.5 var(--mono);color:var(--acc)}
+.g-b{font-size:14px;line-height:1.4;color:var(--mut)}
+.after{margin:16px 0 0}
+
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 20px;padding:16px 18px;border-radius:14px;background:var(--inset)}
+.mail-a{flex:1 1 auto;font:500 clamp(15px,2.5vw,20px)/1.3 var(--mono);overflow-wrap:anywhere;user-select:all}
+.mail-b{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:9px;background:var(--acc);color:var(--acc-ink);font-size:14px;font-weight:700}
+.mail-b:hover{filter:brightness(1.1)}
+.mail-b:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.list{display:flex;flex-wrap:wrap;gap:8px}
+
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;padding-block:6px calc(30px + env(safe-area-inset-bottom,0px));font-size:13.5px;color:var(--dim)}
+footer p{margin:0}
+footer span{background:var(--bg);box-shadow:0 0 0 5px var(--bg)}
+
+@media (max-width:640px){
+  body{font-size:16.5px}
+  .top nav{display:none}
+  .hero{padding-block:84px 40px}
+  .focus,.facts,.more,.games{grid-template-columns:minmax(0,1fr)}
+  .focus li:last-child{grid-column:auto}
+  .fl-nums div{padding:12px 10px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<a class="skip" href="#main">Skip to the content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand pill" href="#top"><img src="../shared/img/n.png" alt="" width="22" height="22"><span>imaNNeo</span></a>
+    <nav class="pill" aria-label="Sections">
+      <a href="#about">About</a><a href="#work">Open source</a><a href="#games">Games</a><a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap" id="top">
+    <div class="panel">
+      <div class="hero-in">
+        <p class="kick mono"><i aria-hidden="true"></i>imaN Neo · Amsterdam</p>
+        <h1>Iman Khoshabi</h1>
+        <p class="role">Senior mobile engineer.</p>
+        <p class="bio">I have been building mobile apps for 10+ years, with a mix of Android (Kotlin and Java) and Flutter (Dart). I like products that feel fast and solid, and I care a lot about clean structure and good UI details.</p>
+        <ul class="soc" data-fill="links"></ul>
+      </div>
+      <div class="hud mono">
+        <output id="stat" aria-hidden="true">generation <b>0000</b> · 0 cells</output>
+        <div><button type="button" id="run">Pause</button><button type="button" id="reset">Reset</button></div>
+      </div>
+    </div>
+    <p class="hint mono"><span>Behind this page runs Conway's Game of Life. <span class="t-mouse">Move the pointer to add cells.</span><span class="t-touch">Drag a finger to add cells.</span></span></p>
+  </section>
+
+  <div class="wrap">
+    <div class="stack">
+      <section class="sec panel" id="about" aria-labelledby="h-about">
+        <p class="sec-k mono">01 / about</p>
+        <h2 id="h-about">What I work on</h2>
+        <p class="lead" data-say="me.bio2"></p>
+        <ul class="focus" data-fill="focus"></ul>
+        <div class="facts">
+          <div><h3>Stack</h3><ul class="chips" id="stack"></ul></div>
+          <div><h3>Worked in</h3><ul class="chips" id="domains"></ul></div>
+        </div>
+      </section>
+
+      <section class="sec panel" id="work" aria-labelledby="h-work">
+        <p class="sec-k mono">02 / open source</p>
+        <h2 id="h-work">Open source, writing and videos</h2>
+        <div data-fill="fl"></div>
+        <ul class="more" data-fill="more"></ul>
+      </section>
+
+      <section class="sec panel" id="games" aria-labelledby="h-games">
+        <p class="sec-k mono">03 / games</p>
+        <h2 id="h-games">Games, on the side</h2>
+        <p class="lead">I make small games for fun, with Godot, Cocos Creator and Flame. These are the four main ones.</p>
+        <ul class="games" data-fill="games"></ul>
+        <p class="after"><a class="out" id="all-games" href="#">And 20 small browser games<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></p>
+      </section>
+
+      <section class="sec panel" id="contact" aria-labelledby="h-contact">
+        <p class="sec-k mono">04 / contact</p>
+        <h2 id="h-contact">Say hi</h2>
+        <p class="lead" data-say="me.contact"></p>
+        <p class="mail" data-fill="mail"></p>
+        <ul class="soc list" id="soc2"></ul>
+      </section>
+    </div>
+    <footer>
+      <p><span>© 2026 Iman Khoshabi</span></p>
+      <p><span><a href="#top">Back to the top</a></span></p>
+    </footer>
+  </div>
+</main>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/icons.js"></script>
+<script src="../shared/kit.js"></script>
+<script src="../shared/bg.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.SITE, K = window.KIT, $ = function (id) { return document.getElementById(id); };
+  K.fill();
+  $("stack").innerHTML = K.html.chips(S.me.stack);
+  $("domains").innerHTML = K.html.chips(S.me.domains);
+  $("soc2").innerHTML = K.html.links({ skip: ["mail"] });
+  var ag = $("all-games"); ag.href = S.links.games; ag.target = "_blank"; ag.rel = "noopener";
+
+  /* The shader only draws: one byte per cell, 255 for a live cell and less for one that has just died. */
+  var FRAG = [
+    "uniform sampler2D uCells; uniform vec2 uGrid; uniform float uCell; uniform vec3 uBg; uniform vec3 uLive; uniform vec3 uGhost;",
+    "void main(){",
+    "  vec2 p = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y);",
+    "  vec2 c = floor(p / uCell), f = fract(p / uCell);",
+    "  float v = texture2D(uCells, (c + .5) / uGrid).r, live = step(.99, v);",
+    "  float box = 1. - smoothstep(.09, .15, length(max(abs(f - .5) - .25, 0.)));",
+    "  vec3 col = mix(uBg, mix(uGhost, uLive, live), box * mix(v * .7, 1., live));",
+    "  col += uLive * (1. - smoothstep(.04, .09, length(f - .5))) * .05 * (1. - live);",
+    "  vec2 m = floor(vec2(uMouse.x, uRes.y - uMouse.y) / uCell);",
+    "  float near = (1. - smoothstep(1.5, 4.5, distance(c, m))) * uHover;",
+    "  col += uLive * near * .07 * box;",
+    "  vec2 q = gl_FragCoord.xy / uRes - .5;",
+    "  gl_FragColor = vec4(col * (1. - .45 * dot(q, q)), 1.);",
+    "}"
+  ].join("\n");
+
+  var CELL = 14, cols = 0, rows = 0, size = 0, cur, nxt, heat, gen = 0, alive = 0, running = true;
+  var stat = $("stat"), runBtn = $("run");
+  function pad(n) { n = String(n); while (n.length < 4) n = "0" + n; return n; }
+  function show() { stat.innerHTML = "generation <b>" + pad(gen) + "</b> · " + alive.toLocaleString("en-US") + " cells"; }
+  function upload() { if (bg) { bg.data("uCells", cols, rows, heat); bg.draw(); } show(); }
+  function soup() {
+    gen = 0; alive = 0;
+    for (var i = 0; i < cur.length; i++) { cur[i] = Math.random() < .17 ? 1 : 0; heat[i] = cur[i] ? 255 : 0; alive += cur[i]; }
+  }
+  /* Called at the start and whenever the window changes size. What is already on the board is kept. */
+  function init(api) {
+    var oc = cols, or = rows, ocur = cur, oheat = heat, x, y, i;
+    size = Math.max(6, Math.round(CELL * api.size.dpr));
+    cols = Math.ceil(api.size.w / size); rows = Math.ceil(api.size.h / size);
+    api.set("uCell", size); api.set("uGrid", [cols, rows]);
+    if (ocur && cols === oc && rows === or) return;
+    cur = new Uint8Array(cols * rows); nxt = new Uint8Array(cols * rows); heat = new Uint8Array(cols * rows);
+    if (!ocur) soup();
+    else {
+      alive = 0;
+      for (y = 0; y < rows; y++) for (x = 0; x < cols; x++) {
+        i = y * cols + x;
+        if (x < oc && y < or) { cur[i] = ocur[y * oc + x]; heat[i] = oheat[y * oc + x]; }
+        else { cur[i] = Math.random() < .17 ? 1 : 0; heat[i] = cur[i] ? 255 : 0; }
+        alive += cur[i];
+      }
+    }
+    if (!ocur && api.still) for (i = 0; i < 40; i++) step(true);
+    api.data("uCells", cols, rows, heat); show();
+  }
+  function put(x, y) { x = (x + cols) % cols; y = (y + rows) % rows; var i = y * cols + x; if (!cur[i]) alive++; cur[i] = 1; heat[i] = 255; }
+  function step(quiet) {
+    var x, y, i, n, xm, xp, ym, yp, y0, v;
+    alive = 0;
+    for (y = 0; y < rows; y++) {
+      ym = (y ? y - 1 : rows - 1) * cols; yp = (y === rows - 1 ? 0 : y + 1) * cols; y0 = y * cols;
+      for (x = 0; x < cols; x++) {
+        xm = x ? x - 1 : cols - 1; xp = x === cols - 1 ? 0 : x + 1;
+        n = cur[ym + xm] + cur[ym + x] + cur[ym + xp] + cur[y0 + xm] + cur[y0 + xp] + cur[yp + xm] + cur[yp + x] + cur[yp + xp];
+        i = y0 + x; v = cur[i] ? (n === 2 || n === 3 ? 1 : 0) : (n === 3 ? 1 : 0);
+        nxt[i] = v; alive += v; heat[i] = v ? 255 : (heat[i] > 20 ? Math.floor(Math.min(heat[i], 215) * .8) : 0);
+      }
+    }
+    var t = cur; cur = nxt; nxt = t; gen++;
+    /* Every so often drop an R-pentomino, a five cell shape that keeps going for a long time, so the board never settles. */
+    if (gen % 70 === 0) { var rx = Math.floor(Math.random() * cols), ry = Math.floor(Math.random() * rows); put(rx + 1, ry); put(rx + 2, ry); put(rx, ry + 1); put(rx + 1, ry + 1); put(rx + 1, ry + 2); }
+    if (!quiet) upload();
+  }
+
+  var bg = BG.mount($("bg"), {
+    frag: FRAG, maxDpr: 2,
+    uniforms: { uBg: BG.rgb("#0d0e13"), uLive: BG.rgb("#b9a2ff"), uGhost: BG.rgb("#4a3f78") },
+    onResize: init
+  });
+  if (!bg) return;
+  running = !bg.still;
+  runBtn.textContent = running ? "Pause" : "Play";
+  setInterval(function () { if (running && !document.hidden) step(); }, 110);
+  runBtn.addEventListener("click", function () { running = !running; runBtn.textContent = running ? "Pause" : "Play"; });
+  $("reset").addEventListener("click", function () { soup(); upload(); });
+  var last = -1;
+  window.addEventListener("pointermove", function (e) {
+    var x = Math.floor(e.clientX * bg.size.dpr / size), y = Math.floor(e.clientY * bg.size.dpr / size), k = y * cols + x;
+    if (k === last || x < 0 || y < 0 || x >= cols || y >= rows) return;
+    last = k;
+    for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) if (Math.random() < .5) put(x + dx, y + dy);
+    upload();
+  }, { passive: true });
+})();
+</script>
+<script src="../shared/switcher.js" data-n="28"></script>
+</body>
+</html>
