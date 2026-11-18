@@ -1,4 +1,4 @@
-/* The design options, in number order: 1 to 10 are round one, 11 to 20 round two. Used by the gallery and the preview switcher. */
+/* The design options, in number order: 1 to 10 are round one, 11 to 20 round two, 21 to 30 round three and 31 to 40 round four. Used by the gallery and the preview switcher. */
 window.OPTIONS = [
   { n: 1, slug: "01-terminal", name: "The riced terminal", mood: "Dark, warm", line: "A tiling desktop of terminal panes. Everything is readable at a glance, and the shell at the bottom really takes commands." },
   { n: 2, slug: "02-matrix", name: "Wake up, Neo", mood: "Dark, green", line: "Digital rain, a red pill for the games and a blue pill for the code. Built on the nickname you picked before you saw the film." },
@@ -21,5 +21,17 @@ window.OPTIONS = [
   { n: 17, round: 2, slug: "17-ascii", name: "ASCII engine", mood: "Text mode", line: "A small real-time renderer that draws a 3D shape, the game covers and even a portrait with letters. The whole page is characters." },
   { n: 18, round: 2, slug: "18-particles", name: "Particle type", mood: "Dark, 3D", line: "Thousands of points that fly together into a new shape for every section: a planet, the release chart, a game pad and an at sign. Click and they scatter." },
   { n: 19, round: 2, slug: "19-exploded", name: "Exploded view", mood: "Light, 3D", line: "A phone in 3D that comes apart into seven layers as you scroll. Each layer is a part of the site, and the parts list brings a layer forward." },
-  { n: 20, round: 2, slug: "20-world", name: "Tiny world", mood: "Playful, 3D", line: "A small low-poly island you can spin. The towers are the fl_chart releases, the arcade holds the games and the signpost has the links. It has a day and a night." }
+  { n: 20, round: 2, slug: "20-world", name: "Tiny world", mood: "Playful, 3D", line: "A small low-poly island you can spin. The towers are the fl_chart releases, the arcade holds the games and the signpost has the links. It has a day and a night." },
+
+  /* Round three: minimal and modern. The first screen is an overview of the person, the work comes in later sections, and each page has one catch in the background. */
+  { n: 21, round: 3, slug: "21-rain", name: "Matrix rain", mood: "Dark, green", line: "A calm overview of you over digital rain drawn by a shader. The rain clears around the pointer, and a small switch changes the glyphs or turns the rain off." },
+  { n: 22, round: 3, slug: "22-daylight", name: "Daylight rain", mood: "Light, green", line: "The matrix effect in daylight. Pale green rain runs down the sides of a bright page and spells words from your work as the drops pass. The pointer is an umbrella." },
+  { n: 23, round: 3, slug: "23-flashlight", name: "Flashlight", mood: "Dark, warm light", line: "A dark wall made of a short Dart file about you. A warm light follows the pointer and shows the code, and a button turns the room light on." },
+  { n: 24, round: 3, slug: "24-aurora", name: "Aurora", mood: "Light or dark", line: "A soft colour field in blue and green that flows slowly behind glass cards. The calmest of the ten, and it follows the light or dark mode of the device." },
+  { n: 25, round: 3, slug: "25-blueprint", name: "Blueprint", mood: "Blue, technical", line: "The page as an engineering drawing: a grid that bulges around the pointer, a dimension line under your name and a title block with your details." },
+  { n: 26, round: 3, slug: "26-dither", name: "Dither", mood: "Two colours", line: "Only cream and indigo. A ball lit from the pointer is cut down to two colours with an old dither pattern, and the game covers get the same treatment until you hover." },
+  { n: 27, round: 3, slug: "27-contours", name: "Contours", mood: "Paper, warm", line: "A map of nowhere. Contour lines drift across warm paper and the pointer raises a hill, with your name in a large serif, the coordinates of Amsterdam and a scale bar in years." },
+  { n: 28, round: 3, slug: "28-life", name: "Game of Life", mood: "Dark, lavender", line: "Conway's Game of Life plays behind the page. Move the pointer to add cells, pause it or start over. Quietly the geekiest of the ten." },
+  { n: 29, round: 3, slug: "29-canal", name: "Canal", mood: "Dusk, amber", line: "Your name stands on a quay at dusk and is reflected in rippling canal water, under lamps and stars. The pointer makes ripples. The Amsterdam one." },
+  { n: 30, round: 3, slug: "30-halftone", name: "Halftone", mood: "Paper, red and black", line: "Your portrait printed in two halftone screens, red and black, like a newspaper. A lens near the pointer shows the photo, and the sections open as rows." }
 ];
