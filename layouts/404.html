@@ -1,0 +1,18 @@
+{{ define "main" }}
+{{- $p := site.Params -}}
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="{{ site.Home.RelPermalink }}">
+      {{- with resources.Get "fav.png" }}{{ with .Resize "78x" }}<img src="{{ .RelPermalink }}" alt="" width="26" height="26">{{ end }}{{ end -}}
+      <span>{{ $p.handle }}</span></a>
+  </div>
+</header>
+
+<main id="main" class="lost wrap">
+  <p class="tag glass"><i aria-hidden="true"></i>Error 404</p>
+  <h1>Nothing <span>here.</span></h1>
+  <p class="role">This address does not lead anywhere.</p>
+  <p class="bio">The page may have moved, or the link was mistyped. Everything on this site is on one page.</p>
+  <a class="soc-a" href="{{ site.Home.RelPermalink }}"><span class="soc-i">{{ partial "icon.html" "home" }}</span><span class="soc-l">Go to the home page</span></a>
+</main>
+{{ end }}

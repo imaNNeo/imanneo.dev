@@ -1,0 +1,34 @@
+{{- /*
+  Asks an address for a JSON document while the site builds, and returns it as a map.
+
+  When the address does not answer, or answers with something else, this returns false and says so
+  in the build log, so that the caller can fall back on a saved value. A build never fails because of it.
+
+  Pass a dict with:
+    url      the address to ask
+    headers  optional, a dict of request headers
+    quiet    optional, true to leave a failure out of the build log
+*/ -}}
+{{- $data := false -}}
+{{- $problem := "" -}}
+{{- $opts := dict -}}
+{{- with .headers -}}{{- $opts = dict "headers" . -}}{{- end -}}
+{{- with try (resources.GetRemote .url $opts) -}}
+  {{- with .Err -}}
+    {{- $problem = printf "it did not answer (%s)" . -}}
+  {{- else with .Value -}}
+    {{- with try (transform.Unmarshal .Content) -}}
+      {{- with .Err -}}
+        {{- $problem = printf "its answer was not JSON (%s)" . -}}
+      {{- else -}}
+        {{- $data = .Value -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $problem = "it was not found" -}}
+  {{- end -}}
+{{- end -}}
+{{- if and $problem (not .quiet) -}}
+  {{- warnf "%s: %s. A saved value is shown instead." .url $problem -}}
+{{- end -}}
+{{- return $data -}}

@@ -1,0 +1,7 @@
+{{- /*
+  The social links as round buttons, in the order of the list in hugo.yaml.
+  The email address is not one of them: it only shows under "Say hi", after a click.
+*/ -}}
+{{- range site.Params.socials }}
+<li><a class="soc-a" href="{{ .url }}" target="_blank" rel="noopener"><span class="soc-i">{{ partial "icon.html" .icon }}</span><span class="soc-l">{{ .label }}</span></a></li>
+{{- end }}

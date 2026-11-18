@@ -1,108 +1,163 @@
 baseURL: "https://imanneo.dev/"
 languageCode: "en-us"
-title: "imaN Neo"
-theme: hugo-profile
+title: "Iman Khoshabi · imaN Neo"
+enableRobotsTXT: true
 
+# The site is one page and a page for wrong addresses. There is no blog, so no tags and no feeds.
+disableKinds:
+  - taxonomy
+  - term
+  - section
+  - RSS
 outputs:
   home:
     - "HTML"
-    - "RSS"
-    - "JSON"
-  page:
-    - "HTML"
-    - "RSS"
 
-enableRobotsTXT: true
-# disqusShortname: your-disqus-shortname
-# googleAnalytics: G-MEASUREMENT_ID
+module:
+  # The templates use "try", which Hugo has since version 0.141.
+  hugoVersion:
+    min: "0.141.0"
+  # Pictures in static/images can also be resized by the templates.
+  mounts:
+    - source: assets
+      target: assets
+    - source: static/images
+      target: assets/images
 
-markup:
-  goldmark:
-    renderer:
-      unsafe: true
+# The fl_chart numbers are fetched from GitHub and pub.dev while the site builds.
+# On your own machine an answer is kept for half a day.
+caches:
+  getresource:
+    maxAge: 12h
 
+# Everything the page says is below. Change a text, push to main, and the site rebuilds.
 params:
-  title: "imaN Neo"
-  description: This is my personal website, where you can find Iman Khoshabi (imaN Neo) projects, experiences, and more.
-  favicon: "/fav.png"
-  useBootstrapCDN: false
-  animate: true
+  description: "Iman Khoshabi (imaN Neo): senior software engineer in Amsterdam. Mobile apps, open source and small games."
+  name: "Iman Khoshabi"
+  aka: "imaN Neo"
+  handle: "imaNNeo"
+  jobTitle: "Senior software engineer"
+  # The contact address, in two parts: the name before the @ and the host after it.
+  # It is kept out of sight of robots that collect addresses for spam. It is not written as one
+  # piece here, and the page never contains it as text: under "Say hi" a button puts it together
+  # in the visitor's browser when they ask for it.
+  emailName: "iman.neofight"
+  emailHost: "gmail.com"
+  # The picture that shows when the site is shared in a chat or on social media, 1200 by 630.
+  shareImage: "images/og.jpg"
+  shareImageAlt: "Hi, I'm Iman. A photo of Iman Khoshabi, a.k.a. imaN Neo, next to the address imanneo.dev."
 
-  theme:
-  font:
-    fontSize: 1rem
-    fontWeight: 400
-    lineHeight: 1.5
-    textAlign: left
-
-  navbar:
-    align: ms-auto
-    brandName: "imaN Neo"
-    disableSearch: true
-    menus:
-      disableAbout: false
-      disableExperience: false
-      disableEducation: false
-      disableProjects: false
-      disableAchievements: false
-      disableContact: false
-
-  # Hero
+  # The first screen.
   hero:
-    enable: true
-    intro: "Hi, my name is"
-    title: "Iman Khoshabi"
-    subtitle: "AKA. imaN Neo"
-    content: "As a senior software engineer (focused on the mobile apps) with more than 10 years of experience, I can develop high-quality apps using Flutter for mobile, desktop and web platforms"
-    image: /images/hero.jpg
-    bottomImage:
-      enable: true
-    button:
-      enable: true
-      name: "Get in Touch"
-      url: "./#contact"
-      download: false
-      newPage: false
-    socialLinks:
-      fontAwesomeIcons:
-        - icon: fab fa-youtube
-          url: https://www.youtube.com/@imaNNeO
-        - icon: fab fa-github
-          url: https://github.com/imaNNeo
-        - icon: fab fa-linkedin
-          url: https://www.linkedin.com/in/iman-khoshabi-7782a9114
-        - icon: fab fa-twitter
-          url: https://twitter.com/iman__neo
-      customIcons:
-        - icon: /images/flutter4fun-icon.png
-          url: https://flutter4fun.com
+    tag: "Senior software engineer · Amsterdam"
+    greeting: "Hi, I'm"
+    name: "Iman."
+    # \u00a0 is a space that never breaks. It keeps the line break after the comma.
+    line: "10+ years of building\u00a0software, mostly\u00a0for\u00a0mobile."
+    text: "I believe in open source, I'm curious about AI, and I like learning new things."
+    photo: "images/me.jpg"
+    photoAlt: "Iman in a yellow T-shirt on a sunny terrace, pointing at the camera"
+
+  # The round buttons under the first text, and again under "Say hi", in this order.
+  # Icons: youtube, github, linkedin, x, blog.
+  socials:
+    - icon: github
+      label: "GitHub"
+      url: "https://github.com/imaNNeo"
+    - icon: linkedin
+      label: "LinkedIn"
+      url: "https://www.linkedin.com/in/iman-khoshabi-7782a9114"
+    - icon: youtube
+      label: "YouTube"
+      url: "https://www.youtube.com/@imaNNeO"
+    - icon: x
+      label: "X"
+      url: "https://twitter.com/iman__neo"
+    - icon: blog
+      label: "Blog"
+      url: "https://blog.imanneo.dev"
 
   about:
-    enable: true
-    title: "About Me"
-    image: "/images/me.jpg"
-    content: |-
-      I have been a Software Engineer for 10 years now. This includes 7 years of Mobile Application Development. It also has been 5 years since I started working with Flutter.
-      
-      Contributing to the Flutter community has been my passion. That is why I created the [fl_chart plugin](https://pub.dev/packages/fl_chart) (which has around 6k stars). I also have published the [Flutter 4 Fun blog](https://flutter4fun.com) to solve UI Challenges in the form of blog posts.
-      
-      My Android (Kotlin, Java) Development background includes working in businesses such as Maps and Navigation, Social Media, Shopping, Fin-Tech, and E-commerce.
+    menu: "About"
+    title: "What I work on"
+    lead: "These days I mostly build mobile apps, from the first architecture sketch to the release, and I leverage AI along the way. Next to that, I share what I learn through open source, write-ups and videos."
+    focus:
+      - title: "Android and Flutter"
+        text: "I'm comfortable in both."
+      - title: "Mobile apps, end to end"
+        text: "From architecture to release."
+      - title: "Shipping with balance"
+        text: "Clean code, but not over-engineered."
+      - title: "UI implementation"
+        text: "I'm picky about the details."
+      - title: "Games on the side"
+        text: "Small ones, just for fun."
+    stackTitle: "Stack"
+    stack: ["Android", "Kotlin", "Java", "Flutter", "Dart"]
+    domainsTitle: "Worked in"
+    domains: ["Maps and navigation", "Software agency", "Travel"]
 
+  work:
+    menu: "Open source"
+    title: "Open source, writing and videos"
+    flChart:
+      name: "fl_chart"
+      tagline: "A highly customizable chart library for Flutter."
+      logo: "images/fl_chart.png"
+      # Where the three numbers come from: the repository on GitHub and the package on pub.dev.
+      github: "imaNNeo/fl_chart"
+      package: "fl_chart"
+      since: 2019
+      links:
+        - label: "GitHub"
+          url: "https://github.com/imaNNeo/fl_chart"
+        - label: "pub.dev"
+          url: "https://pub.dev/packages/fl_chart"
+        - label: "Docs"
+          url: "https://flchart.dev"
+        - label: "Live demo"
+          url: "https://app.flchart.dev"
+    more:
+      - icon: blog
+        title: "Blog"
+        text: "Posts where I solve UI challenges in Flutter."
+        handle: "blog.imanneo.dev"
+        url: "https://blog.imanneo.dev"
+      - icon: youtube
+        title: "YouTube"
+        text: "Videos about Flutter and game development."
+        handle: "@imaNNeO"
+        url: "https://www.youtube.com/@imaNNeO"
+
+  games:
+    menu: "Games"
+    title: "Games, on the side"
+    lead: "I make small games for fun, some of them with the help of AI. These are the four main ones."
+    # Each game opens at <site>play/<id>/ and its cover is static/images/games/<id>.webp.
+    site: "https://games.imanneo.dev/"
+    more: "And 20 small browser games"
+    featured:
+      - id: "flappy-dash"
+        title: "Flappy Dash"
+        tag: "Multiplayer"
+        text: "Flap through the pipes with players from all over the world, live."
+      - id: "ttg"
+        title: "Through The Galaxies"
+        tag: "iOS and Android"
+        text: "Launch your little rocket from planet to planet."
+      - id: "save-the-potato"
+        title: "Save The Potato"
+        tag: "Flame Jam 3 winner"
+        text: "Spin the shield and block the fire and ice orbs."
+      - id: "trickle"
+        title: "Trickle"
+        tag: "3D puzzle"
+        text: "Dig trenches so the water reaches the thirsty trees."
 
   contact:
-    enable: true
-    content: My inbox is always open. Whether you have a question or just want to say hi, I’ll try my best to get back to you!
-    email: iman.neofight@gmail.com@gmail.com
-    btnName: Mail me
-
-  terms:
-    read: "Read"
-    toc: "Table Of Contents"
-    copyright: "All rights reserved"
-    pageNotFound: "Page not found"
-    emailText: "Check out this site"
-
-  datesFormat:
-    article: "Jan 2, 2006"
-    articleList: "Jan 2, 2006"
-    articleRecent: "Jan 2, 2006"
+    menu: "Contact"
+    title: "Say hi"
+    lead: "My inbox is always open. Whether you have a question or just want to say hi, I'll try my best to get back to you."
+    # The button that shows the email address, and the line a visitor without JavaScript sees instead.
+    show: "Show my email"
+    noScript: "My email address shows when JavaScript is on. The links below work without it."

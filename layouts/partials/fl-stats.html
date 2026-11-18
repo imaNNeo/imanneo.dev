@@ -1,0 +1,39 @@
+{{- /*
+  The three fl_chart numbers: stars on GitHub, downloads in the last 30 days and releases on pub.dev.
+
+  Every build asks GitHub and pub.dev for the current values. When one of them does not answer,
+  that number comes from data/fl_chart.yaml instead, so a build never fails because of this.
+
+  GitHub only answers a few anonymous questions an hour from one address. In the GitHub workflow
+  the build therefore passes its own token as HUGO_GITHUB_TOKEN. If that is refused, it asks again without.
+
+  Returns a dict with stars, downloads and releases as whole numbers.
+*/ -}}
+{{- $fl := site.Params.work.flChart -}}
+{{- $saved := site.Data.fl_chart -}}
+{{- $stars := int $saved.stars -}}
+{{- $downloads := int $saved.downloads30 -}}
+{{- $releases := int $saved.releases -}}
+
+{{- /* Stars, from GitHub. */ -}}
+{{- $url := printf "https://api.github.com/repos/%s" $fl.github -}}
+{{- $repo := false -}}
+{{- with os.Getenv "HUGO_GITHUB_TOKEN" -}}
+  {{- $repo = partial "remote-json.html" (dict "url" $url "headers" (dict "Authorization" (printf "Bearer %s" .)) "quiet" true) -}}
+{{- end -}}
+{{- if not $repo -}}
+  {{- $repo = partial "remote-json.html" (dict "url" $url) -}}
+{{- end -}}
+{{- with $repo -}}{{- with .stargazers_count -}}{{- $stars = int . -}}{{- end -}}{{- end -}}
+
+{{- /* Downloads in the last 30 days, from pub.dev. */ -}}
+{{- with partial "remote-json.html" (dict "url" (printf "https://pub.dev/api/packages/%s/score" $fl.package)) -}}
+  {{- with .downloadCount30Days -}}{{- $downloads = int . -}}{{- end -}}
+{{- end -}}
+
+{{- /* Releases, from the list of versions on pub.dev. */ -}}
+{{- with partial "remote-json.html" (dict "url" (printf "https://pub.dev/api/packages/%s" $fl.package)) -}}
+  {{- with .versions -}}{{- $releases = len . -}}{{- end -}}
+{{- end -}}
+
+{{- return (dict "stars" $stars "downloads" $downloads "releases" $releases) -}}
