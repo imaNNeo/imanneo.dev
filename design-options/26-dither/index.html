@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam. Mobile apps, open source and small games.">
+<meta name="theme-color" content="#f2ead8">
+<link rel="icon" href="../shared/img/n.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#f2ead8; --ink:#2b2a8c; --soft:#5c5ba6; --rule:2px solid var(--ink);
+  --sans:"Space Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"Space Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --gut:clamp(20px,5vw,64px);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+svg{width:1em;height:1em;flex:none}
+.mono{font-family:var(--mono)}
+::selection{background:var(--ink);color:var(--paper)}
+.skip{position:absolute;left:-999px;top:8px;z-index:9;background:var(--ink);color:var(--paper);padding:8px 12px;font-weight:700}
+.skip:focus{left:12px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+.wrap{width:100%;max-width:1240px;margin-inline:auto;padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+.top{position:absolute;inset:0 0 auto;z-index:3;padding-top:calc(18px + env(safe-area-inset-top,0px))}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:inline-flex;align-items:center;gap:10px;font:700 14px/1 var(--mono);text-decoration:none;background:var(--paper);padding:4px 8px 4px 4px}
+.brand b{display:grid;place-items:center;width:24px;height:24px;background:var(--ink);color:var(--paper);font:700 15px/1 var(--sans)}
+.top nav{display:flex;border:var(--rule);background:var(--paper)}
+.top nav a{font:400 13px/1 var(--mono);text-decoration:none;padding:11px 14px;border-left:var(--rule)}
+.top nav a:first-child{border-left:0}
+.top nav a:hover{background:var(--ink);color:var(--paper)}
+
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;border-bottom:var(--rule);overflow:hidden}
+#bg{position:absolute;inset:0;width:100%;height:100%;display:block;image-rendering:pixelated}
+.nogl #bg{display:none}
+.nogl .hero{background:radial-gradient(circle at 73% 48%,var(--ink) 0 21vh,transparent calc(21vh + 1px))}
+.hero .wrap{position:relative;z-index:1;padding-block:120px 96px}
+.hero-in{max-width:600px}
+.kick{display:inline-block;margin:0 0 22px;padding:5px 9px;background:var(--ink);color:var(--paper);font-size:12.5px;letter-spacing:.04em}
+h1{margin:0;font-size:clamp(50px,8.6vw,124px);font-weight:700;line-height:.9;letter-spacing:-.055em}
+.role{margin:24px 0 0;font-size:clamp(20px,2.3vw,27px);font-weight:500;line-height:1.25;letter-spacing:-.02em;text-wrap:balance}
+.bio{margin:14px 0 0;max-width:52ch;font-size:clamp(16.5px,1.35vw,18px);background:var(--paper);box-shadow:0 0 0 6px var(--paper)}
+.soc{list-style:none;margin:0;padding:0}
+.hero .soc{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.soc-a{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 14px;border:var(--rule);background:var(--paper);font-size:15px;font-weight:600}
+.soc-a:hover{background:var(--ink);color:var(--paper)}
+.soc-a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.soc-i{display:inline-flex;font-size:16px}
+.soc-h,.soc-n,a .soc-e{display:none}
+.soc-mail .soc-e{font:400 11px/1 var(--mono);padding-left:9px;border-left:2px solid currentColor}
+.hint{margin:34px 0 0;font-size:12.5px;line-height:1.5}
+.hint span{background:var(--paper);box-shadow:0 0 0 4px var(--paper)}
+.nogl .hint{display:none}
+.t-touch{display:none}
+@media (hover:none){.t-mouse{display:none}.t-touch{display:inline}}
+
+.bar{display:flex;align-items:baseline;gap:18px;margin:0;padding:16px max(var(--gut),env(safe-area-inset-right,0px)) 18px max(var(--gut),env(safe-area-inset-left,0px));background:var(--ink);color:var(--paper)}
+.bar span{font:400 13px/1 var(--mono)}
+h2{margin:0;font-size:clamp(28px,4.2vw,52px);font-weight:600;line-height:1;letter-spacing:-.04em}
+.sec{scroll-margin-top:0}
+.cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px clamp(28px,6vw,88px);padding-block:clamp(36px,6vw,72px)}
+.cols > *{min-width:0}
+.cols.rev{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.lead{margin:0;font-size:clamp(20px,2.3vw,28px);font-weight:500;line-height:1.32;letter-spacing:-.02em;text-wrap:pretty}
+h3{margin:26px 0 10px;font:700 12.5px/1.2 var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.focus{list-style:none;margin:0;padding:0;border-top:var(--rule)}
+.focus li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:0 10px;padding:14px 0;border-bottom:var(--rule)}
+.fo-n{grid-row:span 2;font:400 13px/1.9 var(--mono)}
+.fo-t{font-weight:700;font-size:18.5px;line-height:1.3}
+.fo-d{color:var(--soft)}
+.chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.chips li{padding:5px 10px;border:var(--rule);font:400 13px/1.2 var(--mono)}
+
+.fl{padding:clamp(18px,2.4vw,26px);border:var(--rule);box-shadow:6px 6px 0 var(--ink)}
+.fl-h{display:flex;align-items:center;gap:14px}
+.fl-logo{width:48px;height:48px;border:var(--rule)}
+.fl-n{margin:0;font:700 26px/1.1 var(--sans);letter-spacing:-.03em;text-transform:none}
+.fl-t{margin:3px 0 0;font-size:15.5px}
+.fl-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:24px 0 0}
+.fl-nums div{display:flex;flex-direction:column-reverse;gap:4px;min-width:0}
+.fl-nums dd{margin:0;font-size:clamp(32px,4.4vw,56px);font-weight:700;line-height:.95;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.fl-nums dt{font:400 12px/1.35 var(--mono)}
+.fl-links{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.fl-links a{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px;border:var(--rule);font-size:14px;font-weight:600;text-decoration:none}
+.fl-links a:hover{background:var(--ink);color:var(--paper)}
+.fl-links a svg,.out svg{font-size:13px}
+.more{list-style:none;margin:0;padding:0;border-top:var(--rule)}
+.more-a{display:grid;grid-template-columns:24px minmax(0,1fr);gap:0 12px;padding:16px 6px;border-bottom:var(--rule);text-decoration:none}
+.more-a:hover{background:var(--ink);color:var(--paper)}
+.more-i{grid-row:span 3;font-size:19px;display:inline-flex;padding-top:4px}
+.more-t{font-weight:700;font-size:18.5px}
+.more-d{line-height:1.45}
+.more-h{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font:400 12.5px/1 var(--mono)}
+
+.games{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.game{position:relative;display:flex;flex-direction:column;text-decoration:none}
+.g-img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border:var(--rule);margin-bottom:12px}
+.g-dit{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:1;border:var(--rule);image-rendering:pixelated;transition:opacity .12s}
+.game:hover .g-dit,.game:focus-visible .g-dit,.game:active .g-dit{opacity:0}
+.g-t{font-weight:700;font-size:18.5px;line-height:1.2}
+.g-tag{font:400 12px/1.7 var(--mono)}
+.g-b{font-size:15px;line-height:1.4;color:var(--soft)}
+.games-note{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;margin:26px 0 0}
+.games-note p{margin:0;font-size:12.5px}
+.out{display:inline-flex;align-items:center;gap:7px;height:44px;padding:0 14px;border:var(--rule);font-weight:600;text-decoration:none}
+.out:hover{background:var(--ink);color:var(--paper)}
+.pad{padding-block:clamp(36px,6vw,72px)}
+
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:26px 0 0}
+.mail-a{font-size:clamp(19px,2.5vw,27px);font-weight:700;letter-spacing:-.03em;line-height:1.2;overflow-wrap:anywhere;user-select:all}
+.mail-b{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 13px;background:var(--ink);color:var(--paper);font-size:14px;font-weight:600;border:var(--rule)}
+.mail-b:hover{background:var(--paper);color:var(--ink)}
+.mail-b:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.list{border-top:var(--rule)}
+.list .soc-a{display:grid;grid-template-columns:24px 130px minmax(0,1fr) 18px;gap:12px;align-items:center;width:100%;height:auto;padding:14px 6px;border:0;border-bottom:var(--rule);font-size:17px}
+.list .soc-l{font-weight:700}
+.list .soc-h{display:block;font:400 13px/1.3 var(--mono);overflow-wrap:anywhere}
+.list a .soc-e{display:inline-flex;font-size:13px}
+
+footer.wrap{max-width:none}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;padding-block:18px calc(24px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);font:400 12.5px/1.5 var(--mono)}
+footer p{margin:0}
+
+@media (max-width:900px){
+  .top nav{display:none}
+  .hero .wrap{padding-block:calc(38vw + 92px) 64px}
+  .cols,.cols.rev{grid-template-columns:minmax(0,1fr)}
+  .games{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:520px){
+  body{font-size:16.5px}
+  .fl-nums{gap:8px}
+  .list .soc-a{grid-template-columns:24px minmax(0,1fr) 18px}
+  .list .soc-h{grid-column:2}
+  .list a .soc-e{grid-column:3;grid-row:1}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><b aria-hidden="true">N</b><span>imaNNeo</span></a>
+    <nav aria-label="Sections">
+      <a href="#about">About</a><a href="#work">Open source</a><a href="#games">Games</a><a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <canvas id="bg" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="hero-in">
+        <p class="kick mono">imaN Neo / Amsterdam</p>
+        <h1>Iman Khoshabi</h1>
+        <p class="role">Senior mobile engineer. Android and Flutter, for 10+ years.</p>
+        <p class="bio">I like building products that feel fast and solid, and I care a lot about clean structure and good UI details.</p>
+        <ul class="soc" data-fill="links"></ul>
+        <p class="hint mono"><span>Two colours, no greys. <span class="t-mouse">The light follows your pointer.</span><span class="t-touch">Drag a finger to move the light.</span></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="about" aria-labelledby="h-about">
+    <div class="bar"><span>01</span><h2 id="h-about">What I work on</h2></div>
+    <div class="wrap cols">
+      <div>
+        <p class="lead" data-say="me.bio2"></p>
+        <h3>Stack</h3><ul class="chips" id="stack"></ul>
+        <h3>Worked in</h3><ul class="chips" id="domains"></ul>
+      </div>
+      <ul class="focus" data-fill="focus"></ul>
+    </div>
+  </section>
+
+  <section class="sec" id="work" aria-labelledby="h-work">
+    <div class="bar"><span>02</span><h2 id="h-work">Open source, writing and videos</h2></div>
+    <div class="wrap cols rev">
+      <article class="fl" data-fill="fl"></article>
+      <ul class="more" data-fill="more"></ul>
+    </div>
+  </section>
+
+  <section class="sec" id="games" aria-labelledby="h-games">
+    <div class="bar"><span>03</span><h2 id="h-games">Games, on the side</h2></div>
+    <div class="wrap pad">
+      <ul class="games" data-fill="games"></ul>
+      <div class="games-note">
+        <p class="mono">The covers are dithered the same way as the ball. Point at one to see its colours.</p>
+        <a class="out" id="all-games" href="#">And 20 small browser games<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="contact" aria-labelledby="h-contact">
+    <div class="bar"><span>04</span><h2 id="h-contact">Say hi</h2></div>
+    <div class="wrap cols">
+      <div>
+        <p class="lead" data-say="me.contact"></p>
+        <p class="mail" data-fill="mail"></p>
+      </div>
+      <ul class="soc list" id="soc2"></ul>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>© 2026 Iman Khoshabi</p>
+  <p><a href="#top">Back to the top</a></p>
+</footer>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/icons.js"></script>
+<script src="../shared/kit.js"></script>
+<script src="../shared/bg.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.SITE, K = window.KIT, $ = function (id) { return document.getElementById(id); };
+  K.fill();
+  $("stack").innerHTML = K.html.chips(S.me.stack);
+  $("domains").innerHTML = K.html.chips(S.me.domains);
+  $("soc2").innerHTML = K.html.links({ skip: ["mail"] });
+  var ag = $("all-games"); ag.href = S.links.games; ag.target = "_blank"; ag.rel = "noopener";
+
+  /* One ball and a little haze, shaded as usual and then cut down to two colours with an 8 by 8 Bayer pattern. */
+  var FRAG = [
+    "uniform vec3 uInk; uniform vec3 uPaper; uniform float uPix; uniform vec2 uC; uniform float uR;",
+    "float bayer2(vec2 a){ a = floor(a); return fract(a.x / 2. + a.y * a.y * .75); }",
+    "float bayer4(vec2 a){ return bayer2(.5 * a) * .25 + bayer2(a); }",
+    "float bayer8(vec2 a){ return bayer4(.5 * a) * .25 + bayer2(a); }",
+    "void main(){",
+    "  vec2 px = floor(gl_FragCoord.xy / uPix), p = (px + .5) * uPix;",
+    "  vec2 s = (p - uC) / uR;",
+    "  float rr = dot(s, s), ink = 0.;",
+    "  vec2 ld = mix(vec2(cos(uTime * .35) * 1.1, sin(uTime * .27) * .8 + .5), clamp((uMouse - uC) / uR, -3., 3.), uHover);",
+    "  vec3 L = normalize(vec3(ld, 1.05));",
+    "  if (rr < 1.) {",
+    "    vec3 n = vec3(s, sqrt(1. - rr));",
+    "    float dif = max(dot(n, L), 0.);",
+    "    float bands = fbm(vec2(n.x * 1.5 + uTime * .05, n.y * 5.5 + n.x * .8));",
+    "    float lum = .05 + dif * (.62 + .55 * bands) + pow(max(reflect(-L, n).z, 0.), 26.) * .7;",
+    "    ink = 1. - clamp(lum, 0., 1.);",
+    "  } else {",
+    "    float y = p.y / uRes.y;",
+    "    float haze = smoothstep(.34, 0., y) * (.2 + .42 * fbm(vec2(p.x / uRes.y * 2.4 + uTime * .06, y * 7. - uTime * .03)));",
+    "    vec2 sh = (p - vec2(uC.x - ld.x * uR * .3, uC.y - uR * 1.3)) / vec2(uR * 1.15, uR * .15);",
+    "    ink = max(haze, smoothstep(1., .15, dot(sh, sh)) * .55);",
+    "  }",
+    "  gl_FragColor = vec4(mix(uPaper, uInk, step(bayer8(px) + .008, ink)), 1.);",
+    "}"
+  ].join("\n");
+
+  var narrow = window.matchMedia("(max-width: 900px)");
+  BG.mount($("bg"), {
+    frag: FRAG, maxDpr: 2, stillTime: 4,
+    uniforms: { uInk: BG.rgb("#2b2a8c"), uPaper: BG.rgb("#f2ead8") },
+    onResize: function (api) {
+      var w = api.size.w, h = api.size.h, d = api.size.dpr, r = narrow.matches ? w * .19 : Math.min(h * .33, w * .2);
+      api.set("uPix", Math.max(2, Math.round(3 * d))); api.set("uR", r);
+      api.set("uC", narrow.matches ? [w - r * 1.3, h - r - 78 * d] : [w * .73, h * .53]);
+    }
+  });
+
+  /* The game covers get the same treatment, on a small canvas laid over each picture. */
+  function b2(x, y) { var v = x / 2 + y * y * .75; return v - Math.floor(v); }
+  function b8(x, y) { return (b2(x >> 2, y >> 2) * .25 + b2(x >> 1, y >> 1)) * .25 + b2(x, y); }
+  function dither(img) {
+    var n = 76, c = document.createElement("canvas"), x = c.getContext("2d");
+    c.width = c.height = n; c.className = "g-dit"; c.setAttribute("aria-hidden", "true");
+    function run() {
+      try {
+        x.drawImage(img, 0, 0, n, n);
+        var d = x.getImageData(0, 0, n, n), a = d.data;
+        for (var i = 0; i < n * n; i++) {
+          var l = (a[i * 4] * .299 + a[i * 4 + 1] * .587 + a[i * 4 + 2] * .114) / 255;
+          var on = (l - .5) * 1.3 + .5 < b8(i % n, Math.floor(i / n)) + .008;
+          a[i * 4] = on ? 43 : 242; a[i * 4 + 1] = on ? 42 : 234; a[i * 4 + 2] = on ? 140 : 216; a[i * 4 + 3] = 255;
+        }
+        x.putImageData(d, 0, 0);
+        img.parentNode.insertBefore(c, img.nextSibling);
+      } catch (e) {}
+    }
+    if (img.complete && img.naturalWidth) run(); else img.addEventListener("load", run);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".g-img"), dither);
+})();
+</script>
+<script src="../shared/switcher.js" data-n="26"></script>
+</body>
+</html>
