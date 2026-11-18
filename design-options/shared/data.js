@@ -10,14 +10,14 @@ window.SITE = {
     name: "Iman Khoshabi",
     handle: "imaNNeo",
     aka: "imaN Neo",
-    role: "Senior mobile engineer",
+    role: "Senior software engineer",
     city: "Amsterdam",
     years: "10+",
     email: "iman.neofight@gmail.com",
 
     /* The overview, in his own words (GitHub profile and the current site), lightly edited. */
-    bio: "I'm a senior mobile engineer based in Amsterdam. I have been building mobile apps for 10+ years, with a mix of Android (Kotlin and Java) and Flutter (Dart).",
-    bio2: "I like building products that feel fast and solid, and I care a lot about clean structure and good UI details. I also enjoy sharing what I learn through open source, write-ups and videos.",
+    bio: "I'm a senior software engineer based in Amsterdam. I have been building mobile apps for 10+ years, with a mix of Android (Kotlin and Java) and Flutter (Dart).",
+    bio2: "Most of my work is mobile apps, from the first architecture sketch to the release. Next to that, I share what I learn through open source, write-ups and videos.",
     focus: [
       { t: "Mobile apps, end to end", d: "From architecture to release." },
       { t: "Flutter and native Android", d: "I'm comfortable in both." },
