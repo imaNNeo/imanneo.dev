@@ -1,6 +1,7 @@
 /*
  * Preview-only helper: a small pill to flip between the ten options.
  * Not part of any design. It is removed when one option becomes the real site.
+ * data-n="3" on the script tag says which option the page is.
  * Position: data-pos="br" (default) | "bl" | "tr" | "tl" | "bc" on the script tag.
  * data-lift="84" raises it by that many pixels on small screens, to clear a bottom bar.
  */
@@ -9,9 +10,13 @@
   if (!opts.length) return;
   var script = document.currentScript;
   var pos = (script && script.getAttribute("data-pos")) || "br";
-  var here = location.pathname.replace(/index\.html$/, "");
-  var idx = -1;
-  for (var i = 0; i < opts.length; i++) if (here.indexOf("/" + opts[i].slug + "/") !== -1) idx = i;
+  /* Which option is this? The page says so with data-n; the address is only the fallback. */
+  var idx = -1, said = parseInt((script && script.getAttribute("data-n")) || "", 10);
+  for (var i = 0; i < opts.length; i++) if (opts[i].n === said) idx = i;
+  if (idx < 0) {
+    var here = location.pathname.replace(/index\.html$/, "");
+    for (var j = 0; j < opts.length; j++) if (here.indexOf("/" + opts[j].slug + "/") !== -1) idx = j;
+  }
   if (idx < 0) return;
   var cur = opts[idx], prev = opts[(idx + opts.length - 1) % opts.length], next = opts[(idx + 1) % opts.length];
 
