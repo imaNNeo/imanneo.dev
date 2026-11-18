@@ -31,6 +31,10 @@ The stars, downloads and releases of fl_chart are asked from GitHub and pub.dev 
 
 The page never contains the email address as text, so that robots that collect addresses for spam do not find it. `hugo.yaml` holds it in two parts (`emailName` and `emailHost`), the build writes it into the page in an encoded form, and the button under "Say hi" puts it together in the visitor's browser when they press it.
 
+#### The name in Persian
+
+So that a search in Persian finds the page, `hugo.yaml` holds the name in Persian in two spellings. `nameFa` has the half-space and shows under the photo. `nameFaTyped` has a normal space, the way most people type it, and goes into the title of the browser tab. Search engines also get both as other names of the same person.
+
 #### Running it locally
 
 Install the extended edition of Hugo, version 0.141 or newer (the workflow uses 0.144.2), and run:

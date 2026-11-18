@@ -36,6 +36,12 @@ params:
   name: "Iman Khoshabi"
   aka: "imaN Neo"
   handle: "imaNNeo"
+  # The name in Persian, so that a search in Persian finds this page.
+  # nameFa is the spelling that shows under the photo. \u200c is the half-space in the family name.
+  nameFa: "ایمان خوش\u200cآبی"
+  # nameFaTyped is the same name with a normal space, the way most people type it into a search box.
+  # It goes into the title of the browser tab. Search engines get both spellings as names of the same person.
+  nameFaTyped: "ایمان خوش آبی"
   jobTitle: "Senior software engineer"
   # The contact address, in two parts: the name before the @ and the host after it.
   # It is kept out of sight of robots that collect addresses for spam. It is not written as one
