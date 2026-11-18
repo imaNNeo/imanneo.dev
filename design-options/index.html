@@ -12,7 +12,7 @@
 <style>
   :root{
     --bg:#f3f5f8; --surface:#ffffff; --ink:#0e1218; --muted:#566170; --line:#dbe1e8; --line-2:#b8c2cd;
-    --accent:#0369ad; --accent-bg:#e4f1fb; --green:#047a44; --green-bg:#dff5e9; --stage:#e9edf2; --dot:#d5dce4; --bezel:#10151c;
+    --accent:#0369ad; --accent-bg:#e4f1fb; --green:#047a44; --green-bg:#dff5e9; --star:#a86400; --star-bg:#fdf1d7; --stage:#e9edf2; --dot:#d5dce4; --bezel:#10151c;
     --lift:0 1px 2px rgba(14,18,24,.07), 0 12px 28px rgba(14,18,24,.12);
     --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     --head:"Space Grotesk","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -21,16 +21,17 @@
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
     --bg:#0b0f14; --surface:#131a22; --ink:#e8edf2; --muted:#9ba7b4; --line:#26303b; --line-2:#3b4755;
-    --accent:#62bff8; --accent-bg:#0f2a3d; --green:#22d680; --green-bg:#0d2c1e; --stage:#0e141b; --dot:#1b242e; --bezel:#2a3440;
+    --accent:#62bff8; --accent-bg:#0f2a3d; --green:#22d680; --green-bg:#0d2c1e; --star:#f2c14e; --star-bg:#33280c; --stage:#0e141b; --dot:#1b242e; --bezel:#2a3440;
     --lift:0 1px 2px rgba(0,0,0,.5), 0 14px 30px rgba(0,0,0,.45); color-scheme:dark }
   }
   :root[data-theme="dark"]{
     --bg:#0b0f14; --surface:#131a22; --ink:#e8edf2; --muted:#9ba7b4; --line:#26303b; --line-2:#3b4755;
-    --accent:#62bff8; --accent-bg:#0f2a3d; --green:#22d680; --green-bg:#0d2c1e; --stage:#0e141b; --dot:#1b242e; --bezel:#2a3440;
+    --accent:#62bff8; --accent-bg:#0f2a3d; --green:#22d680; --green-bg:#0d2c1e; --star:#f2c14e; --star-bg:#33280c; --stage:#0e141b; --dot:#1b242e; --bezel:#2a3440;
     --lift:0 1px 2px rgba(0,0,0,.5), 0 14px 30px rgba(0,0,0,.45); color-scheme:dark }
 
   *,*::before,*::after{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
   img{max-width:100%}
   [hidden]{display:none!important}
   .page{max-width:1212px;margin-inline:auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:22px 64px}
@@ -41,33 +42,46 @@
   .brand i{font-style:normal;color:var(--muted);font-weight:500}
   .meta{margin:0;font:500 12px/1.4 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 
-  .hero{padding:clamp(34px,6vw,68px) 0 clamp(30px,4.6vw,52px);max-width:820px}
+  .hero{padding:clamp(34px,6vw,68px) 0 clamp(22px,3.4vw,36px);max-width:820px}
   h1{margin:0 0 16px;font:700 clamp(32px,5.4vw,58px)/1.04 var(--head);letter-spacing:-.03em;text-wrap:balance}
   h1 em{font-style:normal;color:var(--accent)}
   .lead{margin:0;max-width:62ch;font-size:clamp(16.5px,1.6vw,19px);line-height:1.55;color:var(--muted)}
   .lead b{color:var(--ink);font-weight:600}
-  .jump{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 0;padding:0;list-style:none}
-  .jump a{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:8px 16px 8px 8px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;transition:border-color .16s, transform .16s}
-  .jump a:hover{border-color:var(--accent);transform:translateY(-1px)}
-  .jump a:focus-visible, a.x:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-  .jump .n{font-size:12px}
-  .jump svg{color:var(--muted)}
 
-  .round{padding-top:clamp(26px,3.6vw,40px);border-top:1px solid var(--line);scroll-margin-top:8px}
-  .round + .round{margin-top:clamp(40px,6vw,72px)}
+  /* The bar that stays at the top: the four rounds and the shortlist switch. */
+  .bar{position:sticky;top:env(safe-area-inset-top, 0px);z-index:9;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin:0 -8px;padding:10px 8px;background:var(--bg);border-bottom:1px solid var(--line)}
+  .jump{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none;min-width:0}
+  .jump a, .only-b{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:5px 13px 5px 5px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font:600 14px/1 var(--sans);white-space:nowrap;transition:border-color .16s, background-color .16s, color .16s}
+  .jump a:hover, .only-b:hover{border-color:var(--accent)}
+  .jump a:focus-visible, .only-b:focus-visible, .star:focus-visible, a.x:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .jump .n{font-size:12px}
+  .only-b{padding-left:12px;cursor:pointer}
+  .only-b svg{color:var(--star);fill:currentColor}
+  .only-b b{font:700 12px/1 var(--mono);color:var(--accent);background:var(--accent-bg);border-radius:6px;padding:5px 7px}
+  .only-b[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+
+  .round{padding-top:clamp(26px,3.6vw,40px);scroll-margin-top:calc(64px + env(safe-area-inset-top, 0px))}
+  .round + .round{margin-top:clamp(40px,6vw,72px);border-top:1px solid var(--line)}
   .rhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px 32px;flex-wrap:wrap;margin-bottom:clamp(18px,2.6vw,28px)}
   .rhead > div{min-width:0}
   .eyebrow{display:flex;align-items:center;gap:10px;margin:0 0 10px;font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .new{font-weight:700;color:var(--green);background:var(--green-bg);border-radius:6px;padding:5px 7px;letter-spacing:.06em}
   .rhead h2{margin:0;font:700 clamp(26px,3.6vw,38px)/1.08 var(--head);letter-spacing:-.025em;text-wrap:balance}
-  .rhead .sub{margin:0;flex:0 1 46ch;font-size:15px;line-height:1.5;color:var(--muted)}
+  .rhead .sub{margin:0;flex:0 1 48ch;font-size:15px;line-height:1.5;color:var(--muted)}
 
   .grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.2vw,28px)}
   .grid > li{min-width:0}
-  .card{display:flex;flex-direction:column;height:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;color:inherit;text-decoration:none;scroll-margin-top:16px;transition:border-color .16s, transform .16s, box-shadow .16s}
+  .card{position:relative;display:flex;flex-direction:column;height:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;scroll-margin-top:calc(72px + env(safe-area-inset-top, 0px));transition:border-color .16s, transform .16s, box-shadow .16s}
   .card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--lift)}
   .card:target{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg), var(--lift)}
-  .card:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .on .card{border-color:var(--star)}
+  .go{color:inherit;text-decoration:none}
+  .go::after{content:"";position:absolute;inset:0;z-index:1}
+  .go:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+  @supports selector(:has(a)){
+    .go:focus-visible{outline:none}
+    .card:has(.go:focus-visible){outline:3px solid var(--accent);outline-offset:3px}
+  }
 
   .stage{display:flex;align-items:flex-end;justify-content:center;gap:3.2%;padding:6% 5% 0;background-color:var(--stage);background-image:radial-gradient(var(--dot) 1px, transparent 1.5px);background-size:14px 14px;border-bottom:1px solid var(--line);overflow:hidden}
   .stage img{display:block;height:auto;box-shadow:var(--lift);transition:transform .22s cubic-bezier(.2,.7,.2,1)}
@@ -75,23 +89,41 @@
   .stage .m{width:21.2%;border:3px solid var(--bezel);border-bottom:0;border-radius:13px 13px 0 0;transform:translateY(7%)}
   .card:hover .stage .m{transform:translateY(0)}
 
-  .body{display:flex;flex-direction:column;flex:1;padding:18px 20px 20px}
-  .k{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;font:500 11.5px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  .body{display:flex;flex-direction:column;flex:1;padding:18px 20px 18px}
+  .k{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin:0 0 10px;font:500 11.5px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
   .kl{display:flex;align-items:center;gap:8px;min-width:0}
   .n{font:700 13px/1 var(--mono);color:var(--accent);background:var(--accent-bg);border-radius:6px;padding:6px 8px;letter-spacing:.04em}
   .pick{font-weight:700;color:var(--green);background:var(--green-bg);border-radius:6px;padding:7px 8px;white-space:nowrap}
-  .mood{border:1px solid var(--line);border-radius:999px;padding:6px 10px;white-space:nowrap}
+  .mood{border:1px solid var(--line);border-radius:14px;padding:6px 10px;line-height:1.35}
   .card h3, .panel h2{margin:0 0 6px;font:700 clamp(20px,2.2vw,24px)/1.18 var(--head);letter-spacing:-.015em;text-wrap:balance}
   .line{margin:0 0 14px;color:var(--muted);font-size:15px;line-height:1.5}
-  .try{margin:0 0 18px;padding:10px 12px;border-radius:10px;background:var(--bg);font-size:14px;line-height:1.5}
+  .credit{margin:-4px 0 14px;font-size:13.5px;line-height:1.5;color:var(--muted)}
+  .credit a{position:relative;z-index:2}
+  .try{margin:0 0 16px;padding:10px 12px;border-radius:10px;background:var(--bg);font-size:14px;line-height:1.5}
   .try > span{display:inline-block;margin-right:9px;font:700 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
   .try b{font-weight:600}
   code,kbd{font:500 .92em var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 5px;white-space:nowrap}
   kbd{border-bottom-width:2px}
-  .open{margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:var(--accent)}
+  .acts{margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px}
+  .open{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:var(--accent)}
   .open svg{transition:transform .16s}
   .card:hover .open svg{transform:translateX(4px)}
+  .star{position:relative;z-index:2;display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 13px 6px 11px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--muted);font:600 13.5px/1 var(--sans);cursor:pointer;transition:border-color .16s, background-color .16s, color .16s}
+  .star svg{color:var(--star)}
+  .star:hover{border-color:var(--star);color:var(--ink)}
+  .star[aria-pressed="true"]{background:var(--star-bg);border-color:var(--star);color:var(--ink)}
+  .star[aria-pressed="true"] svg{fill:currentColor}
 
+  /* The shortlist view: the starred cards from every round in one grid, side by side. */
+  .only .grid > li:not(.on){display:none}
+  .only #rounds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.2vw,28px);padding-top:clamp(26px,3.6vw,40px);scroll-margin-top:calc(64px + env(safe-area-inset-top, 0px))}
+  .only .round, .only .grid{display:contents}
+  .only .rhead{display:none}
+  .shead{grid-column:1 / -1}
+  .shead h2{margin:0 0 6px;font:700 clamp(26px,3.6vw,38px)/1.08 var(--head);letter-spacing:-.025em;text-wrap:balance}
+  .shead p:last-child{margin:0;font-size:15px;line-height:1.5;color:var(--muted)}
+  .empty{margin:clamp(26px,3.6vw,40px) 0 0;padding:clamp(20px,3vw,32px);border:1px dashed var(--line-2);border-radius:16px;text-align:center;color:var(--muted)}
+  .empty b{display:block;margin-bottom:4px;color:var(--ink);font:700 20px/1.2 var(--head)}
   .tip{margin:22px 0 0;font-size:14px;color:var(--muted)}
 
   .notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.2vw,28px);margin-top:clamp(40px,6vw,72px)}
@@ -103,9 +135,10 @@
   .panel li{position:relative;padding-left:46px;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
   .panel li > .n{position:absolute;left:0;top:0;font-size:12px}
   .panel li b{font-weight:600}
-  .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px clamp(22px,3.4vw,44px)}
+  .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px clamp(22px,3.4vw,44px)}
   .cols > div{min-width:0}
   .mini{margin:0 0 12px;font:500 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .src + .mini{margin-top:22px}
   .mix{margin:20px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:15px;line-height:1.5}
   .mix b{font-weight:600}
   .facts li, .src li{padding-left:22px}
@@ -116,16 +149,22 @@
   a.x{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:3px}
   a.x:hover{text-decoration-thickness:2px}
 
-  .next{margin-top:clamp(16px,2.2vw,28px);display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--accent-bg);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2.2vw,22px) clamp(18px,2.4vw,26px)}
-  .next p{margin:0;flex:1 1 320px;min-width:0;font-size:16px}
+  .next{margin-top:clamp(16px,2.2vw,28px);background:var(--accent-bg);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2.2vw,22px) clamp(18px,2.4vw,26px)}
+  .next p{margin:0;font-size:16px}
+  .next p + p{margin-top:6px;font-size:15px;color:var(--muted)}
   .next b{font-weight:600}
   .foot{margin-top:28px;font-size:13px;line-height:1.6;color:var(--muted)}
   .foot code{font-size:.9em;white-space:normal;overflow-wrap:anywhere}
 
   @media (max-width:760px){
-    .grid,.notes,.cols{grid-template-columns:minmax(0,1fr)}
+    .grid,.notes,.cols,.only #rounds{grid-template-columns:minmax(0,1fr)}
     .meta{font-size:11px}
     .rhead .sub{flex-basis:100%}
+    .jl{display:none}
+    .jump{gap:4px}
+    .jump a{padding:5px;min-height:38px}
+    .jump .n{padding:6px 6px}
+    .only-b{min-height:38px;padding:5px 8px 5px 10px;gap:6px}
   }
   @media (prefers-reduced-motion:reduce){ *{transition:none!important} }
 </style>
@@ -135,177 +174,613 @@
 <div class="page" id="top">
   <header class="top">
     <p class="brand"><img src="shared/img/n.png" alt="" width="26" height="26">imanneo.dev <i>/ redesign</i></p>
-    <p class="meta">20 options &middot; numbers from 17 Nov 2026</p>
+    <p class="meta">40 options &middot; numbers from 17 Nov 2026</p>
   </header>
 
   <main>
     <section class="hero">
-      <h1>Twenty ways to rebuild <em>imanneo.dev</em></h1>
-      <p class="lead">Round two is in: <b>ten modern samples</b> that start from what the web looks like right now, not from your story. The first ten are still here. Every option is <b>a working page, not a picture</b>, so open a few, click around, then tell me a number.</p>
-      <ul class="jump" aria-label="Jump to a round">
-        <li><a href="#round-2"><span class="n">11&ndash;20</span>Round two: modern<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></li>
-        <li><a href="#round-1"><span class="n">01&ndash;10</span>Round one: geeky<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></li>
+      <h1>Forty ways to rebuild <em>imanneo.dev</em></h1>
+      <p class="lead">All four rounds are in one place now. The <b>twenty new ones</b> come first: ten minimal pages that open with an overview of you, and the ten most popular templates filled with your content. Every option is <b>a working page, not a picture</b>. Open a few, star the ones you like, then tell me a number.</p>
+    </section>
+
+    <nav class="bar" aria-label="Rounds and shortlist">
+      <ul class="jump">
+        <li><a href="#round-3" aria-label="Round three, options 21 to 30: minimal"><span class="n">21&ndash;30</span><span class="jl">Minimal</span></a></li>
+        <li><a href="#round-4" aria-label="Round four, options 31 to 40: templates"><span class="n">31&ndash;40</span><span class="jl">Templates</span></a></li>
+        <li><a href="#round-2" aria-label="Round two, options 11 to 20: modern"><span class="n">11&ndash;20</span><span class="jl">Modern</span></a></li>
+        <li><a href="#round-1" aria-label="Round one, options 1 to 10: geeky"><span class="n">01&ndash;10</span><span class="jl">Geeky</span></a></li>
       </ul>
+      <button type="button" class="only-b" id="only" aria-pressed="false" aria-label="Show only my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span class="jl">Shortlist</span><b id="count">0</b></button>
+    </nav>
+
+    <div id="rounds">
+    <div class="shead" id="shead" hidden>
+      <p class="eyebrow">Your shortlist</p>
+      <h2 id="shead-h"></h2>
+      <p>Compare them here, then tell me a number. Press a star again to take one off, or the shortlist button to see all forty.</p>
+    </div>
+    <section class="round" id="round-3" aria-labelledby="r3-h">
+      <div class="rhead">
+        <div>
+          <p class="eyebrow"><span class="new">New</span>Round three &middot; 21 to 30</p>
+          <h2 id="r3-h">Minimal, with one effect each</h2>
+        </div>
+        <p class="sub">The first screen is a short overview of you. Projects and games come in the sections below it. Each page has one background effect that reacts to the pointer, and 21 and 22 use the Matrix rain you mentioned.</p>
+      </div>
+      <ol class="grid" start="21">
+        <li>
+          <article class="card" id="o21">
+            <div class="stage">
+              <img class="d" src="shots/21-rain.webp" alt="Option 21, Matrix rain, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/21-rain-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">21</span></span><span class="mood">Dark, green</span></p>
+              <h3><a class="go" href="21-rain/index.html" aria-label="Open option 21, Matrix rain">Matrix rain</a></h3>
+              <p class="line">A calm overview of you over digital rain drawn by a shader. The rain clears around the pointer, and a small switch changes the glyphs or turns the rain off.</p>
+              <p class="try"><span>Try</span>Move the pointer and the rain clears around it. The small switch in the top corner changes it to <b>01</b> or turns it <b>Off</b>.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 21<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="21" aria-pressed="false" aria-label="Put option 21 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o22">
+            <div class="stage">
+              <img class="d" src="shots/22-daylight.webp" alt="Option 22, Daylight rain, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/22-daylight-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">22</span><span class="pick">My pick</span></span><span class="mood">Light, green</span></p>
+              <h3><a class="go" href="22-daylight/index.html" aria-label="Open option 22, Daylight rain">Daylight rain</a></h3>
+              <p class="line">The matrix effect in daylight. Pale green rain runs down the sides of a bright page and spells words from your work as the drops pass. The pointer is an umbrella.</p>
+              <p class="try"><span>Try</span>Watch the rain for a few seconds: words from your work appear in it. The pointer keeps a dry spot, like an umbrella.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 22<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="22" aria-pressed="false" aria-label="Put option 22 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o23">
+            <div class="stage">
+              <img class="d" src="shots/23-flashlight.webp" alt="Option 23, Flashlight, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/23-flashlight-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">23</span></span><span class="mood">Dark, warm light</span></p>
+              <h3><a class="go" href="23-flashlight/index.html" aria-label="Open option 23, Flashlight">Flashlight</a></h3>
+              <p class="line">A dark wall made of a short Dart file about you. A warm light follows the pointer and shows the code, and a button turns the room light on.</p>
+              <p class="try"><span>Try</span>Move the light over the wall to read the code, then press <b>Room light</b>.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 23<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="23" aria-pressed="false" aria-label="Put option 23 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o24">
+            <div class="stage">
+              <img class="d" src="shots/24-aurora.webp" alt="Option 24, Aurora, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/24-aurora-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">24</span></span><span class="mood">Light or dark</span></p>
+              <h3><a class="go" href="24-aurora/index.html" aria-label="Open option 24, Aurora">Aurora</a></h3>
+              <p class="line">A soft colour field in blue and green that flows slowly behind glass cards. The calmest of the ten, and it follows the light or dark mode of the device.</p>
+              <p class="try"><span>Try</span>Move the pointer for a soft glow, then switch your device to dark mode. The page follows.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 24<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="24" aria-pressed="false" aria-label="Put option 24 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o25">
+            <div class="stage">
+              <img class="d" src="shots/25-blueprint.webp" alt="Option 25, Blueprint, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/25-blueprint-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">25</span></span><span class="mood">Blue, technical</span></p>
+              <h3><a class="go" href="25-blueprint/index.html" aria-label="Open option 25, Blueprint">Blueprint</a></h3>
+              <p class="line">The page as an engineering drawing: a grid that bulges around the pointer, a dimension line under your name and a title block with your details.</p>
+              <p class="try"><span>Try</span>Move the pointer: the grid bulges around it and the corner shows its coordinates.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 25<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="25" aria-pressed="false" aria-label="Put option 25 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o26">
+            <div class="stage">
+              <img class="d" src="shots/26-dither.webp" alt="Option 26, Dither, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/26-dither-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">26</span></span><span class="mood">Two colours</span></p>
+              <h3><a class="go" href="26-dither/index.html" aria-label="Open option 26, Dither">Dither</a></h3>
+              <p class="line">Only cream and indigo. A ball lit from the pointer is cut down to two colours with an old dither pattern, and the game covers get the same treatment until you hover.</p>
+              <p class="try"><span>Try</span>Move the pointer to light the ball from another side, and hover a game cover to see it in full colour.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 26<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="26" aria-pressed="false" aria-label="Put option 26 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o27">
+            <div class="stage">
+              <img class="d" src="shots/27-contours.webp" alt="Option 27, Contours, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/27-contours-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">27</span></span><span class="mood">Paper, warm</span></p>
+              <h3><a class="go" href="27-contours/index.html" aria-label="Open option 27, Contours">Contours</a></h3>
+              <p class="line">A map of nowhere. Contour lines drift across warm paper and the pointer raises a hill, with your name in a large serif, the coordinates of Amsterdam and a scale bar in years.</p>
+              <p class="try"><span>Try</span>Move the pointer to raise a hill in the map.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 27<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="27" aria-pressed="false" aria-label="Put option 27 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o28">
+            <div class="stage">
+              <img class="d" src="shots/28-life.webp" alt="Option 28, Game of Life, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/28-life-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">28</span></span><span class="mood">Dark, lavender</span></p>
+              <h3><a class="go" href="28-life/index.html" aria-label="Open option 28, Game of Life">Game of Life</a></h3>
+              <p class="line">Conway's Game of Life plays behind the page. Move the pointer to add cells, pause it or start over. Quietly the geekiest of the ten.</p>
+              <p class="try"><span>Try</span>Move the pointer to add cells, then press <b>Pause</b> or <b>Reset</b>.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 28<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="28" aria-pressed="false" aria-label="Put option 28 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o29">
+            <div class="stage">
+              <img class="d" src="shots/29-canal.webp" alt="Option 29, Canal, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/29-canal-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">29</span></span><span class="mood">Dusk, amber</span></p>
+              <h3><a class="go" href="29-canal/index.html" aria-label="Open option 29, Canal">Canal</a></h3>
+              <p class="line">Your name stands on a quay at dusk and is reflected in rippling canal water, under lamps and stars. The pointer makes ripples. The Amsterdam one.</p>
+              <p class="try"><span>Try</span>Move over the water to make ripples under your name.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 29<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="29" aria-pressed="false" aria-label="Put option 29 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o30">
+            <div class="stage">
+              <img class="d" src="shots/30-halftone.webp" alt="Option 30, Halftone, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/30-halftone-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">30</span></span><span class="mood">Paper, red and black</span></p>
+              <h3><a class="go" href="30-halftone/index.html" aria-label="Open option 30, Halftone">Halftone</a></h3>
+              <p class="line">Your portrait printed in two halftone screens, red and black, like a newspaper. A lens near the pointer shows the photo, and the sections open as rows.</p>
+              <p class="try"><span>Try</span>Point at the portrait to see the photo behind the dots, then open the rows below it.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 30<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="30" aria-pressed="false" aria-label="Put option 30 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+      </ol>
+    </section>
+
+    <section class="round" id="round-4" aria-labelledby="r4-h">
+      <div class="rhead">
+        <div>
+          <p class="eyebrow"><span class="new">New</span>Round four &middot; 31 to 40</p>
+          <h2 id="r4-h">The popular templates</h2>
+        </div>
+        <p class="sub">The ten personal site templates with the most stars that I could find. Each one is written from scratch in the style of the original and filled with your content, with a credit in its footer.</p>
+      </div>
+      <ol class="grid" start="31">
+        <li>
+          <article class="card" id="o31">
+            <div class="stage">
+              <img class="d" src="shots/31-simplefolio.webp" alt="Option 31, Simplefolio, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/31-simplefolio-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">31</span></span><span class="mood">Light, teal</span></p>
+              <h3><a class="go" href="31-simplefolio/index.html" aria-label="Open option 31, Simplefolio">Simplefolio</a></h3>
+              <p class="line">The well-known one-page portfolio: a white hello screen, slanted teal bands for About and Contact, and project rows whose pictures lean towards the pointer.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/cobiwave/simplefolio" target="_blank" rel="noopener">Simplefolio</a> by cobiwave. 14.2k stars on GitHub, MIT licence, built with plain HTML and Sass.</p>
+              <p class="try"><span>Try</span>Hover <b>Know more</b>, then move the pointer over a project picture. It leans towards you.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 31<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="31" aria-pressed="false" aria-label="Put option 31 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o32">
+            <div class="stage">
+              <img class="d" src="shots/32-navy.webp" alt="Option 32, Brittany Chiang v4, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/32-navy-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">32</span></span><span class="mood">Dark navy, green</span></p>
+              <h3><a class="go" href="32-navy/index.html" aria-label="Open option 32, Brittany Chiang v4">Brittany Chiang v4</a></h3>
+              <p class="line">The developer portfolio that half the internet has forked: navy and mint green, numbered headings, a rail of links on each side, tabs, and projects with an overlapping text box.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/bchiang7/v4" target="_blank" rel="noopener">Brittany Chiang v4</a> by Brittany Chiang. 8.2k stars on GitHub, MIT licence, built with Gatsby.</p>
+              <p class="try"><span>Try</span>Scroll down and back up to see the header hide and return, and step through the tabs under <b>What I Work On</b> with the arrow keys.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 32<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="32" aria-pressed="false" aria-label="Put option 32 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o33">
+            <div class="stage">
+              <img class="d" src="shots/33-papermod.webp" alt="Option 33, PaperMod, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/33-papermod-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">33</span><span class="pick">Template pick</span></span><span class="mood">Light or dark, plain</span></p>
+              <h3><a class="go" href="33-papermod/index.html" aria-label="Open option 33, PaperMod">PaperMod</a></h3>
+              <p class="line">The most starred Hugo theme for personal sites, and your site already runs on Hugo. System fonts, one narrow column, a profile block and rounded cards, with a light and dark switch.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/adityatelange/hugo-PaperMod" target="_blank" rel="noopener">PaperMod</a> by Aditya Telange. 13.1k stars on GitHub, MIT licence, built with Hugo.</p>
+              <p class="try"><span>Try</span>Press the moon next to the title for dark mode, and copy the email address from the code block at the bottom.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 33<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="33" aria-pressed="false" aria-label="Put option 33 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o34">
+            <div class="stage">
+              <img class="d" src="shots/34-alfolio.webp" alt="Option 34, al-folio, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/34-alfolio-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">34</span></span><span class="mood">Light or dark, academic</span></p>
+              <h3><a class="go" href="34-alfolio/index.html" aria-label="Open option 34, al-folio">al-folio</a></h3>
+              <p class="line">The homepage theme of thousands of researchers: thin type, your photo floated to the right, work listed like publications with small outlined buttons, and cards for the fun projects.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener">al-folio</a> by Maruan Al-Shedivat. 15.1k stars on GitHub, MIT licence, built with Jekyll.</p>
+              <p class="try"><span>Try</span>Press <b>Abs</b> under a selected work to open its summary, and try the theme switch in the menu.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 34<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="34" aria-pressed="false" aria-label="Put option 34 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o35">
+            <div class="stage">
+              <img class="d" src="shots/35-minimal-mistakes.webp" alt="Option 35, Minimal Mistakes, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/35-minimal-mistakes-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">35</span></span><span class="mood">Light, classic</span></p>
+              <h3><a class="go" href="35-minimal-mistakes/index.html" aria-label="Open option 35, Minimal Mistakes">Minimal Mistakes</a></h3>
+              <p class="line">The Jekyll classic behind countless personal sites, and behind Academic Pages too: a thin masthead, your photo and links in a sidebar that stays in place, and the work as plain teasers and rows next to it.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/mmistakes/minimal-mistakes" target="_blank" rel="noopener">Minimal Mistakes</a> by Michael Rose. 13.4k stars on GitHub, MIT licence, built with Jekyll.</p>
+              <p class="try"><span>Try</span>Scroll, and your photo and links stay in place at the side. On a phone, press <b>Follow</b>.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 35<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="35" aria-pressed="false" aria-label="Put option 35 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o36">
+            <div class="stage">
+              <img class="d" src="shots/36-academic.webp" alt="Option 36, Hugo Blox Academic CV, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/36-academic-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">36</span></span><span class="mood">Light or dark, CV</span></p>
+              <h3><a class="go" href="36-academic/index.html" aria-label="Open option 36, Hugo Blox Academic CV">Hugo Blox Academic CV</a></h3>
+              <p class="line">The CV site of the Hugo world, known for years as Academic: a round photo with icons on the left, the biography on the right, then sections that alternate white and grey with the title in a side column.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/HugoBlox/hugo-blox-builder" target="_blank" rel="noopener">Hugo Blox Academic CV</a> by George Cushen. 10k stars on GitHub, MIT licence, built with Hugo.</p>
+              <p class="try"><span>Try</span>Filter the games by genre in the <b>Games</b> section, and watch the menu mark where you are.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 36<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="36" aria-pressed="false" aria-label="Put option 36 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o37">
+            <div class="stage">
+              <img class="d" src="shots/37-tailwind-blog.webp" alt="Option 37, Tailwind Next.js Starter Blog, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/37-tailwind-blog-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">37</span></span><span class="mood">Light or dark, pink</span></p>
+              <h3><a class="go" href="37-tailwind-blog/index.html" aria-label="Open option 37, Tailwind Next.js Starter Blog">Tailwind Next.js Starter Blog</a></h3>
+              <p class="line">The most used Next.js blog starter: very large headings with a hairline under them, an author block with a round photo, bordered project cards and rows with a side column, all with pink links.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/timlrx/tailwind-nextjs-starter-blog" target="_blank" rel="noopener">Tailwind Next.js Starter Blog</a> by Timothy Lin. 10.5k stars on GitHub, MIT licence, built with Next.js.</p>
+              <p class="try"><span>Try</span>Switch to dark mode with the button in the header. On a phone, open the full-screen menu.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 37<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="37" aria-pressed="false" aria-label="Put option 37 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o38">
+            <div class="stage">
+              <img class="d" src="shots/38-plain.webp" alt="Option 38, Lee Robinson's site, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/38-plain-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">38</span></span><span class="mood">Light or dark, bare</span></p>
+              <h3><a class="go" href="38-plain/index.html" aria-label="Open option 38, Lee Robinson's site">Lee Robinson's site</a></h3>
+              <p class="line">The personal site a generation of Next.js developers copied: one narrow column, a lowercase menu, a short hello, small badges inside the sentences, a mosaic of pictures and bordered link cards. Nothing else.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/leerob/site" target="_blank" rel="noopener">Lee Robinson's site</a> by Lee Robinson. 7.6k stars on GitHub, MIT licence, built with Next.js.</p>
+              <p class="try"><span>Try</span>Hover a link card to see its arrow tip over, and drag the strip of small covers sideways.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 38<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="38" aria-pressed="false" aria-label="Put option 38 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o39">
+            <div class="stage">
+              <img class="d" src="shots/39-astropaper.webp" alt="Option 39, AstroPaper, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/39-astropaper-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">39</span></span><span class="mood">Light or dark, monospace</span></p>
+              <h3><a class="go" href="39-astropaper/index.html" aria-label="Open option 39, AstroPaper">AstroPaper</a></h3>
+              <p class="line">The best-known Astro blog theme: everything in one monospaced face, a big hello, a row of icons, hairlines between the parts and lists of blue titles with a small dated line. Dark mode is navy with orange lines.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/satnaing/astro-paper" target="_blank" rel="noopener">AstroPaper</a> by Sat Naing. 4.2k stars on GitHub, MIT licence, built with Astro.</p>
+              <p class="try"><span>Try</span>Press the moon in the menu: in dark mode the lines turn orange. Hover the icons next to <b>Social Links</b>.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 39<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="39" aria-pressed="false" aria-label="Put option 39 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card" id="o40">
+            <div class="stage">
+              <img class="d" src="shots/40-dock.webp" alt="Option 40, Magic UI Portfolio, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/40-dock-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">40</span></span><span class="mood">Light or dark, black and white</span></p>
+              <h3><a class="go" href="40-dock/index.html" aria-label="Open option 40, Magic UI Portfolio">Magic UI Portfolio</a></h3>
+              <p class="line">The newest of the ten and the one you see most on new developer sites: a hello with a round photo, rows that open when pressed, black badges, small bordered cards, and a floating dock at the bottom whose icons grow near the pointer.</p>
+              <p class="credit">In the style of <a class="x" href="https://github.com/dillionverma/portfolio" target="_blank" rel="noopener">Magic UI Portfolio</a> by Dillion Verma. 1.4k stars on GitHub, MIT licence, built with Next.js.</p>
+              <p class="try"><span>Try</span>Move the pointer along the dock at the bottom, and press a row under <b>What I Work On</b> to open it.</p>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 40<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="40" aria-pressed="false" aria-label="Put option 40 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+      </ol>
     </section>
 
     <section class="round" id="round-2" aria-labelledby="r2-h">
       <div class="rhead">
         <div>
-          <p class="eyebrow"><span class="new">New</span>Round two &middot; 11 to 20</p>
+          <p class="eyebrow">Round two &middot; 11 to 20</p>
           <h2 id="r2-h">Modern samples</h2>
         </div>
         <p class="sub">Each one takes an idea from current sites and trend lists and fills it with your real content. Samples 18, 19 and 20 are in 3D.</p>
       </div>
       <ol class="grid" start="11">
         <li>
-          <a class="card" id="o11" href="11-bento/index.html">
+          <article class="card" id="o11">
             <div class="stage">
-              <img class="d" src="shots/11-bento.webp" alt="Option 11, Bento, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/11-bento-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/11-bento.webp" alt="Option 11, Bento, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/11-bento-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">11</span></span><span class="mood">Dark, tiles</span></p>
-              <h3>Bento</h3>
+              <h3><a class="go" href="11-bento/index.html" aria-label="Open option 11, Bento">Bento</a></h3>
               <p class="line">The whole site on one screen, as a grid of live tiles: numbers that count up, a release chart, a games shelf, a clock on Amsterdam time and the links. Tiles glow under the cursor.</p>
               <p class="try"><span>Try</span>Drag the accent slider in the <b>tweak me</b> tile, then switch the page to <b>Light</b>.</p>
-              <span class="open">Open option 11<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 11<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="11" aria-pressed="false" aria-label="Put option 11 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o12" href="12-glass/index.html">
+          <article class="card" id="o12">
             <div class="stage">
-              <img class="d" src="shots/12-glass.webp" alt="Option 12, Liquid glass, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/12-glass-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/12-glass.webp" alt="Option 12, Liquid glass, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/12-glass-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">12</span></span><span class="mood">Light, glassy</span></p>
-              <h3>Liquid glass</h3>
+              <h3><a class="go" href="12-glass/index.html" aria-label="Open option 12, Liquid glass">Liquid glass</a></h3>
               <p class="line">Frosted glass panels floating over a slow colour field drawn by a shader, with a dock at the bottom that swells under the cursor.</p>
               <p class="try"><span>Try</span>In the <b>Shader</b> panel in the top corner, try <b>Sunset</b> or <b>Night</b> and move the sliders.</p>
-              <span class="open">Open option 12<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 12<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="12" aria-pressed="false" aria-label="Put option 12 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o13" href="13-kinetic/index.html">
+          <article class="card" id="o13">
             <div class="stage">
-              <img class="d" src="shots/13-kinetic.webp" alt="Option 13, Kinetic type, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/13-kinetic-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/13-kinetic.webp" alt="Option 13, Kinetic type, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/13-kinetic-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">13</span></span><span class="mood">Light, editorial</span></p>
-              <h3>Kinetic type</h3>
+              <h3><a class="go" href="13-kinetic/index.html" aria-label="Open option 13, Kinetic type">Kinetic type</a></h3>
               <p class="line">Big type that moves. The headline changes weight around the pointer, the marquee leans with your scroll speed, and game covers follow the cursor down the list.</p>
               <p class="try"><span>Try</span>Move the pointer over the big headline, then play with the <b>type tester</b> under it.</p>
-              <span class="open">Open option 13<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 13<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="13" aria-pressed="false" aria-label="Put option 13 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o14" href="14-spotlight/index.html">
+          <article class="card" id="o14">
             <div class="stage">
-              <img class="d" src="shots/14-spotlight.webp" alt="Option 14, Command palette, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/14-spotlight-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/14-spotlight.webp" alt="Option 14, Command palette, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/14-spotlight-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">14</span></span><span class="mood">Dark, keyboard</span></p>
-              <h3>Command palette</h3>
+              <h3><a class="go" href="14-spotlight/index.html" aria-label="Open option 14, Command palette">Command palette</a></h3>
               <p class="line">The site is one search box. Type to find a game, a link or a number, move with the arrow keys and press Enter.</p>
               <p class="try"><span>Try</span>Type <code>flappy</code>, move with the arrow keys and press <kbd>Enter</kbd>.</p>
-              <span class="open">Open option 14<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 14<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="14" aria-pressed="false" aria-label="Put option 14 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o15" href="15-nodes/index.html">
+          <article class="card" id="o15">
             <div class="stage">
-              <img class="d" src="shots/15-nodes.webp" alt="Option 15, Node graph, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/15-nodes-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/15-nodes.webp" alt="Option 15, Node graph, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/15-nodes-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">15</span></span><span class="mood">Dark, canvas</span></p>
-              <h3>Node graph</h3>
+              <h3><a class="go" href="15-nodes/index.html" aria-label="Open option 15, Node graph">Node graph</a></h3>
               <p class="line">A node editor on an endless canvas. You, fl_chart, the games and the links are nodes wired together, and everything can be dragged.</p>
               <p class="try"><span>Try</span>Drag a node by its title, zoom with <kbd>Ctrl</kbd> + scroll, then press <b>Tidy</b>.</p>
-              <span class="open">Open option 15<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 15<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="15" aria-pressed="false" aria-label="Put option 15 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o16" href="16-holo/index.html">
+          <article class="card" id="o16">
             <div class="stage">
-              <img class="d" src="shots/16-holo.webp" alt="Option 16, Holo cards, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/16-holo-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/16-holo.webp" alt="Option 16, Holo cards, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/16-holo-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">16</span></span><span class="mood">Dark, shiny</span></p>
-              <h3>Holo cards</h3>
+              <h3><a class="go" href="16-holo/index.html" aria-label="Open option 16, Holo cards">Holo cards</a></h3>
               <p class="line">Every part of the site is a collectible card with a holographic foil that tilts and shines under the cursor. Open a pack and get five games at random.</p>
               <p class="try"><span>Try</span>Move the pointer over a card, flip the middle one, and <b>open a pack</b> in the games section.</p>
-              <span class="open">Open option 16<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 16<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="16" aria-pressed="false" aria-label="Put option 16 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o17" href="17-ascii/index.html">
+          <article class="card" id="o17">
             <div class="stage">
-              <img class="d" src="shots/17-ascii.webp" alt="Option 17, ASCII engine, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/17-ascii-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/17-ascii.webp" alt="Option 17, ASCII engine, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/17-ascii-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">17</span></span><span class="mood">Text mode</span></p>
-              <h3>ASCII engine</h3>
+              <h3><a class="go" href="17-ascii/index.html" aria-label="Open option 17, ASCII engine">ASCII engine</a></h3>
               <p class="line">A small real-time renderer that draws a 3D shape, the game covers and even a portrait with letters. The whole page is characters.</p>
               <p class="try"><span>Try</span>Drag the shape to turn it, switch it to <b>portrait</b>, and change the characters to <b>blocks</b>.</p>
-              <span class="open">Open option 17<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 17<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="17" aria-pressed="false" aria-label="Put option 17 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o18" href="18-particles/index.html">
+          <article class="card" id="o18">
             <div class="stage">
-              <img class="d" src="shots/18-particles.webp" alt="Option 18, Particle type, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/18-particles-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/18-particles.webp" alt="Option 18, Particle type, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/18-particles-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">18</span></span><span class="mood">Dark, 3D</span></p>
-              <h3>Particle type</h3>
+              <h3><a class="go" href="18-particles/index.html" aria-label="Open option 18, Particle type">Particle type</a></h3>
               <p class="line">Thousands of points that fly together into a new shape for every section: a planet, the release chart, a game pad and an at sign. Click and they scatter.</p>
               <p class="try"><span>Try</span>Scroll and the points rearrange. Click anywhere to scatter them.</p>
-              <span class="open">Open option 18<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 18<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="18" aria-pressed="false" aria-label="Put option 18 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o19" href="19-exploded/index.html">
+          <article class="card" id="o19">
             <div class="stage">
-              <img class="d" src="shots/19-exploded.webp" alt="Option 19, Exploded view, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/19-exploded-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/19-exploded.webp" alt="Option 19, Exploded view, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/19-exploded-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
-              <p class="k"><span class="kl"><span class="n">19</span><span class="pick">My pick</span></span><span class="mood">Light, 3D</span></p>
-              <h3>Exploded view</h3>
+              <p class="k"><span class="kl"><span class="n">19</span><span class="pick">Round two pick</span></span><span class="mood">Light, 3D</span></p>
+              <h3><a class="go" href="19-exploded/index.html" aria-label="Open option 19, Exploded view">Exploded view</a></h3>
               <p class="line">A phone in 3D that comes apart into seven layers as you scroll. Each layer is a part of the site, and the parts list brings a layer forward.</p>
               <p class="try"><span>Try</span>Scroll to take the phone apart, hover a row in the parts list, and drag the phone to see its back.</p>
-              <span class="open">Open option 19<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 19<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="19" aria-pressed="false" aria-label="Put option 19 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o20" href="20-world/index.html">
+          <article class="card" id="o20">
             <div class="stage">
-              <img class="d" src="shots/20-world.webp" alt="Option 20, Tiny world, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/20-world-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/20-world.webp" alt="Option 20, Tiny world, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/20-world-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">20</span></span><span class="mood">Playful, 3D</span></p>
-              <h3>Tiny world</h3>
+              <h3><a class="go" href="20-world/index.html" aria-label="Open option 20, Tiny world">Tiny world</a></h3>
               <p class="line">A small low-poly island you can spin. The towers are the fl_chart releases, the arcade holds the games and the signpost has the links. It has a day and a night.</p>
               <p class="try"><span>Try</span>Click the arcade, hover a chart tower, and switch to night with the button in the top corner.</p>
-              <span class="open">Open option 20<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 20<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="20" aria-pressed="false" aria-label="Put option 20 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
       </ol>
     </section>
@@ -320,170 +795,218 @@
       </div>
       <ol class="grid">
         <li>
-          <a class="card" id="o1" href="01-terminal/index.html">
+          <article class="card" id="o1">
             <div class="stage">
-              <img class="d" src="shots/01-terminal.webp" alt="Option 1, The riced terminal, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/01-terminal-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/01-terminal.webp" alt="Option 1, The riced terminal, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/01-terminal-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">01</span></span><span class="mood">Dark, warm</span></p>
-              <h3>The riced terminal</h3>
+              <h3><a class="go" href="01-terminal/index.html" aria-label="Open option 1, The riced terminal">The riced terminal</a></h3>
               <p class="line">A tiling desktop of terminal panes. Everything is readable at a glance, and the shell at the bottom really takes commands.</p>
               <p class="try"><span>Try</span>Type <code>help</code> in the shell at the bottom. <code>play trickle</code> and <code>theme tokyo</code> work too.</p>
-              <span class="open">Open option 1<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 1<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="1" aria-pressed="false" aria-label="Put option 1 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o2" href="02-matrix/index.html">
+          <article class="card" id="o2">
             <div class="stage">
-              <img class="d" src="shots/02-matrix.webp" alt="Option 2, Wake up, Neo, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/02-matrix-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/02-matrix.webp" alt="Option 2, Wake up, Neo, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/02-matrix-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">02</span></span><span class="mood">Dark, green</span></p>
-              <h3>Wake up, Neo</h3>
+              <h3><a class="go" href="02-matrix/index.html" aria-label="Open option 2, Wake up, Neo">Wake up, Neo</a></h3>
               <p class="line">Digital rain, a red pill for the games and a blue pill for the code. Built on the nickname you picked before you saw the film.</p>
               <p class="try"><span>Try</span>Take a pill. The red one goes to the games, the blue one to the code.</p>
-              <span class="open">Open option 2<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 2<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="2" aria-pressed="false" aria-label="Put option 2 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o3" href="03-charts/index.html">
+          <article class="card" id="o3">
             <div class="stage">
-              <img class="d" src="shots/03-charts.webp" alt="Option 3, Life in charts, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/03-charts-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/03-charts.webp" alt="Option 3, Life in charts, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/03-charts-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">03</span></span><span class="mood">Dark, neon</span></p>
-              <h3>Life in charts</h3>
+              <h3><a class="go" href="03-charts/index.html" aria-label="Open option 3, Life in charts">Life in charts</a></h3>
               <p class="line">The site as a dashboard in the fl_chart sample app's own colours. Every section is a chart you can touch, drawn from real numbers.</p>
               <p class="try"><span>Try</span>Hover any chart, and switch the big one to <b>per year</b>.</p>
-              <span class="open">Open option 3<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 3<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="3" aria-pressed="false" aria-label="Put option 3 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o4" href="04-package/index.html">
+          <article class="card" id="o4">
             <div class="stage">
-              <img class="d" src="shots/04-package.webp" alt="Option 4, The package page, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/04-package-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/04-package.webp" alt="Option 4, The package page, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/04-package-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">04</span></span><span class="mood">Light</span></p>
-              <h3>The package page</h3>
+              <h3><a class="go" href="04-package/index.html" aria-label="Open option 4, The package page">The package page</a></h3>
               <p class="line">You, published as a package: Readme, Changelog, Example, Installing, Versions and Scores tabs, with a score box on the side.</p>
               <p class="try"><span>Try</span>Open the <b>Versions</b> and <b>Scores</b> tabs.</p>
-              <span class="open">Open option 4<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 4<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="4" aria-pressed="false" aria-label="Put option 4 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o5" href="05-main-dart/index.html">
+          <article class="card" id="o5">
             <div class="stage">
-              <img class="d" src="shots/05-main-dart.webp" alt="Option 5, main.dart, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/05-main-dart-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/05-main-dart.webp" alt="Option 5, main.dart, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/05-main-dart-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">05</span><span class="pick">Round one pick</span></span><span class="mood">Dark IDE, light app</span></p>
-              <h3>main.dart</h3>
+              <h3><a class="go" href="05-main-dart/index.html" aria-label="Open option 5, main.dart">main.dart</a></h3>
               <p class="line">An IDE on the left, a phone on the right. The Dart code builds the app you are looking at, and hot reload really reloads it.</p>
               <p class="try"><span>Try</span>Press <kbd>R</kbd> for hot reload, or turn on <b>Select widget</b> and click something in the app.</p>
-              <span class="open">Open option 5<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 5<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="5" aria-pressed="false" aria-label="Put option 5 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o6" href="06-arcade/index.html">
+          <article class="card" id="o6">
             <div class="stage">
-              <img class="d" src="shots/06-arcade.webp" alt="Option 6, Insert coin, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/06-arcade-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/06-arcade.webp" alt="Option 6, Insert coin, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/06-arcade-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">06</span></span><span class="mood">Dark, pixel</span></p>
-              <h3>Insert coin</h3>
+              <h3><a class="go" href="06-arcade/index.html" aria-label="Open option 6, Insert coin">Insert coin</a></h3>
               <p class="line">An arcade cabinet. Your stats are the high scores, the games are the game select screen, and the arrow keys work.</p>
               <p class="try"><span>Try</span>Press Start, then move through the games with the arrow keys.</p>
-              <span class="open">Open option 6<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 6<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="6" aria-pressed="false" aria-label="Put option 6 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o7" href="07-galaxies/index.html">
+          <article class="card" id="o7">
             <div class="stage">
-              <img class="d" src="shots/07-galaxies.webp" alt="Option 7, Through the galaxies, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/07-galaxies-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/07-galaxies.webp" alt="Option 7, Through the galaxies, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/07-galaxies-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">07</span></span><span class="mood">Dark, playful</span></p>
-              <h3>Through the galaxies</h3>
+              <h3><a class="go" href="07-galaxies/index.html" aria-label="Open option 7, Through the galaxies">Through the galaxies</a></h3>
               <p class="line">A rocket flies from planet to planet as you scroll, the way it does in your own game. Each planet is a part of your work.</p>
               <p class="try"><span>Try</span>Scroll, or press <b>Launch</b>, and the rocket flies to the next planet.</p>
-              <span class="open">Open option 7<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 7<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="7" aria-pressed="false" aria-label="Put option 7 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o8" href="08-datasheet/index.html">
+          <article class="card" id="o8">
             <div class="stage">
-              <img class="d" src="shots/08-datasheet.webp" alt="Option 8, The datasheet, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/08-datasheet-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/08-datasheet.webp" alt="Option 8, The datasheet, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/08-datasheet-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">08</span></span><span class="mood">Light, print</span></p>
-              <h3>The datasheet</h3>
+              <h3><a class="go" href="08-datasheet/index.html" aria-label="Open option 8, The datasheet">The datasheet</a></h3>
               <p class="line">You, documented as an electronic component: pinout for the links, electrical characteristics for the stats, figures for the charts.</p>
               <p class="try"><span>Try</span>Use the bookmarks and the zoom buttons, like in a real PDF viewer.</p>
-              <span class="open">Open option 8<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 8<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="8" aria-pressed="false" aria-label="Put option 8 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o9" href="09-neoos/index.html">
+          <article class="card" id="o9">
             <div class="stage">
-              <img class="d" src="shots/09-neoos.webp" alt="Option 9, NeoOS, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/09-neoos-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/09-neoos.webp" alt="Option 9, NeoOS, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/09-neoos-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">09</span></span><span class="mood">Retro desktop</span></p>
-              <h3>NeoOS</h3>
+              <h3><a class="go" href="09-neoos/index.html" aria-label="Open option 9, NeoOS">NeoOS</a></h3>
               <p class="line">A small operating system with draggable windows, a start menu, a games folder and a clock in the corner.</p>
               <p class="try"><span>Try</span>Drag the windows around, open the N menu, and look in the Trash.</p>
-              <span class="open">Open option 9<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 9<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="9" aria-pressed="false" aria-label="Put option 9 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
         <li>
-          <a class="card" id="o10" href="10-neo-brutal/index.html">
+          <article class="card" id="o10">
             <div class="stage">
-              <img class="d" src="shots/10-neo-brutal.webp" alt="Option 10, Neo-brutal N, on a desktop screen" width="1200" height="750">
-              <img class="m" src="shots/10-neo-brutal-m.webp" alt="The same page on a phone" width="390" height="844">
+              <img class="d" src="shots/10-neo-brutal.webp" alt="Option 10, Neo-brutal N, on a desktop screen" width="1200" height="750" loading="lazy" decoding="async">
+              <img class="m" src="shots/10-neo-brutal-m.webp" alt="The same page on a phone" width="390" height="844" loading="lazy" decoding="async">
             </div>
             <div class="body">
               <p class="k"><span class="kl"><span class="n">10</span></span><span class="mood">Light, loud</span></p>
-              <h3>Neo-brutal N</h3>
+              <h3><a class="go" href="10-neo-brutal/index.html" aria-label="Open option 10, Neo-brutal N">Neo-brutal N</a></h3>
               <p class="line">Your blue N logo turned up: thick outlines, hard green shadows, big type and a stats ticker. The one that is not a costume.</p>
               <p class="try"><span>Try</span>Filter the small games by genre, and hover the release chart.</p>
-              <span class="open">Open option 10<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div class="acts">
+                <span class="open" aria-hidden="true">Open option 10<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <button type="button" class="star" data-n="10" aria-pressed="false" aria-label="Put option 10 on my shortlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17.1 6.6 20l1.1-6.1-4.5-4.3 6.1-.8z"/></svg><span>Shortlist</span></button>
+              </div>
             </div>
-          </a>
+          </article>
         </li>
       </ol>
     </section>
-    <p class="tip">Inside each option there is a small pill in the corner that steps to the next one or brings you back here. It belongs to this preview, not to the designs.</p>
+    </div>
+    <p class="empty" id="empty" hidden><b>Nothing on your shortlist yet</b>Press the star on a card to add it, then come back here to compare. Press the shortlist button again to see all forty.</p>
+    <p class="tip">Inside each option there is a small pill in the corner that steps to the next one or brings you back here. It belongs to this preview, not to the designs. The shortlist is kept in this browser only.</p>
 
     <section class="notes" aria-label="Notes">
       <div class="panel wide">
         <h2>If you want my opinion</h2>
-        <p class="sub">My overall pick is 19. These are the three I would look at first in each round, and why.</p>
+        <p class="sub">You said the site does not have to be fancy: modern, minimal and a little catchy. By that brief my pick is 22. These are the ones I would look at first in each round, and why.</p>
         <div class="cols">
+          <div>
+            <h3 class="mini">Round three</h3>
+            <ul>
+              <li><span class="n">22</span><b>Daylight rain is the one I would build.</b> It keeps your Matrix idea but stays bright and easy to read, and the words that appear in the rain are your own. It needs one small shader and no library.</li>
+              <li><span class="n">21</span><b>Matrix rain, if you want it dark.</b> The same idea at full strength, and it suits the name Neo. Anyone who finds the rain too busy can switch it off.</li>
+              <li><span class="n">24</span><b>Aurora, if it should be calm.</b> The quietest of the forty. It follows the light or dark mode of the device.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="mini">Round four</h3>
+            <ul>
+              <li><span class="n">33</span><b>PaperMod is the practical one.</b> It is a Hugo theme and your site already runs on Hugo, so I can install the real theme, and its maintainers keep it up to date.</li>
+              <li><span class="n">40</span><b>Magic UI Portfolio, if it should look current.</b> It is the newest of the ten: black and white, small cards and a dock.</li>
+              <li><span class="n">32</span><b>Brittany Chiang v4, if you do not mind company.</b> It is probably the best known developer portfolio, so many sites look like it. The author asks for a credit link, and the footer has one.</li>
+            </ul>
+          </div>
           <div>
             <h3 class="mini">Round two</h3>
             <ul>
-              <li><span class="n">19</span><b>Exploded view is the one I would build.</b> A phone that comes apart says mobile engineer before anyone reads a word. If you only scroll, it still reads like a normal page, and where 3D is missing it becomes one. The price is one 3D library, about 170 KB to download.</li>
+              <li><span class="n">19</span><b>Exploded view, if it may be fancy after all.</b> A phone that comes apart says mobile engineer before anyone reads a word. The price is one 3D library, about 170 KB to download.</li>
               <li><span class="n">11</span><b>Bento, if it should be fast and simple.</b> Everything sits on one screen with no engine behind it, and adding a tile later is easy.</li>
-              <li><span class="n">20</span><b>Tiny world, if it should be remembered.</b> It is a toy people spin and poke at, and the chart towers are your real release counts. It is also the least like a normal website.</li>
+              <li><span class="n">20</span><b>Tiny world, if it should be remembered.</b> It is a toy people spin and poke at, and the chart towers are your real release counts.</li>
             </ul>
           </div>
           <div>
@@ -495,29 +1018,44 @@
             </ul>
           </div>
         </div>
-        <p class="mix"><b>Mixing works across rounds.</b> For example Bento as the base, with the exploded phone in its biggest tile.</p>
+        <p class="mix"><b>Mixing works across rounds.</b> A background from round three fits behind a template from round four, for example PaperMod with the daylight rain.</p>
       </div>
 
       <div class="panel">
         <h2>Where the ideas came from</h2>
-        <p class="sub">You asked me to look around first. These are the pages I read, and what each one turned into.</p>
+        <p class="sub">The pages I read, and what each one turned into.</p>
+        <h3 class="mini">Round four: which templates are popular</h3>
+        <ul class="src">
+          <li><a class="x" href="https://adminlte.io/blog/react-portfolio-templates/" target="_blank" rel="noopener"><cite>13 Best React Portfolio Templates for Developers 2026</cite>, AdminLTE</a><span>Simplefolio (31), Brittany Chiang v4 (32), Tailwind Next.js Starter Blog (37), Lee Robinson's site (38) and Magic UI Portfolio (40).</span></li>
+          <li><a class="x" href="https://adminlte.io/blog/hugo-themes/" target="_blank" rel="noopener"><cite>20 Best Hugo Themes &amp; Templates 2026</cite>, AdminLTE</a><span>PaperMod (33) and Hugo Blox (36), the two with the most stars on that list.</span></li>
+          <li><a class="x" href="https://adminlte.io/blog/jekyll-themes/" target="_blank" rel="noopener"><cite>19 Best Free Jekyll Themes &amp; Templates (2026)</cite>, AdminLTE</a><span>al-folio (34) and Minimal Mistakes (35). Academic Pages has more stars than both, but it is built on Minimal Mistakes, so 35 covers it.</span></li>
+          <li><a class="x" href="https://jamstackthemes.dev/archetype/personal" target="_blank" rel="noopener"><cite>Personal themes</cite>, Jamstack Themes</a><span>AstroPaper (39), an Astro theme with 4,188 stars.</span></li>
+          <li>The star counts on the cards are the ones these pages showed on 18 November 2026.</li>
+        </ul>
+        <h3 class="mini">Round three</h3>
+        <ul class="src">
+          <li>This round came from your own brief: an overview first, minimal, and maybe a shader with the Matrix effect. The rain became 21 and 22, and the other eight are effects I thought would suit you.</li>
+        </ul>
+        <h3 class="mini">Round two: what is current</h3>
         <ul class="src">
           <li><a class="x" href="https://www.utsubo.com/blog/best-threejs-websites-2026" target="_blank" rel="noopener"><cite>8 Best Three.js Websites of 2026</cite>, Utsubo</a><span>One object with real weight and scrolling as the story became 19. A landscape to explore became 20. Type that breaks into particles became 18.</span></li>
           <li><a class="x" href="https://www.designrush.com/agency/website-design-development/trends/web-design-trends" target="_blank" rel="noopener"><cite>17 Web Design Trends for 2026</cite>, DesignRush</a><span>Bento grids became 11, glass in the style of Apple's Liquid Glass became 12, kinetic typography became 13, and gamification is behind the card packs in 16.</span></li>
-          <li><a class="x" href="https://www.b12.io/resource-center/website-design/web-design-guide-bento-grids-and-kinetic-typography" target="_blank" rel="noopener"><cite>Bento grids and kinetic typography</cite>, B12</a><span>The house rules for 11 and 13: every tile has one job, headings move and body text does not, and motion is turned down for people who ask for less.</span></li>
-          <li><a class="x" href="https://www.wearedevelopers.com/en/magazine/644/five-nostalgic-developer-portfolios-for-inspiration-644" target="_blank" rel="noopener"><cite>Five nostalgic developer portfolios</cite>, WeAreDevelopers</a><span>A whole site as one single interface. That thought became 14, where the site is a search box, and 17, where it is all characters.</span></li>
-          <li>The rest is from tools and demos I already knew: the command menus of developer tools (14), node editors (15), holographic trading cards (16) and ASCII renderers (17).</li>
+          <li><a class="x" href="https://www.b12.io/resource-center/website-design/web-design-guide-bento-grids-and-kinetic-typography" target="_blank" rel="noopener"><cite>Bento grids and kinetic typography</cite>, B12</a><span>The house rules for 11 and 13: every tile has one job, headings move and body text does not.</span></li>
+          <li><a class="x" href="https://www.wearedevelopers.com/en/magazine/644/five-nostalgic-developer-portfolios-for-inspiration-644" target="_blank" rel="noopener"><cite>Five nostalgic developer portfolios</cite>, WeAreDevelopers</a><span>A whole site as one single interface became 14, where the site is a search box, and 17, where it is all characters.</span></li>
         </ul>
       </div>
 
       <div class="panel">
         <h2>Good to know</h2>
-        <p class="sub">The small print behind all twenty.</p>
+        <p class="sub">The small print behind all forty.</p>
         <ul class="facts">
           <li>The fl_chart numbers are a snapshot from 17 November 2026: 7.6k stars, 2.3M downloads a month, 7,209 likes. The real site will refresh them from GitHub and pub.dev on its own.</li>
           <li>The game links point to games.imanneo.dev, so they start working once the games site has moved there.</li>
+          <li>The backgrounds in round three are small shaders or plain canvas drawings, without a library. They hold still when a device asks for less motion, and the page stays readable where WebGL is missing.</li>
+          <li>The pages in round four are my own code in the style of each template, not the templates themselves. If you pick one, I can install the real theme where it is a Hugo theme (33 and 36), or keep my version for the others, which are built for Jekyll, Next.js, Gatsby or Astro.</li>
+          <li class="ask"><b>Your work history is missing.</b> Your current site has company logos but no titles or dates, so where a template has an Experience or Education section, the sample shows what you work on instead. Send me the list and I will add a real one.</li>
+          <li class="ask"><b>One link still needs your yes.</b> I could not open the mailing list link (iman-khoshabi.kit.com/profile) to confirm it. Round one and sample 38 show it, the others leave it out. Tell me if it is right.</li>
           <li>Samples 19 and 20 run on Three.js, which sits in the folder next to the pages. Sample 18 draws with WebGL directly. All three turn into a plain page where 3D is not available.</li>
-          <li class="ask"><b>One link still needs your yes.</b> I could not confirm the mailing list link (iman-khoshabi.kit.com/profile). Round one shows it and round two leaves it out. Tell me if it is right.</li>
           <li>Your current site has the contact email with the domain written twice in <code>hugo.yaml</code>. The new build fixes that.</li>
           <li>Nothing on the live site changes until you pick.</li>
         </ul>
@@ -525,7 +1063,8 @@
     </section>
 
     <div class="next">
-      <p><b>Next step:</b> reply with a number from either round. I will build that one into the real Hugo site and open a pull request for you to review.</p>
+      <p><b>Next step:</b> reply with a number from any round, or two if you want a mix. I will build that one into the real Hugo site and open a pull request for you to review.</p>
+      <p id="mine" hidden></p>
     </div>
   </main>
 
@@ -534,16 +1073,65 @@
   </footer>
 </div>
 <script>
-/* Jump links scroll inside the page, so they work wherever the gallery is shown. */
-document.addEventListener("click", function (e) {
-  var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
-  if (!a) return;
-  var t = document.getElementById(a.getAttribute("href").slice(1));
-  if (!t) return;
-  e.preventDefault();
-  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  t.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" });
-});
+(function () {
+  /* Jump links scroll inside the page, so they work wherever the gallery is shown. */
+  document.addEventListener("click", function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var t = document.getElementById(a.getAttribute("href").slice(1));
+    if (!t) return;
+    e.preventDefault();
+    if (filtering()) setFilter(false);
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    t.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" });
+  });
+
+  /* The shortlist: stars on the cards, kept in this browser, and a switch that shows only the starred ones. */
+  var KEY = "imanneo-redesign-shortlist", picks = [];
+  try {
+    var raw = JSON.parse(localStorage.getItem(KEY) || "[]");
+    if (Array.isArray(raw)) picks = raw.filter(function (n) { return typeof n === "number" && n >= 1 && n <= 40; });
+  } catch (e) {}
+  var page = document.getElementById("top"), only = document.getElementById("only"), count = document.getElementById("count"),
+    empty = document.getElementById("empty"), mine = document.getElementById("mine"), shead = document.getElementById("shead"), sheadH = document.getElementById("shead-h"),
+    stars = Array.prototype.slice.call(document.querySelectorAll(".star")), rounds = Array.prototype.slice.call(document.querySelectorAll(".round"));
+  function two(n) { return (n < 10 ? "0" : "") + n; }
+  function filtering() { return only.getAttribute("aria-pressed") === "true"; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(picks)); } catch (e) {} }
+  function paint() {
+    stars.forEach(function (b) {
+      var n = +b.getAttribute("data-n"), on = picks.indexOf(n) >= 0;
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      b.setAttribute("aria-label", (on ? "Take option " + n + " off my shortlist" : "Put option " + n + " on my shortlist"));
+      b.querySelector("span").textContent = on ? "On your shortlist" : "Shortlist";
+      b.closest("li").classList.toggle("on", on);
+    });
+    count.textContent = picks.length;
+    var f = filtering();
+    page.classList.toggle("only", f);
+    rounds.forEach(function (r) { r.hidden = f && !r.querySelector("li.on"); });
+    empty.hidden = !(f && !picks.length);
+    shead.hidden = !(f && picks.length);
+    sheadH.textContent = picks.length === 1 ? "One option on your shortlist" : picks.length + " options on your shortlist";
+    only.setAttribute("aria-label", f ? "Show all forty options" : "Show only my shortlist");
+    var sorted = picks.slice().sort(function (a, b) { return a - b; }).map(two);
+    mine.hidden = !sorted.length;
+    mine.textContent = sorted.length ? "Your shortlist so far: " + sorted.join(", ") + "." : "";
+  }
+  function setFilter(on) { only.setAttribute("aria-pressed", on ? "true" : "false"); paint(); }
+  stars.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var n = +b.getAttribute("data-n"), i = picks.indexOf(n);
+      if (i >= 0) picks.splice(i, 1); else picks.push(n);
+      save(); paint();
+    });
+  });
+  only.addEventListener("click", function () {
+    setFilter(!filtering());
+    if (filtering()) document.getElementById("rounds").scrollIntoView({ block: "start" });
+  });
+  paint();
+})();
 </script>
 
 </body>
