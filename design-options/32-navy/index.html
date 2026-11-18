@@ -276,6 +276,10 @@ footer{display:flex;flex-direction:column;align-items:center;justify-content:cen
   .skills{grid-template-columns:repeat(2,minmax(0,1fr))}
   .grid{grid-template-columns:minmax(0,1fr)}
 }
+@media (max-width:399px){
+  .num{white-space:normal}
+  .num::after{display:none}
+}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
 </style>
 </head>
