@@ -32,7 +32,7 @@
         var r = document.createRange(); r.selectNodeContents(node);
         var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
         if (node.scrollIntoView) node.scrollIntoView({ block: "center" });
-        show("Selected", "The address is selected. Copy it with your keyboard.");
+        show("Selected", "The address is selected, ready to copy.");
       } else show("Copy it by hand");
     }
     try { navigator.clipboard.writeText(text).then(function () { show("Copied", btn.getAttribute("data-said")); }, select); } catch (e) { select(); }

@@ -37,4 +37,5 @@ hugo server
 
 #### Credits
 
-The typeface is [Plus Jakarta Sans](https://github.com/tokotype/PlusJakartaSans) by Tokotype, under the SIL Open Font License (`static/fonts/OFL.txt`).
+- The typeface is [Plus Jakarta Sans](https://github.com/tokotype/PlusJakartaSans) by Tokotype, under the SIL Open Font License (`static/fonts/OFL.txt`).
+- The YouTube, GitHub, LinkedIn and X icons come from [Simple Icons](https://simpleicons.org/) (CC0), and the pen icon from [Feather](https://feathericons.com/) (MIT).
