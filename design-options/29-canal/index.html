@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam. Mobile apps, open source and small games.">
+<meta name="theme-color" content="#0b0f2a">
+<link rel="icon" href="../shared/img/n.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#080b1f; --ink:#fff1d6; --mut:rgba(255,241,214,.74); --dim:rgba(255,241,214,.52); --line:rgba(255,241,214,.15); --tile:rgba(255,241,214,.035);
+  --acc:#f5a55a; --acc-ink:#221203;
+  --sans:"Outfit",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --gut:clamp(22px,5.4vw,80px);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+svg{width:1em;height:1em;flex:none}
+.skip{position:absolute;left:-999px;top:8px;z-index:9;background:var(--acc);color:var(--acc-ink);padding:8px 12px;border-radius:8px;font-weight:600}
+.skip:focus{left:12px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:5px}
+
+.wrap{width:100%;max-width:1320px;margin-inline:auto;padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+.top{position:absolute;inset:0 0 auto;z-index:3;padding-top:calc(18px + env(safe-area-inset-top,0px))}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15.5px;text-decoration:none}
+.brand img{width:26px;height:26px}
+.top nav{display:flex;gap:4px}
+.top nav a{font-size:15px;font-weight:500;color:var(--mut);text-decoration:none;padding:8px 12px;border-radius:999px}
+.top nav a:hover{color:var(--ink);background:rgba(255,241,214,.1)}
+
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;overflow:hidden;background:linear-gradient(#0b0f2a 0%,#2f346e 34%,#b45a78 52%,#f49a4e 60%,#8f5a55 61%,#2a2e5e 76%,#080b1f 100%)}
+#bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.nogl #bg{display:none}
+.sky{position:relative;z-index:1;flex:0 0 auto;min-height:60vh;min-height:60svh;display:flex;flex-direction:column;justify-content:space-between;padding-top:104px}
+.intro{max-width:560px}
+.role{margin:0;font-size:clamp(22px,2.6vw,30px);font-weight:600;line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.bio{margin:12px 0 0;color:var(--mut);font-weight:300;font-size:clamp(16.5px,1.35vw,18.5px)}
+.soc{list-style:none;margin:0;padding:0}
+.hero .soc{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.soc-a{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:1px solid rgba(255,241,214,.26);border-radius:999px;background:rgba(8,11,31,.32);font-size:14.5px;font-weight:500;transition:border-color .15s,background .15s}
+.soc-a:hover{border-color:var(--acc);background:rgba(8,11,31,.6)}
+.soc-a:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.soc-i{display:inline-flex;font-size:15px;color:var(--acc)}
+.soc-h,.soc-n,a .soc-e{display:none}
+.soc-mail .soc-e{font-size:12px;color:var(--dim);padding-left:9px;border-left:1px solid var(--line)}
+.soc-mail.did .soc-e{color:var(--acc)}
+h1{margin:28px 0 0;font-size:var(--name,clamp(44px,13vw,190px));font-weight:800;line-height:.86;letter-spacing:-.03em;color:transparent;white-space:nowrap}
+.nogl h1{color:var(--ink)}
+.water{position:relative;z-index:1;flex:1 1 auto;min-height:34vh;min-height:34svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+.refl{display:none;margin:0;font-size:var(--name,clamp(44px,13vw,190px));font-weight:800;line-height:.86;letter-spacing:-.03em;white-space:nowrap;transform:scaleY(-1);opacity:.3;-webkit-mask-image:linear-gradient(transparent 0,#000 100%);mask-image:linear-gradient(transparent 0,#000 100%)}
+.nogl .refl{display:block;margin-bottom:auto}
+.cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 24px;font-size:12.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.cap p{margin:0}
+.nogl .tip,.t-touch{display:none}
+@media (hover:none){.t-mouse{display:none}.t-touch{display:inline}}
+@media (max-width:760px){h1 span,.refl span{display:block}}
+
+main{position:relative}
+.quad{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding-block:clamp(28px,5vw,64px) 28px}
+.tile{min-width:0;padding:clamp(22px,3vw,40px);border:1px solid var(--line);border-radius:28px;background:var(--tile);scroll-margin-top:18px}
+.tile-k{margin:0 0 6px;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+h2{margin:0 0 18px;font-size:clamp(28px,3.2vw,40px);font-weight:700;line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.lead{margin:0 0 22px;font-size:clamp(17.5px,1.5vw,19.5px);font-weight:300;line-height:1.55;color:var(--mut)}
+h3{margin:22px 0 10px;font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+
+.focus{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.focus li{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr);gap:2px 12px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line)}
+.fo-n{font-size:13px;font-weight:600;color:var(--acc)}
+.fo-t{font-weight:600}
+.fo-d{color:var(--mut);font-weight:300}
+.chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.chips li{padding:5px 12px;border:1px solid var(--line);border-radius:999px;font-size:13.5px;color:var(--mut)}
+
+.fl-h{display:flex;align-items:center;gap:14px}
+.fl-logo{width:48px;height:48px;border-radius:13px}
+.fl-n{margin:0;font-size:25px;font-weight:700;letter-spacing:-.02em;line-height:1.1;text-transform:none;color:var(--ink)}
+.fl-t{margin:3px 0 0;color:var(--mut);font-weight:300;font-size:15.5px}
+.fl-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:24px 0 0}
+.fl-nums div{display:flex;flex-direction:column-reverse;gap:4px;min-width:0}
+.fl-nums dd{margin:0;font-size:clamp(34px,4.4vw,60px);font-weight:700;line-height:.95;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:var(--acc)}
+.fl-nums dt{font-size:13.5px;color:var(--mut);line-height:1.3}
+.fl-links{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 22px}
+.fl-links a,.out{display:inline-flex;align-items:center;gap:6px;min-height:34px;font-size:15px;font-weight:600;text-decoration:none}
+.fl-links a svg,.out svg{font-size:13px;color:var(--acc)}
+.fl-links a:hover,.out:hover{color:var(--acc)}
+.more{list-style:none;margin:20px 0 0;padding:0;border-top:1px solid var(--line)}
+.more-a{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:0 14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.more-i{grid-row:span 2;font-size:18px;color:var(--acc);display:inline-flex}
+.more-t{font-weight:600}
+.more-d{grid-column:2;color:var(--mut);font-weight:300;font-size:15.5px}
+.more-h{grid-column:3;grid-row:1 / span 2;display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--dim)}
+.more-a:hover .more-t,.more-a:hover .more-h{color:var(--acc)}
+
+.games{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.game{display:flex;flex-direction:column;text-decoration:none}
+.g-img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:18px;margin-bottom:10px;transition:transform .2s}
+.game:hover .g-img{transform:translateY(-3px)}
+.g-t{font-weight:600;line-height:1.25}
+.g-tag{font-size:12.5px;color:var(--acc)}
+.g-b{display:none}
+.after{margin:18px 0 0}
+
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 22px}
+.mail-a{font-size:clamp(20px,2.4vw,30px);font-weight:600;letter-spacing:-.025em;line-height:1.2;overflow-wrap:anywhere;user-select:all}
+.mail-b{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 15px;border-radius:999px;background:var(--acc);color:var(--acc-ink);font-size:14px;font-weight:600}
+.mail-b:hover{filter:brightness(1.08)}
+.mail-b:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.list{display:flex;flex-wrap:wrap;gap:8px}
+.list .soc-a{background:transparent;border-color:var(--line)}
+
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;padding-block:6px calc(30px + env(safe-area-inset-bottom,0px));font-size:13.5px;color:var(--dim)}
+footer p{margin:0}
+
+@media (max-width:980px){
+  .top nav{display:none}
+  .quad{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  body{font-size:16.5px}
+  .sky{padding-top:88px}
+  .focus li{grid-template-columns:30px minmax(0,1fr)}
+  .fo-d{grid-column:2}
+  .games{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fl-nums{gap:8px}
+  .more-a{grid-template-columns:22px minmax(0,1fr)}
+  .more-h{grid-column:2;grid-row:auto;margin-top:6px}
+  .tile{border-radius:22px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="../shared/img/n.png" alt="" width="26" height="26"><span>imaNNeo</span></a>
+    <nav aria-label="Sections">
+      <a href="#about">About</a><a href="#work">Open source</a><a href="#games">Games</a><a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <canvas id="bg" aria-hidden="true"></canvas>
+    <div class="sky wrap" id="sky">
+      <div class="intro">
+        <p class="role">Senior mobile engineer in Amsterdam.</p>
+        <p class="bio">I have been building mobile apps for 10+ years, with a mix of Android (Kotlin and Java) and Flutter (Dart). I like products that feel fast and solid, and I care a lot about clean structure and good UI details.</p>
+        <ul class="soc" data-fill="links"></ul>
+      </div>
+      <h1 id="name"><span>Iman</span> <span>Khoshabi</span></h1>
+    </div>
+    <div class="water wrap">
+      <p class="refl" aria-hidden="true"><span>Iman</span> <span>Khoshabi</span></p>
+      <div class="cap">
+        <p>52.3676° N, 4.9041° E · Amsterdam</p>
+        <p class="tip"><span class="t-mouse">Move over the water</span><span class="t-touch">Touch the water</span></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="quad">
+      <section class="tile" id="about" aria-labelledby="h-about">
+        <p class="tile-k">01 · About</p>
+        <h2 id="h-about">What I work on</h2>
+        <p class="lead" data-say="me.bio2"></p>
+        <ul class="focus" data-fill="focus"></ul>
+        <h3>Stack</h3><ul class="chips" id="stack"></ul>
+        <h3>Worked in</h3><ul class="chips" id="domains"></ul>
+      </section>
+
+      <section class="tile" id="work" aria-labelledby="h-work">
+        <p class="tile-k">02 · Open source</p>
+        <h2 id="h-work">Open source, writing and videos</h2>
+        <div data-fill="fl"></div>
+        <ul class="more" data-fill="more"></ul>
+      </section>
+
+      <section class="tile" id="games" aria-labelledby="h-games">
+        <p class="tile-k">03 · Games</p>
+        <h2 id="h-games">Games, on the side</h2>
+        <p class="lead">I make small games for fun, with Godot, Cocos Creator and Flame. These are the four main ones.</p>
+        <ul class="games" data-fill="games"></ul>
+        <p class="after"><a class="out" id="all-games" href="#">And 20 small browser games<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></p>
+      </section>
+
+      <section class="tile" id="contact" aria-labelledby="h-contact">
+        <p class="tile-k">04 · Contact</p>
+        <h2 id="h-contact">Say hi</h2>
+        <p class="lead" data-say="me.contact"></p>
+        <p class="mail" data-fill="mail"></p>
+        <ul class="soc list" id="soc2"></ul>
+      </section>
+    </div>
+    <footer>
+      <p>© 2026 Iman Khoshabi</p>
+      <p><a href="#top">Back to the top</a></p>
+    </footer>
+  </div>
+</main>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/icons.js"></script>
+<script src="../shared/kit.js"></script>
+<script src="../shared/bg.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.SITE, K = window.KIT, $ = function (id) { return document.getElementById(id); };
+  K.fill();
+  $("stack").innerHTML = K.html.chips(S.me.stack);
+  $("domains").innerHTML = K.html.chips(S.me.domains);
+  $("soc2").innerHTML = K.html.links({ skip: ["mail"] });
+  var ag = $("all-games"); ag.href = S.links.games; ag.target = "_blank"; ag.rel = "noopener";
+
+  /*
+   * One picture: a dusk sky, the name standing on the waterline, and the water below, which shows
+   * the sky, the name and a row of quay lights upside down and pushes them about with ripples.
+   * The name is drawn once on a hidden canvas, so the letters and their reflection always match.
+   */
+  var FRAG = [
+    "uniform sampler2D uText; uniform float uHor; uniform float uBand; uniform vec3 uInk;",
+    "vec3 sky(float h){",
+    "  vec3 col = mix(vec3(.957, .604, .306), vec3(.706, .353, .471), smoothstep(0., .17, h));",
+    "  col = mix(col, vec3(.184, .204, .431), smoothstep(.09, .48, h));",
+    "  return mix(col, vec3(.043, .059, .165), smoothstep(.38, 1., h));",
+    "}",
+    "float name(vec2 q){",
+    "  vec2 uv = vec2(q.x / uRes.x, q.y / uBand);",
+    "  return texture2D(uText, clamp(uv, 0., 1.)).r * step(0., uv.y) * step(uv.y, 1.);",
+    "}",
+    "float lamps(float x, float spread){",
+    "  float s = 0.;",
+    "  for (int i = 0; i < 9; i++) {",
+    "    float fi = float(i), d = (x - uRes.x * (fi + .5 + (hash11(fi * 7.3 + 1.) - .5) * .55) / 9.) / spread;",
+    "    s += exp(-d * d) * (.55 + .45 * hash11(fi * 3.1 + 2.));",
+    "  }",
+    "  return s;",
+    "}",
+    "void main(){",
+    "  vec2 p = gl_FragCoord.xy;",
+    "  float y = p.y - uHor, top = uRes.y - uHor, s = 1. / uDpr, t = uTime;",
+    "  vec3 warm = vec3(1., .8, .5), col;",
+    "  if (y >= 0.) {",
+    "    float h = y / top;",
+    "    col = sky(h);",
+    "    vec2 g = floor(p / (2.5 * uDpr));",
+    "    col += vec3(.9, .92, 1.) * step(.9988, hash21(g)) * smoothstep(.4, .9, h) * (.45 + .4 * sin(t * 1.7 + hash21(g + 3.) * 40.));",
+    "    float e = y / (6. * uDpr);",
+    "    col += warm * lamps(p.x, 4.5 * uDpr) * exp(-e * e);",
+    "    col = mix(col, uInk, name(vec2(p.x, y)));",
+    "  } else {",
+    "    float d = -y, dn = clamp(d / uHor, 0., 1.);",
+    "    float n1 = gnoise(vec2(p.x * .0035 * s, d * .03 * s - t * .35));",
+    "    float w1 = sin(d * .11 * s - t * 1.7 + n1 * 7.), w2 = sin(d * .37 * s + t * 2.4 + p.x * .013 * s);",
+    "    float amp = (.22 + dn * 2.5) * uDpr;",
+    "    float dx = (w1 * 5.5 + w2 * 2.) * amp;",
+    "    float dy = (gnoise(vec2(p.x * .011 * s + t * .15, d * .06 * s - t * .5)) - .5) * 12. * amp;",
+    "    float r = length((p - uMouse) * vec2(1., 2.3)) * s;",
+    "    float ring = sin(r * .13 - t * 7.) * exp(-r * .011) * uHover * step(uMouse.y, uHor + 2.);",
+    "    dx += ring * 10. * uDpr; dy += ring * 14. * uDpr;",
+    "    vec2 q = vec2(p.x + dx, max(d + dy, 0.));",
+    "    vec3 refl = sky(q.y / top) + warm * lamps(q.x, (4.5 + dn * 30.) * uDpr) * exp(-dn * 3.) * .6;",
+    "    refl = mix(refl, uInk, name(q) * .8);",
+    "    col = mix(refl * .86, vec3(.028, .04, .115), smoothstep(0., 1.05, dn) * .72);",
+    "    col += warm * pow(max(w1 * .5 + .5, 0.), 14.) * .055 * (1. - dn);",
+    "    col = mix(col, vec3(1., .82, .6), (1. - smoothstep(0., 1.6 * uDpr, d)) * .4);",
+    "  }",
+    "  gl_FragColor = vec4(col, 1.);",
+    "}"
+  ].join("\n");
+
+  var hero = $("top"), sky = $("sky"), h1 = $("name"), narrow = window.matchMedia("(max-width: 760px)");
+  var FONT = '"Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif', mask = document.createElement("canvas"), mx = mask.getContext("2d"), bg = null;
+
+  /* Pick the biggest size at which the name fits its column, tell the page, then draw the mask at that size. */
+  function layout(api) {
+    var d = api.size.dpr, lines = narrow.matches ? ["Iman", "Khoshabi"] : ["Iman Khoshabi"];
+    var room = h1.parentNode.clientWidth - parseFloat(getComputedStyle(h1.parentNode).paddingLeft) - parseFloat(getComputedStyle(h1.parentNode).paddingRight);
+    mx.font = "800 100px " + FONT;
+    if ("letterSpacing" in mx) mx.letterSpacing = "-3px";
+    var widest = Math.max.apply(null, lines.map(function (l) { return mx.measureText(l).width; }));
+    var px = Math.min(narrow.matches ? 132 : 210, Math.floor(room / widest * 100 * .995));
+    document.documentElement.style.setProperty("--name", px + "px");
+    var hr = hero.getBoundingClientRect(), left = h1.getBoundingClientRect().left - hr.left, hor = sky.getBoundingClientRect().bottom - hr.top;
+    var lh = px * .86, band = Math.ceil((lines.length * lh + px * .2) * d);
+    mask.width = api.size.w; mask.height = band;
+    mx.fillStyle = "#000"; mx.fillRect(0, 0, mask.width, band);
+    mx.fillStyle = "#fff"; mx.textBaseline = "alphabetic"; mx.font = "800 " + (px * d) + "px " + FONT;
+    if ("letterSpacing" in mx) mx.letterSpacing = (-.03 * px * d) + "px";
+    lines.forEach(function (l, i) { mx.fillText(l, left * d, band - (lines.length - 1 - i) * lh * d - px * .012 * d); });
+    api.tex("uText", mask); api.set("uBand", band); api.set("uHor", Math.round(api.size.h - hor * d));
+  }
+  function start() {
+    bg = BG.mount($("bg"), {
+      frag: FRAG, maxDpr: 2, stillTime: 6, ease: 12,
+      uniforms: { uInk: BG.rgb("#fff1d6") },
+      onResize: layout
+    });
+    if (bg) layout(bg);
+  }
+  /* Wait for the font, but not for long. */
+  var done = false, go = function () { if (!done) { done = true; start(); } };
+  if (document.fonts && document.fonts.load) { document.fonts.load('800 100px "Outfit"').then(go, go); setTimeout(go, 1800); } else go();
+})();
+</script>
+<script src="../shared/switcher.js" data-n="29"></script>
+</body>
+</html>
