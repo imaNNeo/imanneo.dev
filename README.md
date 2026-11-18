@@ -33,7 +33,9 @@ The page never contains the email address as text, so that robots that collect a
 
 #### The name in Persian
 
-So that a search in Persian finds the page, `hugo.yaml` holds the name in Persian in two spellings. `nameFa` has the half-space and shows under the photo. `nameFaTyped` has a normal space, the way most people type it, and goes into the title of the browser tab. Search engines also get both as other names of the same person.
+So that a search in Persian finds the page, `hugo.yaml` holds the name in Persian in two spellings. The page itself shows no Persian text: the name sits only in places that a search engine reads. `nameFaTyped` has a normal space, the way most people type it, and goes into the title of the browser tab. `nameFa` has the half-space and goes into the description of the photo (its `alt` text). Search engines also get both as other names of the same person.
+
+Do not put the name into the page as text that is hidden with CSS. Search engines treat hidden text as spam.
 
 #### Running it locally
 

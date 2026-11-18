@@ -28,10 +28,15 @@
     {{- with resources.Get $p.hero.photo }}
     {{- $small := .Resize (printf "400x %s q75" $webp) }}
     {{- $large := .Resize (printf "640x %s q75" $webp) }}
+    {{- /*
+      The page shows no Persian text. The description of the photo also names the person in Persian,
+      because that is one of the places a search engine reads without the text being on the page.
+    */}}
+    {{- $alt := $p.hero.photoAlt }}
+    {{- with $p.nameFa }}{{ $alt = printf "%s (%s)" $alt . }}{{ end }}
     <figure class="photo glass">
-      <img src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} 400w, {{ $large.RelPermalink }} 640w" sizes="(max-width: 860px) 280px, 360px" alt="{{ $p.hero.photoAlt }}" width="640" height="640" fetchpriority="high">
-      {{- /* The name in Persian is real text on the page, so that a search in Persian finds it. */}}
-      <figcaption><span>{{ $p.name }}</span>{{ with $p.nameFa }}<span class="cap-fa" lang="fa" dir="rtl">{{ . }}</span>{{ end }}<span class="cap-aka">a.k.a. {{ $p.aka }}</span></figcaption>
+      <img src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} 400w, {{ $large.RelPermalink }} 640w" sizes="(max-width: 860px) 280px, 360px" alt="{{ $alt }}" width="640" height="640" fetchpriority="high">
+      <figcaption><span>{{ $p.name }}</span><span class="cap-aka">a.k.a. {{ $p.aka }}</span></figcaption>
     </figure>
     {{- end }}
   </section>
