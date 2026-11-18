@@ -170,6 +170,11 @@ footer{font-size:12.5px;color:var(--t3);text-align:center;padding-top:6px}
   .me{grid-template-columns:64px minmax(0,1fr);gap:14px}
   .me img{width:64px;height:64px;border-radius:18px}
   .find span{display:none}
+  .menu{gap:4px}
+  .menu nav{gap:0}
+  .menu nav a{padding:8px 7px;font-size:13.5px;letter-spacing:0}
+  .brand{padding:0 4px 0 0}
+  .brand img{width:30px;height:30px}
 }
 @media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
 </style>
@@ -405,7 +410,8 @@ footer{font-size:12.5px;color:var(--t3);text-align:center;padding-top:6px}
 
   /* ---- pie chart: games by genre ---- */
   var order = ["Puzzle", "Arcade", "Relaxing", "Casual", "Kids", "Action", "Cooking", "Strategy"];
-  var gcol = { Puzzle: C.cyan, Arcade: C.blue, Relaxing: C.green, Casual: C.yellow, Kids: C.pink, Action: C.orange, Cooking: C.purple, Strategy: C.red };
+  /* neighbours on the ring are picked so that they stay apart for colour-blind readers too */
+  var gcol = { Puzzle: C.cyan, Arcade: C.blue, Relaxing: C.green, Casual: C.red, Kids: C.yellow, Action: C.pink, Cooking: C.orange, Strategy: C.purple };
   var counts = {}; S.games.forEach(function (g) { counts[g.genre] = (counts[g.genre] || 0) + 1; });
   var pie = { el: $("pie"), on: null, peek: null };
   function drawPie() {
