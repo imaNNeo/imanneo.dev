@@ -69,8 +69,8 @@ params:
       label: "X"
       url: "https://twitter.com/iman__neo"
     - icon: blog
-      label: "Flutter 4 Fun"
-      url: "https://flutter4fun.com"
+      label: "Blog"
+      url: "https://blog.imanneo.dev"
 
   about:
     menu: "About"
@@ -114,10 +114,10 @@ params:
           url: "https://app.flchart.dev"
     more:
       - icon: blog
-        title: "Flutter 4 Fun"
-        text: "A blog where I solve UI challenges in Flutter."
-        handle: "flutter4fun.com"
-        url: "https://flutter4fun.com"
+        title: "Blog"
+        text: "Posts where I solve UI challenges in Flutter."
+        handle: "blog.imanneo.dev"
+        url: "https://blog.imanneo.dev"
       - icon: youtube
         title: "YouTube"
         text: "Videos about Flutter and game development."
