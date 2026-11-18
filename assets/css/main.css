@@ -95,7 +95,7 @@ h3{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.02em;color:var
 .focus li:last-child:nth-child(odd){grid-column:1 / -1}
 .fo-n{font-size:12px;font-weight:700;color:var(--acc)}
 .fo-t{margin-top:4px;font-weight:700;line-height:1.35}
-.fo-d{color:var(--mut);font-size:15px}
+.fo-d{color:var(--mut);font-size:15px;text-wrap:balance}
 .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:26px}
 .chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .chips li{padding:6px 12px;border-radius:999px;background:var(--solid);border:1px solid var(--line);font-size:13.5px;font-weight:600;color:var(--mut)}

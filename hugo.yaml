@@ -32,7 +32,7 @@ caches:
 
 # Everything the page says is below. Change a text, push to main, and the site rebuilds.
 params:
-  description: "Iman Khoshabi (imaN Neo): senior software engineer in Amsterdam. Mobile apps, open source and small games."
+  description: "Iman Khoshabi (imaN Neo): senior software engineer in Amsterdam. Android apps, open source and small games."
   name: "Iman Khoshabi"
   aka: "imaN Neo"
   handle: "imaNNeo"
@@ -75,12 +75,12 @@ params:
   about:
     menu: "About"
     title: "What I work on"
-    lead: "Most of my work is mobile apps, from the first architecture sketch to the release. Next to that, I share what I learn through open source, write-ups and videos."
+    lead: "These days I mostly build native Android apps, from the first architecture sketch to the release. Next to that, I share what I learn through open source, write-ups and videos."
     focus:
+      - title: "Native Android first"
+        text: "I'm comfortable in Flutter too."
       - title: "Mobile apps, end to end"
         text: "From architecture to release."
-      - title: "Flutter and native Android"
-        text: "I'm comfortable in both."
       - title: "Shipping with balance"
         text: "Clean code, but not over-engineered."
       - title: "UI implementation"
@@ -88,7 +88,7 @@ params:
       - title: "Games on the side"
         text: "Small ones, just for fun."
     stackTitle: "Stack"
-    stack: ["Flutter", "Dart", "Android", "Kotlin", "Java"]
+    stack: ["Android", "Kotlin", "Java", "Flutter", "Dart"]
     domainsTitle: "Worked in"
     domains: ["Maps and navigation", "Social media", "Shopping", "Fintech", "E-commerce"]
 
