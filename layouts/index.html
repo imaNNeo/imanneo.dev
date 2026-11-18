@@ -1,0 +1,122 @@
+{{ define "main" }}
+{{- $p := site.Params -}}
+{{- $webp := cond hugo.IsExtended "webp" "" -}}
+{{- $out := partial "icon.html" "out" -}}
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      {{- with resources.Get "fav.png" }}{{ with .Resize "78x" }}<img src="{{ .RelPermalink }}" alt="" width="26" height="26">{{ end }}{{ end -}}
+      <span>{{ $p.handle }}</span></a>
+    <nav class="glass" aria-label="Sections">
+      <a href="#about">{{ $p.about.menu }}</a><a href="#work">{{ $p.work.menu }}</a><a href="#games">{{ $p.games.menu }}</a><a href="#contact">{{ $p.contact.menu }}</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap" id="top">
+    <div>
+      <p class="tag glass"><i aria-hidden="true"></i>{{ $p.hero.tag }}</p>
+      <h1>{{ $p.hero.greeting }} <span>{{ $p.hero.name }}</span></h1>
+      <p class="role">{{ $p.hero.line }}</p>
+      <p class="bio">{{ $p.hero.text }}</p>
+      <ul class="soc">
+        {{- partial "socials.html" (dict "mail" true) }}
+      </ul>
+    </div>
+    {{- with resources.Get $p.hero.photo }}
+    {{- $small := .Resize (printf "400x %s q82" $webp) }}
+    {{- $large := .Resize (printf "640x %s q82" $webp) }}
+    <figure class="photo glass">
+      <img src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} 400w, {{ $large.RelPermalink }} 640w" sizes="(max-width: 860px) 280px, 360px" alt="{{ $p.hero.photoAlt }}" width="640" height="640" fetchpriority="high">
+      <figcaption><span>{{ $p.name }}</span><span>a.k.a. {{ $p.aka }}</span></figcaption>
+    </figure>
+    {{- end }}
+  </section>
+
+  <div class="wrap">
+    <div class="secs">
+      <section class="sec glass" id="about" aria-labelledby="h-about">
+        <header><span class="sec-k">01</span><h2 id="h-about">{{ $p.about.title }}</h2></header>
+        <div class="sec-b">
+          <p class="lead">{{ $p.about.lead }}</p>
+          <ul class="focus">
+            {{- range $i, $f := $p.about.focus }}
+            <li><span class="fo-n">{{ printf "%02d" (add $i 1) }}</span><b class="fo-t">{{ $f.title }}</b><span class="fo-d">{{ $f.text }}</span></li>
+            {{- end }}
+          </ul>
+          <div class="facts">
+            <div><h3>{{ $p.about.stackTitle }}</h3><ul class="chips">{{ range $p.about.stack }}<li>{{ . }}</li>{{ end }}</ul></div>
+            <div><h3>{{ $p.about.domainsTitle }}</h3><ul class="chips">{{ range $p.about.domains }}<li>{{ . }}</li>{{ end }}</ul></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec glass" id="work" aria-labelledby="h-work">
+        <header><span class="sec-k">02</span><h2 id="h-work">{{ $p.work.title }}</h2></header>
+        <div class="sec-b">
+          {{- with $p.work.flChart }}
+          {{- $stats := partialCached "fl-stats.html" . }}
+          <div class="fl-h">
+            {{- with resources.Get .logo }}{{ with .Resize "144x" }}<img class="fl-logo" src="{{ .RelPermalink }}" alt="" width="48" height="48" loading="lazy">{{ end }}{{ end }}
+            <div><h3 class="fl-n">{{ .name }}</h3><p class="fl-t">{{ .tagline }}</p></div>
+          </div>
+          <dl class="fl-nums">
+            <div><dt>GitHub stars</dt><dd>{{ partial "short.html" $stats.stars }}</dd></div>
+            <div><dt>downloads a month</dt><dd>{{ partial "short.html" $stats.downloads }}</dd></div>
+            <div><dt>releases since {{ .since }}</dt><dd>{{ $stats.releases }}</dd></div>
+          </dl>
+          <ul class="fl-links">
+            {{- range .links }}
+            <li><a href="{{ .url }}" target="_blank" rel="noopener">{{ .label }}{{ $out }}</a></li>
+            {{- end }}
+          </ul>
+          {{- end }}
+          <ul class="more">
+            {{- range $p.work.more }}
+            <li><a class="more-a" href="{{ .url }}" target="_blank" rel="noopener"><span class="more-i">{{ partial "icon.html" .icon }}</span><b class="more-t">{{ .title }}</b><span class="more-d">{{ .text }}</span><span class="more-h">{{ .handle }}{{ $out }}</span></a></li>
+            {{- end }}
+          </ul>
+        </div>
+      </section>
+
+      <section class="sec glass" id="games" aria-labelledby="h-games">
+        <header><span class="sec-k">03</span><h2 id="h-games">{{ $p.games.title }}</h2></header>
+        <div class="sec-b">
+          <p class="lead">{{ $p.games.lead }}</p>
+          <ul class="games">
+            {{- range $p.games.featured }}
+            {{- $cover := resources.Get (printf "images/games/%s.webp" .id) }}
+            {{- if and $cover hugo.IsExtended }}{{ $cover = $cover.Resize "228x webp q82" }}{{ end }}
+            <li><a class="game" href="{{ $p.games.site }}play/{{ .id }}/" target="_blank" rel="noopener">
+              {{- with $cover }}<img class="g-img" src="{{ .RelPermalink }}" alt="" width="76" height="76" loading="lazy">{{ end -}}
+              <span class="g-t">{{ .title }}</span><span class="g-tag">{{ .tag }}</span><span class="g-b">{{ .text }}</span></a></li>
+            {{- end }}
+          </ul>
+          {{- with $p.games.more }}
+          <p class="after"><a class="out" href="{{ $p.games.site }}" target="_blank" rel="noopener">{{ . }}{{ $out }}</a></p>
+          {{- end }}
+        </div>
+      </section>
+
+      <section class="sec glass" id="contact" aria-labelledby="h-contact">
+        <header><span class="sec-k">04</span><h2 id="h-contact">{{ $p.contact.title }}</h2></header>
+        <div class="sec-b">
+          <p class="lead">{{ $p.contact.lead }}</p>
+          {{- with $p.email }}
+          <p class="mail"><a class="mail-a" id="mail-a" href="mailto:{{ . }}">{{ . }}</a><button type="button" class="mail-b" data-copy="{{ . }}" data-from="mail-a">{{ partial "icon.html" "copy" }}<span data-t>Copy</span></button></p>
+          {{- end }}
+          <ul class="soc list">
+            {{- partial "socials.html" (dict "mail" false) }}
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <p>© {{ now.Year }} {{ $p.name }}</p>
+      <p><a href="#top">Back to the top</a></p>
+    </footer>
+  </div>
+</main>
+{{ end }}

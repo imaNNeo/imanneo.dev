@@ -1,0 +1,54 @@
+{{- $p := site.Params -}}
+{{- $title := site.Title -}}
+{{- if not .IsHome }}{{ $title = printf "%s · %s" .Title $p.name }}{{ end -}}
+{{- $photo := resources.Get $p.hero.photo -}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $p.description }}">
+{{- if .IsHome }}
+<link rel="canonical" href="{{ .Permalink }}">
+{{- else }}
+<meta name="robots" content="noindex">
+{{- end }}
+<meta name="theme-color" content="#f6f8fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#06080c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="{{ "fav.png" | relURL }}" type="image/png">
+<link rel="apple-touch-icon" href="{{ "fav.png" | relURL }}">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ $p.name }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $p.description }}">
+<meta property="og:url" content="{{ site.BaseURL }}">
+<meta property="og:image" content="{{ "images/og.jpg" | absURL }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ $p.name }}, {{ $p.hero.tag }}">
+<meta name="twitter:card" content="summary_large_image">
+
+{{- /*
+  The font is served by the site itself, as one file that holds every weight.
+  A second file only loads when the text has accented letters outside basic Latin.
+*/}}
+{{- $latin := "fonts/plus-jakarta-sans-latin-wght-normal.woff2" | relURL }}
+{{- $latinExt := "fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2" | relURL }}
+{{- $face := `@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:200 800;font-display:swap;src:url("%s") format("woff2");unicode-range:%s}` }}
+{{- $fonts := printf $face $latinExt "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF" }}
+{{- $fonts = printf "%s%s" $fonts (printf $face $latin "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD") }}
+<link rel="preload" href="{{ $latin }}" as="font" type="font/woff2" crossorigin>
+<style id="fonts">{{ $fonts | safeCSS }}</style>
+{{- with resources.Get "css/main.css" | minify }}
+<style>{{ .Content | safeCSS }}</style>
+{{- end }}
+{{- with resources.Get "js/main.js" | minify | fingerprint }}
+<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+{{- end }}
+
+{{- if .IsHome }}
+{{- $links := slice }}
+{{- range $p.socials }}{{ $links = $links | append .url }}{{ end }}
+{{- $person := dict "@context" "https://schema.org" "@type" "Person" "name" $p.name "alternateName" (slice $p.aka $p.handle) "url" site.BaseURL "jobTitle" $p.jobTitle "sameAs" $links }}
+{{- with $photo }}{{ $person = merge $person (dict "image" .Permalink) }}{{ end }}
+<script type="application/ld+json">{{ $person | jsonify | safeJS }}</script>
+{{- end }}

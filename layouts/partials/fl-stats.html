@@ -1,0 +1,63 @@
+{{- /*
+  The three fl_chart numbers: stars on GitHub, downloads in the last 30 days and releases on pub.dev.
+
+  Every build asks GitHub and pub.dev for the current values. When one of them does not answer,
+  that number comes from data/fl_chart.yaml instead, so a build never fails because of this.
+  In the GitHub workflow the build passes its own token as HUGO_GITHUB_TOKEN, which lifts
+  the low limit GitHub puts on questions without a name.
+
+  Returns a dict with stars, downloads and releases as whole numbers.
+*/ -}}
+{{- $fl := site.Params.work.flChart -}}
+{{- $saved := site.Data.fl_chart -}}
+{{- $stars := int $saved.stars -}}
+{{- $downloads := int $saved.downloads30 -}}
+{{- $releases := int $saved.releases -}}
+
+{{- /* Stars, from GitHub. */ -}}
+{{- $url := printf "https://api.github.com/repos/%s" $fl.github -}}
+{{- $opts := dict -}}
+{{- with os.Getenv "HUGO_GITHUB_TOKEN" -}}
+  {{- $opts = dict "headers" (dict "Authorization" (printf "Bearer %s" .)) -}}
+{{- end -}}
+{{- with try (resources.GetRemote $url $opts) -}}
+  {{- with .Err -}}
+    {{- warnf "fl_chart: GitHub did not answer, so the saved star count is shown. %s" . -}}
+  {{- else with .Value -}}
+    {{- with try (transform.Unmarshal .Content) -}}
+      {{- with .Value -}}{{- with .stargazers_count -}}{{- $stars = int . -}}{{- end -}}{{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- warnf "fl_chart: %s was not found, so the saved star count is shown." $url -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Downloads in the last 30 days, from pub.dev. */ -}}
+{{- $url = printf "https://pub.dev/api/packages/%s/score" $fl.package -}}
+{{- with try (resources.GetRemote $url) -}}
+  {{- with .Err -}}
+    {{- warnf "fl_chart: pub.dev did not answer, so the saved download count is shown. %s" . -}}
+  {{- else with .Value -}}
+    {{- with try (transform.Unmarshal .Content) -}}
+      {{- with .Value -}}{{- with .downloadCount30Days -}}{{- $downloads = int . -}}{{- end -}}{{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- warnf "fl_chart: %s was not found, so the saved download count is shown." $url -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Releases, from the list of versions on pub.dev. */ -}}
+{{- $url = printf "https://pub.dev/api/packages/%s" $fl.package -}}
+{{- with try (resources.GetRemote $url) -}}
+  {{- with .Err -}}
+    {{- warnf "fl_chart: pub.dev did not answer, so the saved release count is shown. %s" . -}}
+  {{- else with .Value -}}
+    {{- with try (transform.Unmarshal .Content) -}}
+      {{- with .Value -}}{{- with .versions -}}{{- $releases = len . -}}{{- end -}}{{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- warnf "fl_chart: %s was not found, so the saved release count is shown." $url -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (dict "stars" $stars "downloads" $downloads "releases" $releases) -}}
