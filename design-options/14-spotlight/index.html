@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam, maker of fl_chart and a pile of small games.">
+<meta name="theme-color" content="#09090d" id="tc">
+<link rel="icon" href="../shared/img/n.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#09090d;--win:rgba(19,19,25,.74);--ink:#f3f3f6;--mut:#a7a7b2;--dim:#72727e;
+  --line:rgba(255,255,255,.085);--line2:rgba(255,255,255,.15);--sel:rgba(255,255,255,.085);--tile:rgba(255,255,255,.07);--kbd:rgba(255,255,255,.09);
+  --acc:#a093ff;--on-acc:#0e0b22;--glow:.5;--shadow:0 50px 130px -40px rgba(0,0,0,.9);--hi:rgba(255,255,255,.07);--foot:rgba(0,0,0,.16);
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:dark
+}
+:root[data-theme="light"]{
+  --bg:#f0eff6;--win:rgba(255,255,255,.8);--ink:#15151c;--mut:#54545f;--dim:#82828e;
+  --line:rgba(16,16,28,.09);--line2:rgba(16,16,28,.16);--sel:rgba(16,16,28,.065);--tile:rgba(16,16,28,.055);--kbd:rgba(16,16,28,.065);
+  --acc:#5a48f2;--on-acc:#fff;--glow:.4;--shadow:0 50px 110px -50px rgba(50,40,110,.55);--hi:rgba(255,255,255,.8);--foot:rgba(16,16,28,.03);color-scheme:light
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14.5px/1.45 var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr) auto;height:100dvh;transition:background .4s,color .4s}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3,p,dl,dd,ol,ul{margin:0;padding:0}
+ol,ul{list-style:none}
+img{display:block;max-width:100%}
+svg{width:1em;height:1em;flex:none}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;font:500 11px/1 var(--mono);border-radius:6px;background:var(--kbd);color:var(--mut);border:1px solid var(--line)}
+
+/* the glow behind the window takes its colours from what is selected */
+.amb{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.amb i{position:absolute;width:56vmax;height:56vmax;border-radius:50%;filter:blur(120px);opacity:var(--glow);transition:background-color .8s}
+#g1{left:-6%;top:-30%;background:#6a5cff}
+#g2{right:-10%;bottom:-38%;background:#ff5c9a}
+.amb b{position:absolute;inset:0;background-image:radial-gradient(var(--line2) 1px,transparent 1.4px);background-size:26px 26px;-webkit-mask-image:radial-gradient(75% 65% at 50% 46%,#000 25%,transparent 78%);mask-image:radial-gradient(75% 65% at 50% 46%,#000 25%,transparent 78%)}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:calc(16px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) 0 max(22px,env(safe-area-inset-left,0px))}
+.top h1{display:flex;align-items:center;gap:11px;font-size:14.5px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
+.top h1 img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+.top h1 small{display:block;font-weight:400;font-size:12.5px;color:var(--dim);letter-spacing:0}
+.top nav{display:flex;gap:6px}
+.top nav a,.top nav button{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:var(--tile);color:var(--mut);font-size:16px;transition:color .2s,border-color .2s}
+.top nav a:hover,.top nav button:hover{color:var(--ink);border-color:var(--line2)}
+
+.stage{display:grid;place-items:center;min-height:0;padding:16px max(18px,env(safe-area-inset-right,0px)) 8px max(18px,env(safe-area-inset-left,0px))}
+.win{width:min(1010px,100%);height:min(650px,100%);display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;background:var(--win);border:1px solid var(--line2);border-radius:18px;box-shadow:var(--shadow),inset 0 1px 0 var(--hi);-webkit-backdrop-filter:blur(40px) saturate(170%);backdrop-filter:blur(40px) saturate(170%);overflow:hidden;animation:pop .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.975)}}
+.q{display:flex;align-items:center;gap:12px;height:62px;padding:0 16px 0 20px;border-bottom:1px solid var(--line)}
+.q>svg{font-size:19px;color:var(--dim)}
+.q input{flex:1;min-width:0;height:100%;border:0;background:none;outline:0;color:var(--ink);font:400 18px var(--sans);letter-spacing:-.012em;caret-color:var(--acc)}
+.q input::placeholder{color:var(--dim)}
+.q button{border:0;background:none;padding:0}
+.chips{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;display:inline-flex;gap:7px;align-items:center;height:28px;padding:0 11px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--mut);font-size:12.5px;font-weight:500;transition:color .15s,border-color .15s}
+.chips button:hover{color:var(--ink);border-color:var(--line2)}
+.chips button i{font:500 11px/1 var(--mono);font-style:normal;color:var(--dim)}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:transparent}
+.chips button[aria-pressed="true"] i{color:inherit;opacity:.6}
+
+.body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.06fr);min-height:0}
+.list{overflow-y:auto;padding:4px 8px 10px;scrollbar-width:thin;scrollbar-color:var(--line2) transparent;overscroll-behavior:contain;outline:0}
+.gh{padding:13px 10px 6px;font-size:11.5px;font-weight:600;color:var(--dim);letter-spacing:.02em}
+.it{position:relative;display:grid;grid-template-columns:28px minmax(0,max-content) minmax(0,1fr) auto;align-items:center;gap:11px;width:100%;height:42px;padding:0 10px;border:0;border-radius:9px;background:none;text-align:left;cursor:pointer;scroll-margin:40px 0 10px}
+.it[aria-selected="true"]{background:var(--sel)}
+.it[aria-selected="true"]::before{content:"";position:absolute;left:-8px;top:11px;bottom:11px;width:3px;border-radius:0 3px 3px 0;background:var(--acc)}
+.it .ic{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;background:var(--tile);overflow:hidden;color:var(--mut);font-size:15px}
+.it .ic img{width:100%;height:100%;object-fit:cover}
+.it .tt{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.it .tt mark{background:none;color:var(--acc);font-weight:700}
+.it .sb{color:var(--dim);font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.it .kd{color:var(--dim);font-size:12.5px}
+.none{padding:46px 20px;text-align:center;color:var(--mut)}
+.none b{display:block;color:var(--ink);font-size:16px;font-weight:600;margin-bottom:6px}
+.none button{margin:14px 3px 0;height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--line2);background:none;font-size:13px}
+
+.pane{border-left:1px solid var(--line);overflow-y:auto;padding:18px 18px 20px;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+.pv{display:grid;gap:14px;animation:in .28s cubic-bezier(.2,.8,.2,1) both}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+.pv h2{font-size:21px;font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.pv-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pv-p{color:var(--mut);font-size:15px;line-height:1.5}
+.chip{flex:none;font:500 11px/1 var(--mono);padding:6px 8px;border-radius:6px;background:var(--tile);border:1px solid var(--line);color:var(--mut);white-space:nowrap}
+.cover{position:relative;aspect-ratio:16/7.2;border-radius:12px;overflow:hidden;background:var(--tile);display:grid;place-items:center;border:1px solid var(--line)}
+.cover::before{content:"";position:absolute;inset:-30px;background:var(--src) center/cover;filter:blur(26px) saturate(1.3);opacity:.85}
+.cover img{position:absolute;top:8%;left:50%;height:84%;width:auto;max-width:none;aspect-ratio:1;transform:translateX(-50%);border-radius:14px;object-fit:cover;box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+.meta{display:grid;border-top:1px solid var(--line)}
+.meta div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.meta dt{color:var(--dim);white-space:nowrap}
+.meta dd{text-align:right;min-width:0;overflow-wrap:anywhere}
+.meta .m{font:400 12.5px/1.6 var(--mono)}
+.pv-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.pri,.alt{display:inline-flex;align-items:center;gap:9px;height:36px;padding:0 8px 0 14px;border-radius:9px;font-weight:600;font-size:13.5px;border:1px solid var(--line2);background:var(--tile)}
+.pri{background:var(--acc);color:var(--on-acc);border-color:transparent}
+.pri kbd{background:rgba(0,0,0,.16);border-color:transparent;color:inherit}
+.alt:hover{border-color:var(--mut)}
+.big-ic{width:56px;height:56px;border-radius:15px;display:grid;place-items:center;background:var(--tile);border:1px solid var(--line);font-size:26px;overflow:hidden}
+.big-ic img{width:100%;height:100%;object-fit:cover}
+.id{display:flex;align-items:center;gap:14px}
+.id p{color:var(--mut)}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.stats div{padding:11px 12px;border-radius:11px;background:var(--tile);border:1px solid var(--line)}
+.stats b{display:block;font-size:22px;font-weight:600;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.stats span{display:block;margin-top:3px;color:var(--dim);font-size:12px}
+.mini{padding:12px 12px 10px;border-radius:11px;background:var(--tile);border:1px solid var(--line)}
+.mini-h{display:flex;justify-content:space-between;color:var(--dim);font-size:12px}
+.cols{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;margin-top:8px}
+.cols li{position:relative;text-align:center;outline-offset:3px;border-radius:4px}
+.cols .pl{height:86px;display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch}
+.cols b{font:500 11px/1 var(--mono);margin-bottom:4px;color:var(--mut)}
+.cols i{display:block;flex:0 0 calc((100% - 16px) * var(--v));border-radius:4px 4px 1px 1px;background:var(--acc);min-height:3px}
+.cols li.now i{background:repeating-linear-gradient(-45deg,var(--acc) 0 2px,transparent 2px 5px);box-shadow:inset 0 0 0 1px var(--acc)}
+.cols span{display:block;margin-top:5px;font:400 10px/1 var(--mono);color:var(--dim)}
+.cols li::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 2px);transform:translateX(-50%);padding:6px 8px;border-radius:6px;background:var(--ink);color:var(--bg);font:500 11px/1 var(--mono);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s;z-index:2}
+.cols li:hover::after,.cols li:focus-visible::after{opacity:1}
+.cols li:first-child::after{left:0;transform:none}.cols li:last-child::after{left:auto;right:0;transform:none}
+.me{display:flex;align-items:center;gap:14px}
+.me img{width:72px;height:72px;border-radius:18px;object-fit:cover}
+.me p{color:var(--mut)}
+.keys{display:grid;border-top:1px solid var(--line)}
+.keys div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--mut)}
+.keys span{display:inline-flex;gap:4px}
+
+.foot{display:flex;align-items:center;justify-content:space-between;gap:12px;height:44px;padding:0 12px 0 14px;border-top:1px solid var(--line);background:var(--foot);font-size:12.5px;color:var(--mut)}
+.foot .st{display:flex;align-items:center;gap:9px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.foot .st img{width:18px;height:18px;border-radius:5px}
+.foot .acts{display:flex;align-items:center;gap:6px;flex:none}
+.foot .acts span{display:inline-flex;align-items:center;gap:6px;padding:0 4px}
+.foot .acts hr{width:1px;height:16px;border:0;background:var(--line2);margin:0 4px}
+.foot .acts b{color:var(--ink);font-weight:600}
+
+.under{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:6px max(22px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(22px,env(safe-area-inset-left,0px));color:var(--dim);font-size:12.5px}
+.under span{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+
+/* phones: the list is the page and details open in a sheet */
+.sheet{position:fixed;inset:0;z-index:40;display:grid;align-items:end;background:rgba(0,0,0,0);transition:background .3s}
+.sheet.on{background:rgba(0,0,0,.55)}
+.sheet-c{position:relative;max-height:86dvh;overflow-y:auto;padding:10px 18px calc(22px + env(safe-area-inset-bottom,0px));background:var(--bg);border:1px solid var(--line2);border-bottom:0;border-radius:22px 22px 0 0;transform:translateY(102%);transition:transform .38s cubic-bezier(.2,.8,.2,1)}
+.sheet.on .sheet-c{transform:none}
+.sheet-x{display:block;width:100%;height:26px;border:0;background:none;position:relative}
+.sheet-x::before{content:"";position:absolute;left:50%;top:6px;width:40px;height:4px;margin-left:-20px;border-radius:4px;background:var(--line2)}
+.sheet-x:focus-visible{outline:0}.sheet-x:focus-visible::before{background:var(--acc)}
+.sheet .pri,.sheet .alt{height:46px;flex:1;justify-content:center;font-size:15px;padding:0 14px}
+.sheet kbd{display:none}
+
+@media (max-width:820px){
+  .stage{padding:12px 0 0;place-items:stretch}
+  .win{width:100%;height:100%;border-radius:20px 20px 0 0;border-left:0;border-right:0;border-bottom:0}
+  .body{grid-template-columns:minmax(0,1fr)}
+  .pane{display:none}
+  .it{height:54px;grid-template-columns:36px minmax(0,max-content) minmax(0,1fr) auto}
+  .it .ic{width:36px;height:36px;border-radius:9px}
+  .it .tt{font-size:15.5px}
+  .foot{height:calc(60px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
+  .foot .acts,.under,.q kbd{display:none}
+  .q input{font-size:17px}
+  .top h1 small{display:none}
+}
+@media (max-width:420px){.it .sb{display:none}.it{grid-template-columns:36px minmax(0,1fr) auto}}
+@media (max-height:620px) and (min-width:821px){.under{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="amb" aria-hidden="true"><i id="g1"></i><i id="g2"></i><b></b></div>
+
+<header class="top">
+  <h1><img src="../shared/img/me-face.jpg" alt="" width="36" height="36"><span>Iman Khoshabi<small>Senior mobile engineer, Amsterdam</small></span></h1>
+  <nav aria-label="Profiles and theme">
+    <a href="https://github.com/imaNNeo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><span data-i="github"></span></a>
+    <a href="https://www.youtube.com/@imaNNeO" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><span data-i="youtube"></span></a>
+    <button type="button" id="theme" aria-label="Switch between dark and light" title="Dark or light"><span data-i="contrast"></span></button>
+  </nav>
+</header>
+
+<main class="stage">
+  <section class="win" id="win" aria-label="Everything on this site, as a command palette">
+    <div class="q">
+      <span data-i="search"></span>
+      <input id="q" type="text" role="combobox" aria-expanded="true" aria-controls="list" aria-autocomplete="list" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="Search games, charts and links" aria-label="Search games, charts and links">
+      <button type="button" id="clr" aria-label="Clear the search" hidden><kbd>esc</kbd></button>
+      <kbd id="hot" aria-hidden="true">K</kbd>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Show only"></div>
+    <div class="body">
+      <div class="list" id="list" role="listbox" aria-label="Results" tabindex="-1"></div>
+      <aside class="pane" id="pane" aria-label="Details"></aside>
+    </div>
+    <footer class="foot">
+      <span class="st"><img src="../shared/img/n.png" alt="" width="18" height="18"><span id="st" role="status"></span></span>
+      <span class="acts" id="acts" aria-hidden="true"></span>
+    </footer>
+  </section>
+</main>
+
+<p class="under"><span>© 2026 Iman Khoshabi · numbers from GitHub and pub.dev, 17 Nov 2026</span><span id="under-k"></span></p>
+
+<div class="sheet" id="sheet" hidden><div class="sheet-c" role="dialog" aria-modal="true" aria-label="Details"><button type="button" class="sheet-x" id="sheet-x" aria-label="Close"></button><div id="sheet-b"></div></div></div>
+
+<noscript><p style="position:fixed;inset:auto 0 0 0;padding:14px;background:#111;color:#fff;text-align:center">This page needs JavaScript. The games are at <a href="https://games.imanneo.dev/" style="text-decoration:underline">games.imanneo.dev</a> and fl_chart is at <a href="https://github.com/imaNNeo/fl_chart" style="text-decoration:underline">github.com/imaNNeo/fl_chart</a>.</p></noscript>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/icons.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  var S = window.SITE, I = window.ICONS, fl = S.fl, $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); };
+  var mm = function (q) { return window.matchMedia ? matchMedia(q) : { matches: false }; };
+  var still = mm("(prefers-reduced-motion: reduce)").matches, narrow = mm("(max-width:820px)");
+  var root = document.documentElement;
+  [].forEach.call(document.querySelectorAll("[data-i]"), function (el) { el.outerHTML = I[el.getAttribute("data-i")]; });
+  var mac = /Mac|iPhone|iPad/.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || ""), MOD = mac ? "⌘" : "Ctrl";
+  var K = function (k) { return "<kbd>" + k + "</kbd>"; };
+  $("hot").textContent = mac ? "⌘K" : "Ctrl K";
+  $("under-k").innerHTML = K(mac ? "⌘K" : "Ctrl K") + " search from anywhere " + K("↑") + K("↓") + " move " + K("↵") + " open";
+  var input = $("q"), list = $("list"), pane = $("pane"), st = $("st"), acts = $("acts");
+
+  /* ---------- everything on the site, as one list ---------- */
+  var items = [], dl = (fl.downloads30 / 1e6).toFixed(2) + "M", bare = function (u) { return u.replace(/^https?:\/\/(www\.)?/, "").replace(/^mailto:/, ""); };
+  function add(o) { o.i = items.length; o._t = o.title.toLowerCase(); o._h = [o.title, o.sub, o.keys, o.kind].join(" ").toLowerCase(); items.push(o); return o; }
+  var about = add({ group: "me", kind: "About", title: "About Iman", sub: S.me.role, keys: "who is iman khoshabi neo bio profile amsterdam engineer mobile flutter", icon: '<img src="../shared/img/me-face.jpg" alt="">', pv: pvAbout, verb: "Browse the games", run: function () { setFilter("games"); }, tint: ["#ff8a4c", "#7a5cff"] });
+  var flMain = add({ group: "fl", kind: "Package", title: "fl_chart", sub: "Chart library for Flutter", keys: "open source charts flutter dart library stars downloads line bar pie scatter radar candlestick releases", icon: '<img src="../shared/img/fl_chart.png" alt="">', url: fl.repo, verb: "Open on GitHub", pv: pvFl, tint: ["#4f7dff", "#a04cff"] });
+  add({ group: "fl", kind: "Link", title: "fl_chart on GitHub", sub: fl.starsLabel + " stars", keys: "repo repository source code stars forks commits issues", icon: I.github, url: fl.repo, verb: "Open", pv: pvLink, note: "The source, the issues and every release since " + fl.since + ".", facts: [["Stars", fl.starsLabel], ["Forks", fl.forksLabel], ["Commits", S.fmt(fl.commits)], ["Licence", fl.license]], tint: ["#4f7dff", "#a04cff"] });
+  add({ group: "fl", kind: "Link", title: "fl_chart on pub.dev", sub: dl + " downloads in 30 days", keys: "package pub dart downloads likes points install version", icon: I.down, url: fl.pub, verb: "Open", pv: pvLink, note: "The package page, with the install line and the changelog.", facts: [["Downloads in 30 days", S.fmt(fl.downloads30)], ["Likes", S.fmt(fl.likes)], ["Pub points", fl.points + " of " + fl.maxPoints], ["Version", fl.version]], tint: ["#3aa0ff", "#5c6cff"] });
+  add({ group: "fl", kind: "Link", title: "fl_chart docs", sub: "flchart.dev", keys: "documentation guide api reference how to", icon: I.code, url: fl.docs, verb: "Open", pv: pvLink, note: "Guides and the API for all six chart types.", facts: [["Chart types", fl.types.join(", ")]], tint: ["#4f7dff", "#39c6c0"] });
+  add({ group: "fl", kind: "Link", title: "fl_chart samples", sub: "app.flchart.dev", keys: "demo live examples try gallery", icon: I.chart, url: fl.demo, verb: "Open", pv: pvLink, note: "A live app with every chart type, running in the browser.", facts: [["Runs on", fl.platforms.join(", ")]], tint: ["#39c6c0", "#5c6cff"] });
+  add({ group: "fl", kind: "Link", title: "Sponsor fl_chart", sub: "GitHub Sponsors", keys: "support donate money thanks heart", icon: I.heart, url: S.links.sponsor, verb: "Open", pv: pvLink, note: "fl_chart is free and I maintain it in my spare time. Sponsoring helps me keep doing that.", facts: [["Releases so far", String(fl.releases)], ["Maintained since", String(fl.since)]], tint: ["#ff5c9a", "#a04cff"] });
+  S.games.forEach(function (g) {
+    add({ group: "games", kind: "Game", title: g.title, sub: g.featured ? g.tag : g.genre, keys: [g.genre, g.tag, g.tech || "html5", "play game", g.blurb].join(" "), icon: '<img src="' + S.gameImg(g.id) + '" alt="">', url: S.gameUrl(g.id), verb: "Play", pv: pvGame, game: g });
+  });
+  add({ group: "games", kind: "Site", title: "All the games", sub: "games.imanneo.dev", keys: "arcade every 24 site list play", icon: I.game, url: S.links.games, verb: "Open", pv: pvLink, note: "Every game on one page. Free, in the browser, with no downloads and no sign-up.", facts: [["Games", String(S.games.length)], ["Price", "Free"]], tint: ["#ff9a3c", "#ff4c8b"] });
+  var brand = { youtube: ["#ff3b3b", "#ff8a4c"], github: ["#8a8f98", "#5c6cff"], linkedin: ["#2f7dff", "#39c6c0"], x: ["#9aa0aa", "#5c6cff"], blog: ["#3aa0ff", "#6a5cff"], mail: ["#39c6a0", "#3a8cff"] };
+  var copyMail = function () { copy(S.me.email, "Copied " + S.me.email); };
+  S.socials.forEach(function (s) {
+    var mail = s.id === "mail";
+    add({ group: "links", kind: mail ? "Email" : "Link", title: s.label, sub: s.handle, keys: s.note + " social profile contact " + (mail ? "mail inbox write message" : ""), icon: I[s.id], url: s.url, mail: mail, verb: mail ? "Copy address" : "Open", run: mail ? copyMail : null, pv: pvLink, note: s.note + ".", facts: [[mail ? "Address" : "Handle", s.handle]], tint: brand[s.id] });
+  });
+  add({ group: "cmd", kind: "Command", title: "Copy email address", sub: S.me.email, keys: "mail contact clipboard write", icon: I.copy, verb: "Copy", run: copyMail, pv: pvCmd, note: "Puts " + S.me.email + " on your clipboard, so you can paste it into your mail app." });
+  add({ group: "cmd", kind: "Command", title: "Surprise me", sub: "Pick a random game", keys: "random lucky dice shuffle play", icon: I.star, verb: "Pick one", run: lucky, pv: pvCmd, note: "Picks one of the " + S.games.length + " games for you. It does not open it until you say so." });
+  add({ group: "cmd", kind: "Command", title: "Switch theme", sub: "Dark or light", keys: "appearance mode colour color night day", icon: I.contrast, verb: "Switch", run: function () { setTheme(root.getAttribute("data-theme") === "light" ? "dark" : "light", true); }, pv: pvCmd, note: "Flips the page between the dark and the light look, and remembers it on this device." });
+  add({ group: "cmd", kind: "Help", title: "Keyboard shortcuts", sub: "How to drive this page", keys: "keys help hotkeys commands how", icon: I.enter, pv: pvKeys });
+
+  var groups = [["fl", "fl_chart"], ["games", "Games"], ["links", "Links"], ["cmd", "Commands"]];
+  var suggested = [about, flMain].concat(items.filter(function (it) { return it.game && it.game.featured; })).concat(items.filter(function (it) { return it.title === "Copy email address"; }));
+  var filter = "all", view = [], sel = 0;
+  $("chips").innerHTML = [["all", "All", items.length]].concat(groups.map(function (g) { return [g[0], g[1], items.filter(function (it) { return it.group === g[0]; }).length]; })).map(function (c) {
+    return '<button type="button" data-f="' + c[0] + '" aria-pressed="' + (c[0] === "all") + '">' + c[1] + "<i>" + c[2] + "</i></button>";
+  }).join("");
+
+  /* ---------- search ---------- */
+  function subseq(h, n) { var j = 0; for (var i = 0; i < h.length && j < n.length; i++) if (h.charAt(i) === n.charAt(j)) j++; return j === n.length; }
+  function score(it, toks) {
+    var total = 0;
+    for (var k = 0; k < toks.length; k++) {
+      var t = toks[k], ti = it._t.indexOf(t), s;
+      if (ti === 0) s = 100; else if (ti > 0 && /[\s_\-]/.test(it._t.charAt(ti - 1))) s = 82; else if (ti > 0) s = 60;
+      else if (it._h.indexOf(t) >= 0) s = 38; else if (t.length > 2 && subseq(it._t, t)) s = 14; else return -1;
+      total += s;
+    }
+    return total + (it.game && it.game.featured ? 3 : 0) + (it === flMain ? 6 : 0);
+  }
+  function mark(title, toks) {
+    var low = title.toLowerCase(), on = [];
+    toks.forEach(function (t) { var i = low.indexOf(t); if (i >= 0) for (var k = i; k < i + t.length; k++) on[k] = 1; });
+    var out = "", open = false;
+    for (var i = 0; i < title.length; i++) { if (on[i] && !open) { out += "<mark>"; open = true; } if (!on[i] && open) { out += "</mark>"; open = false; } out += esc(title.charAt(i)); }
+    return out + (open ? "</mark>" : "");
+  }
+  function build(keep) {
+    var q = input.value.trim().toLowerCase().replace(/\s+/g, " "), toks = q ? q.split(" ") : [], t0 = performance.now(), html = "", was = keep && view[sel];
+    view = [];
+    function group(name, arr) {
+      if (!arr.length) return;
+      html += '<div class="gh" role="presentation">' + esc(name) + "</div>";
+      arr.forEach(function (it) {
+        var n = view.length, tag = it.url ? "a" : "button";
+        html += "<" + tag + ' class="it" id="r' + n + '" role="option" aria-selected="false" data-n="' + n + '"' + (it.url ? ' href="' + esc(it.url) + '"' + (it.mail ? "" : ' target="_blank" rel="noopener"') : ' type="button"') + '><span class="ic">' + it.icon + '</span><span class="tt">' + (toks.length ? mark(it.title, toks) : esc(it.title)) + '</span><span class="sb">' + esc(it.sub || "") + '</span><span class="kd">' + it.kind + "</span></" + tag + ">";
+        view.push(it);
+      });
+    }
+    if (!toks.length) {
+      if (filter === "all") group("Suggested", suggested);
+      groups.forEach(function (g) { if (filter === "all" || filter === g[0]) group(g[1], items.filter(function (it) { return it.group === g[0]; })); });
+    } else {
+      var res = [];
+      items.forEach(function (it) { if (filter !== "all" && it.group !== filter) return; var s = score(it, toks); if (s >= 0) res.push([s, it]); });
+      res.sort(function (a, b) { return b[0] - a[0] || a[1].i - b[1].i; });
+      group(res.length === 1 ? "1 result" : res.length + " results", res.map(function (r) { return r[1]; }));
+    }
+    var ms = performance.now() - t0;
+    if (!view.length) html = '<div class="none"><b>Nothing for “' + esc(input.value.trim()) + '”</b>Try a game name, a number, or one of these.<br><button type="button" data-q="puzzle">puzzle</button><button type="button" data-q="stars">stars</button><button type="button" data-q="email">email</button></div>';
+    list.innerHTML = html; list.scrollTop = 0;
+    $("clr").hidden = !input.value; $("hot").hidden = !!input.value;
+    idle = toks.length ? view.length + (view.length === 1 ? " result" : " results") + " in " + (ms < .05 ? "under 0.1" : ms.toFixed(1)) + " ms" : (filter === "all" ? items.length + " things to open" : view.length + " in this group");
+    say(idle);
+    var at = was ? view.indexOf(was) : -1;
+    select(at >= 0 ? at : 0, false);
+  }
+  var idle = "", sayT = 0;
+  function say(t, brief) { st.textContent = t; clearTimeout(sayT); if (brief) sayT = setTimeout(function () { st.textContent = idle; }, 2200); }
+
+  /* ---------- selection and the detail pane ---------- */
+  function select(n, scroll) {
+    var old = list.querySelector('[aria-selected="true"]'); if (old) old.setAttribute("aria-selected", "false");
+    sel = n; var it = view[n], el = $("r" + n);
+    if (!it) { pane.innerHTML = ""; acts.innerHTML = ""; input.removeAttribute("aria-activedescendant"); return; }
+    el.setAttribute("aria-selected", "true"); input.setAttribute("aria-activedescendant", "r" + n);
+    if (scroll !== false) el.scrollIntoView({ block: "nearest" });
+    if (pane._it !== it || pane._q !== input.value) { pane._it = it; pane._q = input.value; pane.innerHTML = it.pv(it); pane.scrollTop = 0; }
+    acts.innerHTML = (it.verb ? "<span><b>" + esc(it.verb) + "</b>" + K("↵") + "</span>" : "") + (it.url && !it.mail ? "<hr><span>Copy link" + K(MOD) + K("↵") + "</span>" : "") + "<hr><span>" + K("↑") + K("↓") + "</span>";
+    tint(it);
+  }
+  function move(d) { if (!view.length) return; select((sel + d + view.length * 8) % view.length); }
+  function go(alt) {
+    var it = view[sel]; if (!it) return;
+    if (alt && it.url && !it.mail) return copy(it.url, "Copied the link to " + it.title);
+    if (it.run) return it.run();
+    if (it.url) { var a = $("r" + sel); if (a) a.click(); }
+  }
+  function btns(it) {
+    if (!it.verb) return "";
+    var main = it.run ? '<button type="button" class="pri" data-go>' + esc(it.verb) + K("↵") + "</button>" : '<a class="pri" href="' + esc(it.url) + '" target="_blank" rel="noopener">' + esc(it.verb) + K("↵") + "</a>";
+    var more = it.mail ? '<a class="alt" href="' + esc(it.url) + '" style="padding-right:14px">Open in mail app</a>' : it.url ? '<button type="button" class="alt" data-go="alt">Copy link' + K(MOD) + K("↵") + "</button>" : "";
+    return '<div class="pv-b">' + main + more + "</div>";
+  }
+  function facts(rows) { return '<dl class="meta">' + rows.map(function (r) { return "<div><dt>" + esc(r[0]) + "</dt><dd" + (r[2] ? ' class="m"' : "") + ">" + esc(r[1]) + "</dd></div>"; }).join("") + "</dl>"; }
+  function pvGame(it) {
+    var g = it.game, src = S.gameImg(g.id);
+    return '<div class="pv"><div class="cover" style="--src:url(' + src + ')"><img src="' + src + '" alt=""></div><div class="pv-h"><h2>' + esc(g.title) + '</h2><span class="chip">' + esc(g.genre) + '</span></div><p class="pv-p">' + esc(g.blurb) + "</p>" + btns(it) +
+      facts([["Kind", g.featured ? g.tag : "Small browser game"], ["Built with", g.tech || "HTML5"], ["Price", "Free, no sign-up"], ["Address", bare(it.url), 1]]) + "</div>";
+  }
+  function pvFl(it) {
+    var max = Math.max.apply(null, fl.perYear.map(function (p) { return p[1]; })), now = fl.perYear[fl.perYear.length - 1][0];
+    return '<div class="pv"><div class="id"><div class="big-ic"><img src="../shared/img/fl_chart.png" alt=""></div><div><h2>fl_chart</h2><p>' + esc(fl.tagline) + '</p></div></div>' + btns(it) +
+      '<div class="stats"><div><b>' + fl.starsLabel + "</b><span>stars on GitHub</span></div><div><b>" + dl + "</b><span>downloads in 30 days</span></div><div><b>" + S.fmt(fl.likes) + "</b><span>likes on pub.dev</span></div><div><b>" + fl.points + " / " + fl.maxPoints + "</b><span>pub points</span></div></div>" +
+      '<div class="mini"><div class="mini-h"><span>Releases per year</span><span>' + fl.releases + ' in total</span></div><ol class="cols">' + fl.perYear.map(function (p) {
+        var tip = p[0] + ": " + p[1] + " releases" + (p[0] === now ? " so far" : "");
+        return '<li tabindex="0"' + (p[0] === now ? ' class="now"' : "") + ' data-tip="' + tip + '" aria-label="' + tip + '"><div class="pl"><b>' + p[1] + '</b><i style="--v:' + (p[1] / max).toFixed(3) + '"></i></div><span>' + String(p[0]).slice(2) + "</span></li>";
+      }).join("") + "</ol></div>" +
+      '<p class="pv-p" style="font-size:13.5px">' + fl.types.slice(0, -1).join(", ") + " and " + fl.types[fl.types.length - 1] + " charts. I open-sourced it in " + fl.since + " and still maintain it in my spare time. Version " + fl.version + ", " + fl.license + " licensed.</p></div>";
+  }
+  function pvLink(it) {
+    return '<div class="pv"><div class="id"><div class="big-ic">' + it.icon + "</div><div><h2>" + esc(it.title) + "</h2><p>" + esc(it.sub || "") + '</p></div></div><p class="pv-p">' + esc(it.note || "") + "</p>" + btns(it) + facts((it.facts || []).concat(it.mail ? [] : [["Address", bare(it.url), 1]])) + "</div>";
+  }
+  function pvCmd(it) {
+    return '<div class="pv"><div class="id"><div class="big-ic">' + it.icon + "</div><div><h2>" + esc(it.title) + "</h2><p>" + esc(it.sub || "") + '</p></div></div><p class="pv-p">' + esc(it.note || "") + "</p>" + btns(it) + "</div>";
+  }
+  function pvAbout(it) {
+    return '<div class="pv"><div class="me"><img src="../shared/img/me.jpg" alt="Iman Khoshabi"><div><h2>' + esc(S.me.name) + "</h2><p>also known as " + esc(S.me.aka) + '</p></div></div><p class="pv-p">I build mobile apps for a living. On the side I look after fl_chart, an open-source chart library for Flutter, and I make small games you can play right in the browser.</p>' +
+      btns(it) + facts([["Role", S.me.role], ["Based in", S.me.city + ", 52.37° N 4.90° E"], ["Building apps for", S.me.years + " years"], ["Open source", "fl_chart, " + fl.starsLabel + " stars"], ["Games", S.games.length + ", all free"]]) + "</div>";
+  }
+  function pvKeys(it) {
+    var rows = [["Search from anywhere", K(mac ? "⌘K" : "Ctrl K") + K("/")], ["Move up and down", K("↑") + K("↓")], ["Open what is selected", K("↵")], ["Copy its link", K(MOD) + K("↵")], ["Clear the search", K("esc")], ["Jump by a few", K("PgUp") + K("PgDn")]];
+    return '<div class="pv"><div class="id"><div class="big-ic">' + it.icon + '</div><div><h2>Keyboard shortcuts</h2><p>You never need the mouse here.</p></div></div><div class="keys">' + rows.map(function (r) { return "<div>" + r[0] + "<span>" + r[1] + "</span></div>"; }).join("") + '</div><p class="pv-p" style="font-size:13.5px">Or just start typing. A game name, a number like “stars”, or a word like “puzzle” all work.</p></div>';
+  }
+
+  /* ---------- the glow follows the selection ---------- */
+  var g1 = $("g1"), g2 = $("g2"), tints = {}, wanted = null;
+  function paint(c) { g1.style.backgroundColor = c[0]; g2.style.backgroundColor = c[1]; }
+  function tint(it) {
+    wanted = it;
+    if (it.tint) return paint(it.tint);
+    if (!it.game) return paint(["#6a5cff", "#ff5c9a"]);
+    var id = it.game.id; if (tints[id]) return paint(tints[id]);
+    var im = new Image();
+    im.onload = function () {
+      var out = ["#6a5cff", "#ff5c9a"];
+      try {
+        var c = document.createElement("canvas"); c.width = c.height = 16; var x = c.getContext("2d"); x.drawImage(im, 0, 0, 16, 16);
+        var d = x.getImageData(0, 0, 16, 16).data, acc = [[0, 0, 0, 0], [0, 0, 0, 0]];
+        for (var p = 0; p < 256; p++) {
+          var r = d[p * 4], g = d[p * 4 + 1], b = d[p * 4 + 2], mx = Math.max(r, g, b), mn = Math.min(r, g, b), w = Math.pow((mx - mn) / 255, 2) + .02, h = (p % 16 < 8) ? 0 : 1;
+          acc[h][0] += r * w; acc[h][1] += g * w; acc[h][2] += b * w; acc[h][3] += w;
+        }
+        out = acc.map(function (a) { return "rgb(" + Math.round(a[0] / a[3]) + "," + Math.round(a[1] / a[3]) + "," + Math.round(a[2] / a[3]) + ")"; });
+      } catch (e) {}
+      tints[id] = out; if (wanted === it) paint(out);
+    };
+    im.src = S.gameImg(id);
+  }
+
+  /* ---------- actions ---------- */
+  function copy(text, msg) {
+    var ok = function () { say(msg, true); }, no = function () { say("Could not copy. It is " + text, true); };
+    try { navigator.clipboard.writeText(text).then(ok, no); } catch (e) { no(); }
+  }
+  function lucky() {
+    var gs = items.filter(function (it) { return it.game; }), pick = gs[Math.floor(Math.random() * gs.length)];
+    input.value = ""; filter = "games"; chipsOn(); build();
+    select(view.indexOf(pick)); say("How about " + pick.title + "?", true);
+    if (narrow.matches) sheetOpen(pick);
+  }
+  function setTheme(t, save) {
+    if (t === "light") root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
+    $("tc").setAttribute("content", t === "light" ? "#f0eff6" : "#09090d");
+    if (save) { try { localStorage.setItem("spot-theme", t); } catch (e) {} say("Now in the " + t + " look", true); }
+  }
+  try { if (localStorage.getItem("spot-theme") === "light") setTheme("light"); } catch (e) {}
+  $("theme").addEventListener("click", function () { setTheme(root.getAttribute("data-theme") === "light" ? "dark" : "light", true); });
+  function chipsOn() { [].forEach.call($("chips").children, function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-f") === filter)); }); }
+  function setFilter(f) { filter = f; chipsOn(); build(); if (!narrow.matches) input.focus(); }
+  $("chips").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) setFilter(b.getAttribute("data-f")); });
+
+  /* ---------- the sheet on phones ---------- */
+  var sheet = $("sheet"), sheetB = $("sheet-b"), sheetIt = null;
+  function sheetOpen(it) { sheetIt = it; sheetB.innerHTML = it.pv(it); sheet.hidden = false; void sheet.offsetWidth; sheet.classList.add("on"); $("sheet-x").focus(); }
+  function sheetShut() { if (sheet.hidden) return; sheet.classList.remove("on"); setTimeout(function () { sheet.hidden = true; }, still ? 0 : 380); var el = $("r" + sel); if (el) el.focus(); }
+  sheet.addEventListener("click", function (e) { if (e.target === sheet) sheetShut(); });
+  $("sheet-x").addEventListener("click", sheetShut);
+
+  /* ---------- mouse, touch, keys ---------- */
+  list.addEventListener("pointermove", function (e) { if (e.pointerType === "touch") return; var r = e.target.closest(".it"); if (r && +r.getAttribute("data-n") !== sel) select(+r.getAttribute("data-n"), false); });
+  list.addEventListener("focusin", function (e) { var r = e.target.closest(".it"); if (r && +r.getAttribute("data-n") !== sel) select(+r.getAttribute("data-n"), false); });
+  list.addEventListener("click", function (e) {
+    var qb = e.target.closest("[data-q]"); if (qb) { input.value = qb.getAttribute("data-q"); build(); input.focus(); return; }
+    var r = e.target.closest(".it"); if (!r) return;
+    var n = +r.getAttribute("data-n"), it = view[n]; select(n, false);
+    if (narrow.matches) { e.preventDefault(); sheetOpen(it); return; }
+    if (it.run) { e.preventDefault(); it.run(); }
+  });
+  function paneClick(e) {
+    var b = e.target.closest("[data-go]"); if (!b) return;
+    var it = sheet.hidden ? view[sel] : sheetIt; if (!it) return;
+    if (b.getAttribute("data-go") === "alt") copy(it.url, "Copied the link to " + it.title); else if (it.run) { if (!sheet.hidden) sheetShut(); it.run(); }
+  }
+  pane.addEventListener("click", paneClick); sheetB.addEventListener("click", paneClick);
+  input.addEventListener("input", function () { build(); });
+  $("clr").addEventListener("click", function () { input.value = ""; build(); input.focus(); });
+  document.addEventListener("keydown", function (e) {
+    var k = e.key, mod = e.metaKey || e.ctrlKey, t = e.target;
+    if (!sheet.hidden) { if (k === "Escape") sheetShut(); return; }
+    if (mod && (k === "k" || k === "K")) { e.preventDefault(); input.focus(); input.select(); return; }
+    if (k === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (k === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (k === "PageDown") { e.preventDefault(); move(6); }
+    else if (k === "PageUp") { e.preventDefault(); move(-6); }
+    else if (k === "Enter") {
+      if (t !== input && t.closest && t.closest("button,a") && !(mod && t.closest(".it"))) return;
+      e.preventDefault(); go(mod);
+    }
+    else if (k === "Escape") { if (input.value) { input.value = ""; build(); } else if (filter !== "all") setFilter("all"); input.focus(); }
+    else if (k === "/" && t !== input) { e.preventDefault(); input.focus(); }
+    else if (k.length === 1 && !mod && !e.altKey && t !== input && !(t.closest && t.closest("input,textarea,select"))) input.focus();
+  });
+
+  /* ---------- the placeholder types out a few ideas ---------- */
+  if (!still) {
+    var ideas = ["Search games, charts and links", "Try typing flappy", "Try typing stars", "Try typing puzzle", "Try typing email"], pi = 0;
+    setInterval(function () {
+      if (input.value || document.hidden) return;
+      pi = (pi + 1) % ideas.length; var txt = ideas[pi], n = 0;
+      var iv = setInterval(function () { n++; input.placeholder = txt.slice(0, n); if (n >= txt.length) clearInterval(iv); }, 26);
+    }, 3600);
+  }
+
+  build();
+  if (!narrow.matches && mm("(hover: hover)").matches) { try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); } }
+})();
+</script>
+<script src="../shared/switcher.js" data-n="14"></script>
+</body>
+</html>
