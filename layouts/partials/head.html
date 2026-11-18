@@ -1,10 +1,16 @@
 {{- $p := site.Params -}}
 {{- $title := site.Title -}}
 {{- if not .IsHome }}{{ $title = printf "%s · %s" .Title $p.name }}{{ end -}}
+{{- /*
+  On the home page, the title in the browser tab and in search results also carries the name in Persian,
+  so that a search in Persian finds the page. Link previews keep the short title.
+*/ -}}
+{{- $tab := $title -}}
+{{- if .IsHome }}{{ with or $p.nameFaTyped $p.nameFa }}{{ $tab = printf "%s · %s" $title . }}{{ end }}{{ end -}}
 {{- $photo := resources.Get $p.hero.photo -}}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{{ $title }}</title>
+<title>{{ $tab }}</title>
 <meta name="description" content="{{ $p.description }}">
 {{- if .IsHome }}
 <link rel="canonical" href="{{ .Permalink }}">
@@ -53,7 +59,14 @@
 {{- if .IsHome }}
 {{- $links := slice }}
 {{- range $p.socials }}{{ $links = $links | append .url }}{{ end }}
-{{- $person := dict "@context" "https://schema.org" "@type" "Person" "name" $p.name "alternateName" (slice $p.aka $p.handle) "url" site.BaseURL "jobTitle" $p.jobTitle "sameAs" $links }}
+{{- /*
+  What search engines read about the page: it is the profile of one person, with the other names
+  the person goes by. The name in Persian is among them, in both spellings.
+*/}}
+{{- $names := slice $p.aka $p.handle }}
+{{- range slice $p.nameFa $p.nameFaTyped }}{{ with . }}{{ $names = $names | append . }}{{ end }}{{ end }}
+{{- $person := dict "@type" "Person" "name" $p.name "alternateName" $names "description" $p.description "url" site.BaseURL "jobTitle" $p.jobTitle "sameAs" $links }}
 {{- with $photo }}{{ $person = merge $person (dict "image" .Permalink) }}{{ end }}
-<script type="application/ld+json">{{ $person | jsonify | safeJS }}</script>
+{{- $profile := dict "@context" "https://schema.org" "@type" "ProfilePage" "url" site.BaseURL "name" site.Title "inLanguage" "en" "mainEntity" $person }}
+<script type="application/ld+json">{{ $profile | jsonify | safeJS }}</script>
 {{- end }}
