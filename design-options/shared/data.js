@@ -13,7 +13,22 @@ window.SITE = {
     role: "Senior mobile engineer",
     city: "Amsterdam",
     years: "10+",
-    email: "iman.neofight@gmail.com"
+    email: "iman.neofight@gmail.com",
+
+    /* The overview, in his own words (GitHub profile and the current site), lightly edited. */
+    bio: "I'm a senior mobile engineer based in Amsterdam. I have been building mobile apps for 10+ years, with a mix of Android (Kotlin and Java) and Flutter (Dart).",
+    bio2: "I like building products that feel fast and solid, and I care a lot about clean structure and good UI details. I also enjoy sharing what I learn through open source, write-ups and videos.",
+    focus: [
+      { t: "Mobile apps, end to end", d: "From architecture to release." },
+      { t: "Flutter and native Android", d: "I'm comfortable in both." },
+      { t: "Shipping with balance", d: "Clean code, but not over-engineered." },
+      { t: "UI implementation", d: "I'm picky about the details." },
+      { t: "Games on the side", d: "Godot, Cocos Creator and Flame." }
+    ],
+    stack: ["Flutter", "Dart", "Android", "Kotlin", "Java"],
+    domains: ["Maps and navigation", "Social media", "Shopping", "Fintech", "E-commerce"],
+    fun: "I picked NeO as my nickname before watching The Matrix.",
+    contact: "My inbox is always open. Whether you have a question or just want to say hi, I'll try my best to get back to you."
   },
 
   links: {

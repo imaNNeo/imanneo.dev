@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam. Mobile apps, open source and small games.">
+<meta name="theme-color" content="#050706">
+<link rel="icon" href="../shared/img/n.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#050706; --ink:#eaf4ed; --mut:#9bb0a4; --dim:#64776c; --line:#18241d; --card:#0a100d;
+  --acc:#3df08f; --acc-2:#c4ffdc;
+  --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --gut:clamp(20px,6.6vw,104px); --col:720px;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+.nogl body{background:radial-gradient(900px 520px at 88% -6%,#0d2619 0%,transparent 62%),var(--bg)}
+img{max-width:100%;display:block}
+a{color:inherit}
+svg{width:1em;height:1em;flex:none}
+.mono{font-family:var(--mono)}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;transition:opacity .5s}
+.nogl #bg,.off #bg{opacity:0}
+.skip{position:absolute;left:-999px;top:8px;z-index:9;background:var(--acc);color:#03130a;padding:8px 12px;border-radius:8px;font-weight:600}
+.skip:focus{left:12px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:4px}
+
+.top{position:absolute;inset:0 0 auto;z-index:3;display:flex;align-items:center;gap:20px;padding:calc(18px + env(safe-area-inset-top,0px)) max(var(--gut),env(safe-area-inset-right,0px)) 0 max(var(--gut),env(safe-area-inset-left,0px))}
+.brand{display:inline-flex;align-items:center;gap:10px;font:500 14px/1 var(--mono);text-decoration:none;letter-spacing:-.01em}
+.brand img{width:24px;height:24px}
+.top nav{display:flex;gap:4px;margin-left:auto}
+.top nav a{font-size:14.5px;font-weight:500;color:var(--mut);text-decoration:none;padding:8px 11px;border-radius:8px;transition:color .15s,background .15s}
+.top nav a:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+.rain{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:10px;background:rgba(5,7,6,.7)}
+.rain button{all:unset;box-sizing:border-box;cursor:pointer;min-width:38px;height:30px;padding:0 9px;border-radius:7px;font:500 12.5px/30px var(--mono);text-align:center;color:var(--mut)}
+.rain button:hover{color:var(--ink)}
+.rain button[aria-pressed="true"]{background:var(--acc);color:#03130a}
+.rain button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.nogl .rain{display:none}
+
+main,footer{position:relative;z-index:1}
+.wrap{padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-block:120px 96px}
+.hero > *{max-width:var(--col)}
+.eyebrow{margin:0 0 18px;font-size:14px;color:var(--acc);letter-spacing:.02em}
+.eyebrow::after{content:"";display:inline-block;width:.6em;height:1.05em;margin-left:.35em;background:var(--acc);vertical-align:-.16em;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+h1{margin:0;font-size:clamp(52px,9.4vw,132px);font-weight:700;line-height:.94;letter-spacing:-.045em;text-wrap:balance}
+.role{margin:22px 0 0;font-size:clamp(21px,2.5vw,31px);font-weight:500;line-height:1.25;letter-spacing:-.02em}
+.role em{font-style:normal;color:var(--acc)}
+.bio{margin:20px 0 0;max-width:58ch;font-size:clamp(16.5px,1.35vw,18.5px);color:var(--mut);text-shadow:0 0 14px var(--bg),0 0 3px var(--bg)}
+.fun{margin:34px 0 0;font-size:13px;line-height:1.6;color:var(--dim)}
+.fun b{font-weight:500;color:var(--mut)}
+
+.soc{list-style:none;margin:0;padding:0}
+.hero .soc{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.hero .soc-a{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:rgba(5,7,6,.72);font-size:14.5px;font-weight:500;transition:border-color .15s,color .15s}
+.hero .soc-a:hover{border-color:var(--acc);color:var(--acc-2)}
+.hero .soc-a:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.hero .soc-i{display:inline-flex;font-size:16px;color:var(--acc)}
+.hero .soc-h,.hero .soc-n,.hero a .soc-e{display:none}
+.hero .soc-mail .soc-e{font:500 11px/1 var(--mono);color:var(--dim);padding-left:8px;border-left:1px solid var(--line)}
+.hero .soc-mail.did .soc-e{color:var(--acc)}
+
+.sec{display:grid;grid-template-columns:minmax(0,220px) minmax(0,var(--col));gap:18px clamp(24px,5vw,72px);padding-block:clamp(56px,8vw,104px);border-top:1px solid var(--line)}
+.sec-h{position:sticky;top:24px;align-self:start}
+.sec-n{display:block;margin-bottom:10px;font-size:13px;color:var(--acc)}
+h2{margin:0;font-size:clamp(24px,2.5vw,32px);font-weight:600;line-height:1.12;letter-spacing:-.025em;text-wrap:balance}
+.sec-b{min-width:0}
+.lead{margin:0 0 26px;font-size:clamp(18px,1.7vw,21px);line-height:1.5;color:var(--ink)}
+h3{margin:0;font-size:13px;font-weight:500;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--dim)}
+
+.focus{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.focus li{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr);gap:4px 14px;align-items:baseline;padding:15px 0;border-bottom:1px solid var(--line)}
+.fo-n{font:400 12.5px/1 var(--mono);color:var(--dim)}
+.fo-t{font-weight:600}
+.fo-d{color:var(--mut)}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;margin-top:34px}
+.chips{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
+.chips li{padding:6px 11px;border:1px solid var(--line);border-radius:8px;background:var(--card);font:400 13px/1.2 var(--mono);color:var(--mut)}
+
+.fl{padding:clamp(18px,2.4vw,26px);border:1px solid var(--line);border-radius:16px;background:rgba(8,13,10,.84)}
+.fl-h{display:flex;align-items:center;gap:14px}
+.fl-logo{width:44px;height:44px;border-radius:10px}
+.fl-n{font:600 22px/1.1 var(--sans);letter-spacing:-.02em;text-transform:none;color:var(--ink)}
+.fl-t{margin:4px 0 0;color:var(--mut);font-size:15.5px}
+.fl-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0 0}
+.fl-nums div{display:flex;flex-direction:column-reverse;gap:4px;min-width:0}
+.fl-nums dd{margin:0;font:600 clamp(26px,3.4vw,38px)/1 var(--sans);letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--acc-2)}
+.fl-nums dt{font-size:13.5px;color:var(--mut);line-height:1.3}
+.fl-links{list-style:none;margin:22px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 20px}
+.fl-links a,.out{display:inline-flex;align-items:center;gap:6px;min-height:32px;font-size:14.5px;font-weight:500;text-decoration:none;color:var(--ink)}
+.fl-links a svg,.out svg{font-size:13px;color:var(--acc)}
+.fl-links a:hover,.out:hover{color:var(--acc)}
+
+.more{list-style:none;margin:14px 0 0;padding:0}
+.more-a{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:2px 14px;align-items:center;padding:16px 4px;border-bottom:1px solid var(--line);text-decoration:none}
+.more-i{grid-row:span 2;font-size:19px;color:var(--acc);display:inline-flex}
+.more-t{font-weight:600}
+.more-d{grid-column:2;color:var(--mut);font-size:15px}
+.more-h{grid-column:3;grid-row:1 / span 2;display:inline-flex;align-items:center;gap:6px;font:400 13px/1 var(--mono);color:var(--dim)}
+.more-a:hover .more-t,.more-a:hover .more-h{color:var(--acc)}
+
+.games{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.game{display:grid;grid-template-columns:72px minmax(0,1fr);gap:2px 14px;align-content:center;height:100%;padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(8,13,10,.84);text-decoration:none;transition:border-color .15s,transform .15s}
+.game:hover{border-color:var(--acc);transform:translateY(-2px)}
+.g-img{grid-row:1 / span 3;width:72px;height:72px;border-radius:10px;object-fit:cover}
+.g-t{font-weight:600;line-height:1.25;align-self:end}
+.g-tag{font:400 11.5px/1.3 var(--mono);color:var(--acc)}
+.g-b{font-size:14px;line-height:1.4;color:var(--mut)}
+.after{margin:20px 0 0}
+
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 30px}
+.mail-a{font:500 clamp(16px,2.3vw,22px)/1.3 var(--mono);overflow-wrap:anywhere;user-select:all}
+.mail-b{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 13px;border-radius:9px;background:var(--acc);color:#03130a;font-size:14px;font-weight:600}
+.mail-b:hover{background:var(--acc-2)}
+.mail-b:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.list{border-top:1px solid var(--line)}
+.list .soc-a{display:grid;grid-template-columns:22px 120px minmax(0,1fr) 18px;gap:12px;align-items:center;padding:14px 4px;border-bottom:1px solid var(--line);text-decoration:none}
+.list .soc-i{font-size:17px;color:var(--acc);display:inline-flex}
+.list .soc-l{font-weight:600}
+.list .soc-h{font:400 13.5px/1.3 var(--mono);color:var(--mut);overflow-wrap:anywhere}
+.list .soc-n{display:none}
+.list .soc-e{font-size:13px;color:var(--dim);display:inline-flex}
+.list .soc-a:hover .soc-l,.list .soc-a:hover .soc-e{color:var(--acc)}
+
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-block:26px calc(30px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);font-size:13.5px;color:var(--dim)}
+footer p{margin:0}
+footer a{color:var(--mut)}
+
+@media (max-width:860px){
+  .top nav{display:none}
+  .rain{margin-left:auto}
+  .sec{grid-template-columns:minmax(0,1fr)}
+  .sec-h{position:static}
+  .hero{padding-block:104px 72px}
+}
+@media (max-width:560px){
+  body{font-size:16.5px}
+  .focus li{grid-template-columns:30px minmax(0,1fr)}
+  .fo-d{grid-column:2}
+  .facts,.games{grid-template-columns:minmax(0,1fr)}
+  .fl-nums{gap:8px}
+  .more-a{grid-template-columns:22px minmax(0,1fr)}
+  .more-h{grid-column:2;grid-row:auto;margin-top:6px}
+  .list .soc-a{grid-template-columns:22px minmax(0,1fr) 18px}
+  .list .soc-h{grid-column:2}
+  .list .soc-e{grid-column:3;grid-row:1}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .eyebrow::after{animation:none}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<a class="skip" href="#main">Skip to the content</a>
+
+<header class="top">
+  <a class="brand" href="#top"><img src="../shared/img/n.png" alt="" width="24" height="24"><span>imaNNeo</span></a>
+  <nav aria-label="Sections">
+    <a href="#about">About</a><a href="#work">Open source</a><a href="#games">Games</a><a href="#contact">Contact</a>
+  </nav>
+  <div class="rain" role="group" aria-label="Background rain">
+    <button type="button" data-set="kana" aria-pressed="true" aria-label="Rain in katakana">ｱｲ</button>
+    <button type="button" data-set="bin" aria-pressed="false" aria-label="Rain in ones and zeros">01</button>
+    <button type="button" data-set="off" aria-pressed="false" aria-label="Turn the rain off">Off</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap" id="top">
+    <p class="eyebrow mono" id="hello">Hello, I am</p>
+    <h1>Iman Khoshabi</h1>
+    <p class="role">Senior mobile engineer in <em>Amsterdam</em>.</p>
+    <p class="bio">I have been building mobile apps for 10+ years, with a mix of Android (Kotlin and Java) and Flutter (Dart). I like products that feel fast and solid, and I care a lot about clean structure and good UI details.</p>
+    <ul class="soc" data-fill="links"></ul>
+    <p class="fun mono">// Fun fact: <b>I picked NeO as my nickname before watching The Matrix.</b></p>
+  </section>
+
+  <div class="wrap">
+    <section class="sec" id="about" aria-labelledby="h-about">
+      <header class="sec-h"><span class="sec-n mono">01</span><h2 id="h-about">What I work on</h2></header>
+      <div class="sec-b">
+        <p class="lead" data-say="me.bio2"></p>
+        <ul class="focus" data-fill="focus"></ul>
+        <div class="facts">
+          <div><h3>Stack</h3><ul class="chips" id="stack"></ul></div>
+          <div><h3>Worked in</h3><ul class="chips" id="domains"></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="work" aria-labelledby="h-work">
+      <header class="sec-h"><span class="sec-n mono">02</span><h2 id="h-work">Open source, writing and videos</h2></header>
+      <div class="sec-b">
+        <article class="fl" data-fill="fl"></article>
+        <ul class="more" data-fill="more"></ul>
+      </div>
+    </section>
+
+    <section class="sec" id="games" aria-labelledby="h-games">
+      <header class="sec-h"><span class="sec-n mono">03</span><h2 id="h-games">Games, on the side</h2></header>
+      <div class="sec-b">
+        <p class="lead">I make small games for fun, with Godot, Cocos Creator and Flame. These are the four main ones.</p>
+        <ul class="games" data-fill="games"></ul>
+        <p class="after"><a class="out" id="all-games" href="#">And 20 small browser games<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></p>
+      </div>
+    </section>
+
+    <section class="sec" id="contact" aria-labelledby="h-contact">
+      <header class="sec-h"><span class="sec-n mono">04</span><h2 id="h-contact">Say hi</h2></header>
+      <div class="sec-b">
+        <p class="lead" data-say="me.contact"></p>
+        <p class="mail" data-fill="mail"></p>
+        <ul class="soc list" id="soc2"></ul>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2026 Iman Khoshabi</p>
+      <p class="mono"><a href="#top">Follow the white rabbit back to the top</a></p>
+    </footer>
+  </div>
+</main>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/icons.js"></script>
+<script src="../shared/kit.js"></script>
+<script src="../shared/bg.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.SITE, K = window.KIT, $ = function (id) { return document.getElementById(id); };
+  K.fill();
+  $("stack").innerHTML = K.html.chips(S.me.stack);
+  $("domains").innerHTML = K.html.chips(S.me.domains);
+  $("soc2").innerHTML = K.html.links({ skip: ["mail"] });
+  var ag = $("all-games"); ag.href = S.links.games; ag.target = "_blank"; ag.rel = "noopener";
+  K.decode($("hello"), { dur: 800 });
+
+  /* The rain: one fragment shader. Every column carries two streams of glyphs that fall at their own speed. */
+  var FRAG = [
+    "uniform sampler2D uAtlas; uniform vec2 uGrid; uniform float uCount; uniform vec2 uCell;",
+    "uniform vec3 uInk; uniform vec3 uHead; uniform vec3 uBg; uniform float uDim; uniform float uSide;",
+    "float stream(float col, float row, float rows, float seed, out float head){",
+    "  float h = hash11(col * 1.37 + seed);",
+    "  float len = mix(8., 26., hash11(col * 2.11 + seed * 1.7));",
+    "  float period = rows + len + mix(6., 46., hash11(col * 3.31 + seed * 2.3));",
+    "  float d = mod(uTime * mix(4., 13., h) + h * 311., period) - row;",
+    "  head = step(0., d) * (1. - step(1., d));",
+    "  return d >= 0. ? clamp(1. - d / len, 0., 1.) : 0.;",
+    "}",
+    "void main(){",
+    "  vec2 p = gl_FragCoord.xy, cell = floor(p / uCell), f = fract(p / uCell);",
+    "  float rows = ceil(uRes.y / uCell.y), row = rows - 1. - cell.y;",
+    "  float h1, h2;",
+    "  float a1 = stream(cell.x, row, rows, 3.1, h1), a2 = stream(cell.x, row, rows, 17.7, h2) * .55;",
+    "  float trail = max(a1, a2), head = max(h1, h2 * .6);",
+    "  float tick = floor(uTime * mix(1.2, 5., hash21(cell + 4.2)) + hash21(cell) * 20.);",
+    "  float gi = floor(hash21(cell + tick * 7.13) * uCount);",
+    "  vec2 g = vec2(mod(gi, uGrid.x), floor(gi / uGrid.x));",
+    "  float a = texture2D(uAtlas, vec2((g.x + f.x) / uGrid.x, 1. - (g.y + 1. - f.y) / uGrid.y)).r;",
+    "  float md = distance(p, uMouse) / (uRes.y * .2);",
+    "  float clear = mix(1., smoothstep(.3, 1., md), uHover);",
+    "  float ring = smoothstep(.72, .98, md) * (1. - smoothstep(.98, 1.3, md)) * uHover;",
+    "  float side = mix(1., .14 + .86 * smoothstep(.4, .92, p.x / uRes.x), uSide);",
+    "  float topf = .25 + .75 * smoothstep(46. * uDpr, 150. * uDpr, uRes.y - p.y + uScroll);",
+    "  float b = pow(trail, 1.5) * .8 * (.8 + .2 * hash21(cell + floor(uTime * 12.)));",
+    "  vec3 c = (uInk * b + uHead * head) * a * clear * side * topf * uDim + uInk * a * ring * .34 * max(side, .45) * min(1., uDim * 1.6);",
+    "  vec2 q = p / uRes - .5;",
+    "  gl_FragColor = vec4(uBg + c * (1. - .5 * dot(q, q)), 1.);",
+    "}"
+  ].join("\n");
+
+  var SETS = { kana: "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789:=*+<>", bin: "01" };
+  var root = document.documentElement, narrow = window.matchMedia("(max-width: 860px)");
+  var bg = BG.mount($("bg"), {
+    frag: FRAG, maxDpr: 2,
+    uniforms: { uInk: BG.rgb("#22e07a"), uHead: BG.rgb("#d9ffe8"), uBg: BG.rgb("#050706") },
+    onResize: function (api) { api.set("uCell", [Math.round(15 * api.size.dpr), Math.round(21 * api.size.dpr)]); },
+    onFrame: function (t, dt, api) {
+      var s = Math.min(1, (window.pageYOffset || 0) / (window.innerHeight * .9));
+      api.set("uDim", (narrow.matches ? .4 : 1) * (1 - .8 * s));
+      api.set("uSide", narrow.matches ? 0 : 1);
+    }
+  });
+
+  var btns = document.querySelectorAll(".rain button");
+  function use(name, keep) {
+    if (name !== "off" && !SETS[name]) name = "kana";
+    Array.prototype.forEach.call(btns, function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set") === name)); });
+    root.classList.toggle("off", name === "off");
+    if (bg) {
+      bg.pause(name === "off");
+      if (name !== "off") {
+        var at = BG.atlas(SETS[name], { cw: 30, ch: 42, cols: name === "bin" ? 2 : 8, weight: 500 });
+        bg.tex("uAtlas", at.canvas); bg.set("uGrid", [at.cols, at.rows]); bg.set("uCount", at.n); bg.draw();
+      }
+    }
+    if (keep) { try { localStorage.setItem("rain-set", name); } catch (e) {} }
+  }
+  Array.prototype.forEach.call(btns, function (b) { b.addEventListener("click", function () { use(b.getAttribute("data-set"), true); }); });
+  var saved = "kana"; try { saved = localStorage.getItem("rain-set") || "kana"; } catch (e) {}
+  if (bg) { bg.set("uCell", [Math.round(15 * bg.size.dpr), Math.round(21 * bg.size.dpr)]); use(saved, false); }
+})();
+</script>
+<script src="../shared/switcher.js" data-n="21"></script>
+</body>
+</html>
