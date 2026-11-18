@@ -50,7 +50,7 @@
     '</style>' +
     '<div class="bar" id="bar">' +
     '<a class="full" href="../' + prev.slug + '/index.html" title="Previous: ' + prev.name + '" aria-label="Previous option">&#8249;</a>' +
-    '<a class="full name" href="../index.html" title="Back to all the options"><span class="num">' + pad(cur.n) + '/' + pad(opts.length) + '</span>' + cur.name + '</a>' +
+    '<a class="full name" href="../index.html#o' + cur.n + '" title="Back to all the options"><span class="num">' + pad(cur.n) + '/' + pad(opts.length) + '</span>' + cur.name + '</a>' +
     '<a class="full" href="../' + next.slug + '/index.html" title="Next: ' + next.name + '" aria-label="Next option">&#8250;</a>' +
     '<span class="sep full"></span>' +
     '<button id="tg" title="Hide or show this switcher" aria-label="Hide or show the option switcher">&#9776;</button>' +

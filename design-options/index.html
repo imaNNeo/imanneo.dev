@@ -12,7 +12,7 @@
 <style>
   :root{
     --bg:#f3f5f8; --surface:#ffffff; --ink:#0e1218; --muted:#566170; --line:#dbe1e8; --line-2:#b8c2cd;
-    --accent:#0369ad; --accent-bg:#e4f1fb; --green:#04a85a; --stage:#e9edf2; --dot:#d5dce4; --bezel:#10151c;
+    --accent:#0369ad; --accent-bg:#e4f1fb; --green:#047a44; --green-bg:#dff5e9; --stage:#e9edf2; --dot:#d5dce4; --bezel:#10151c;
     --lift:0 1px 2px rgba(14,18,24,.07), 0 12px 28px rgba(14,18,24,.12);
     --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     --head:"Space Grotesk","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -21,12 +21,12 @@
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
     --bg:#0b0f14; --surface:#131a22; --ink:#e8edf2; --muted:#9ba7b4; --line:#26303b; --line-2:#3b4755;
-    --accent:#62bff8; --accent-bg:#0f2a3d; --green:#22d680; --stage:#0e141b; --dot:#1b242e; --bezel:#2a3440;
+    --accent:#62bff8; --accent-bg:#0f2a3d; --green:#22d680; --green-bg:#0d2c1e; --stage:#0e141b; --dot:#1b242e; --bezel:#2a3440;
     --lift:0 1px 2px rgba(0,0,0,.5), 0 14px 30px rgba(0,0,0,.45); color-scheme:dark }
   }
   :root[data-theme="dark"]{
     --bg:#0b0f14; --surface:#131a22; --ink:#e8edf2; --muted:#9ba7b4; --line:#26303b; --line-2:#3b4755;
-    --accent:#62bff8; --accent-bg:#0f2a3d; --green:#22d680; --stage:#0e141b; --dot:#1b242e; --bezel:#2a3440;
+    --accent:#62bff8; --accent-bg:#0f2a3d; --green:#22d680; --green-bg:#0d2c1e; --stage:#0e141b; --dot:#1b242e; --bezel:#2a3440;
     --lift:0 1px 2px rgba(0,0,0,.5), 0 14px 30px rgba(0,0,0,.45); color-scheme:dark }
 
   *,*::before,*::after{box-sizing:border-box}
@@ -41,16 +41,32 @@
   .brand i{font-style:normal;color:var(--muted);font-weight:500}
   .meta{margin:0;font:500 12px/1.4 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 
-  .hero{padding:clamp(34px,6vw,68px) 0 clamp(26px,4vw,44px);max-width:800px}
+  .hero{padding:clamp(34px,6vw,68px) 0 clamp(30px,4.6vw,52px);max-width:820px}
   h1{margin:0 0 16px;font:700 clamp(32px,5.4vw,58px)/1.04 var(--head);letter-spacing:-.03em;text-wrap:balance}
   h1 em{font-style:normal;color:var(--accent)}
   .lead{margin:0;max-width:62ch;font-size:clamp(16.5px,1.6vw,19px);line-height:1.55;color:var(--muted)}
   .lead b{color:var(--ink);font-weight:600}
+  .jump{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 0;padding:0;list-style:none}
+  .jump a{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:8px 16px 8px 8px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;transition:border-color .16s, transform .16s}
+  .jump a:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .jump a:focus-visible, a.x:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .jump .n{font-size:12px}
+  .jump svg{color:var(--muted)}
+
+  .round{padding-top:clamp(26px,3.6vw,40px);border-top:1px solid var(--line);scroll-margin-top:8px}
+  .round + .round{margin-top:clamp(40px,6vw,72px)}
+  .rhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px 32px;flex-wrap:wrap;margin-bottom:clamp(18px,2.6vw,28px)}
+  .rhead > div{min-width:0}
+  .eyebrow{display:flex;align-items:center;gap:10px;margin:0 0 10px;font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .new{font-weight:700;color:var(--green);background:var(--green-bg);border-radius:6px;padding:5px 7px;letter-spacing:.06em}
+  .rhead h2{margin:0;font:700 clamp(26px,3.6vw,38px)/1.08 var(--head);letter-spacing:-.025em;text-wrap:balance}
+  .rhead .sub{margin:0;flex:0 1 46ch;font-size:15px;line-height:1.5;color:var(--muted)}
 
   .grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.2vw,28px)}
   .grid > li{min-width:0}
-  .card{display:flex;flex-direction:column;height:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;color:inherit;text-decoration:none;transition:border-color .16s, transform .16s, box-shadow .16s}
+  .card{display:flex;flex-direction:column;height:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;color:inherit;text-decoration:none;scroll-margin-top:16px;transition:border-color .16s, transform .16s, box-shadow .16s}
   .card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--lift)}
+  .card:target{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg), var(--lift)}
   .card:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
   .stage{display:flex;align-items:flex-end;justify-content:center;gap:3.2%;padding:6% 5% 0;background-color:var(--stage);background-image:radial-gradient(var(--dot) 1px, transparent 1.5px);background-size:14px 14px;border-bottom:1px solid var(--line);overflow:hidden}
@@ -61,9 +77,11 @@
 
   .body{display:flex;flex-direction:column;flex:1;padding:18px 20px 20px}
   .k{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;font:500 11.5px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
-  .n{font-weight:700;font-size:13px;color:var(--accent);background:var(--accent-bg);border-radius:6px;padding:6px 8px;letter-spacing:.04em}
-  .mood{border:1px solid var(--line);border-radius:999px;padding:6px 10px}
-  h2{margin:0 0 6px;font:700 clamp(20px,2.2vw,24px)/1.18 var(--head);letter-spacing:-.015em;text-wrap:balance}
+  .kl{display:flex;align-items:center;gap:8px;min-width:0}
+  .n{font:700 13px/1 var(--mono);color:var(--accent);background:var(--accent-bg);border-radius:6px;padding:6px 8px;letter-spacing:.04em}
+  .pick{font-weight:700;color:var(--green);background:var(--green-bg);border-radius:6px;padding:7px 8px;white-space:nowrap}
+  .mood{border:1px solid var(--line);border-radius:999px;padding:6px 10px;white-space:nowrap}
+  .card h3, .panel h2{margin:0 0 6px;font:700 clamp(20px,2.2vw,24px)/1.18 var(--head);letter-spacing:-.015em;text-wrap:balance}
   .line{margin:0 0 14px;color:var(--muted);font-size:15px;line-height:1.5}
   .try{margin:0 0 18px;padding:10px 12px;border-radius:10px;background:var(--bg);font-size:14px;line-height:1.5}
   .try > span{display:inline-block;margin-right:9px;font:700 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
@@ -76,17 +94,27 @@
 
   .tip{margin:22px 0 0;font-size:14px;color:var(--muted)}
 
-  .notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.2vw,28px);margin-top:clamp(36px,6vw,64px)}
+  .notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.2vw,28px);margin-top:clamp(40px,6vw,72px)}
   .panel{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,2.4vw,26px)}
+  .panel.wide{grid-column:1 / -1}
   .panel h2{margin-bottom:4px}
-  .panel .sub{margin:0 0 16px;font-size:14px;color:var(--muted)}
+  .panel .sub{margin:0 0 18px;font-size:14px;color:var(--muted)}
   .panel ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
   .panel li{position:relative;padding-left:46px;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
-  .panel li > .n{position:absolute;left:0;top:0;font:700 12px/1 var(--mono)}
+  .panel li > .n{position:absolute;left:0;top:0;font-size:12px}
   .panel li b{font-weight:600}
-  .facts li{padding-left:22px}
-  .facts li::before{content:"";position:absolute;left:3px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--line-2)}
+  .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px clamp(22px,3.4vw,44px)}
+  .cols > div{min-width:0}
+  .mini{margin:0 0 12px;font:500 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .mix{margin:20px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:15px;line-height:1.5}
+  .mix b{font-weight:600}
+  .facts li, .src li{padding-left:22px}
+  .facts li::before, .src li::before{content:"";position:absolute;left:3px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--line-2)}
   .facts li.ask::before{background:var(--green)}
+  .src li > span{display:block;margin-top:2px;color:var(--muted)}
+  .src cite{font-style:normal}
+  a.x{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:3px}
+  a.x:hover{text-decoration-thickness:2px}
 
   .next{margin-top:clamp(16px,2.2vw,28px);display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--accent-bg);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2.2vw,22px) clamp(18px,2.4vw,26px)}
   .next p{margin:0;flex:1 1 320px;min-width:0;font-size:16px}
@@ -95,8 +123,9 @@
   .foot code{font-size:.9em;white-space:normal;overflow-wrap:anywhere}
 
   @media (max-width:760px){
-    .grid,.notes{grid-template-columns:minmax(0,1fr)}
+    .grid,.notes,.cols{grid-template-columns:minmax(0,1fr)}
     .meta{font-size:11px}
+    .rhead .sub{flex-basis:100%}
   }
   @media (prefers-reduced-motion:reduce){ *{transition:none!important} }
 </style>
@@ -106,187 +135,389 @@
 <div class="page" id="top">
   <header class="top">
     <p class="brand"><img src="shared/img/n.png" alt="" width="26" height="26">imanneo.dev <i>/ redesign</i></p>
-    <p class="meta">10 options &middot; numbers from 17 Nov 2026</p>
+    <p class="meta">20 options &middot; numbers from 17 Nov 2026</p>
   </header>
 
   <main>
     <section class="hero">
-      <h1>Ten ways to rebuild <em>imanneo.dev</em></h1>
-      <p class="lead">Every option is <b>a working page, not a picture</b>. Your links, your 24 games and the fl_chart numbers are all in there. Open a few, click around, then tell me a number, or a mix of two.</p>
+      <h1>Twenty ways to rebuild <em>imanneo.dev</em></h1>
+      <p class="lead">Round two is in: <b>ten modern samples</b> that start from what the web looks like right now, not from your story. The first ten are still here. Every option is <b>a working page, not a picture</b>, so open a few, click around, then tell me a number.</p>
+      <ul class="jump" aria-label="Jump to a round">
+        <li><a href="#round-2"><span class="n">11&ndash;20</span>Round two: modern<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></li>
+        <li><a href="#round-1"><span class="n">01&ndash;10</span>Round one: geeky<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></li>
+      </ul>
     </section>
 
-    <ol class="grid">
-      <li>
-        <a class="card" id="o1" href="01-terminal/index.html">
-          <div class="stage">
-            <img class="d" src="shots/01-terminal.webp" alt="Option 1, The riced terminal, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/01-terminal-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">01</span><span class="mood">Dark, warm</span></p>
-            <h2>The riced terminal</h2>
-            <p class="line">A tiling desktop of terminal panes. Everything is readable at a glance, and the shell at the bottom really takes commands.</p>
-            <p class="try"><span>Try</span>Type <code>help</code> in the shell at the bottom. <code>play trickle</code> and <code>theme tokyo</code> work too.</p>
-            <span class="open">Open option 1<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a class="card" id="o2" href="02-matrix/index.html">
-          <div class="stage">
-            <img class="d" src="shots/02-matrix.webp" alt="Option 2, Wake up, Neo, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/02-matrix-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">02</span><span class="mood">Dark, green</span></p>
-            <h2>Wake up, Neo</h2>
-            <p class="line">Digital rain, a red pill for the games and a blue pill for the code. Built on the nickname you picked before you saw the film.</p>
-            <p class="try"><span>Try</span>Take a pill. The red one goes to the games, the blue one to the code.</p>
-            <span class="open">Open option 2<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a class="card" id="o3" href="03-charts/index.html">
-          <div class="stage">
-            <img class="d" src="shots/03-charts.webp" alt="Option 3, Life in charts, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/03-charts-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">03</span><span class="mood">Dark, neon</span></p>
-            <h2>Life in charts</h2>
-            <p class="line">The site as a dashboard in the fl_chart sample app's own colours. Every section is a chart you can touch, drawn from real numbers.</p>
-            <p class="try"><span>Try</span>Hover any chart, and switch the big one to <b>per year</b>.</p>
-            <span class="open">Open option 3<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a class="card" id="o4" href="04-package/index.html">
-          <div class="stage">
-            <img class="d" src="shots/04-package.webp" alt="Option 4, The package page, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/04-package-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">04</span><span class="mood">Light</span></p>
-            <h2>The package page</h2>
-            <p class="line">You, published as a package: Readme, Changelog, Example, Installing, Versions and Scores tabs, with a score box on the side.</p>
-            <p class="try"><span>Try</span>Open the <b>Versions</b> and <b>Scores</b> tabs.</p>
-            <span class="open">Open option 4<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a class="card" id="o5" href="05-main-dart/index.html">
-          <div class="stage">
-            <img class="d" src="shots/05-main-dart.webp" alt="Option 5, main.dart, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/05-main-dart-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">05</span><span class="mood">Dark IDE, light app</span></p>
-            <h2>main.dart</h2>
-            <p class="line">An IDE on the left, a phone on the right. The Dart code builds the app you are looking at, and hot reload really reloads it.</p>
-            <p class="try"><span>Try</span>Press <kbd>R</kbd> for hot reload, or turn on <b>Select widget</b> and click something in the app.</p>
-            <span class="open">Open option 5<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a class="card" id="o6" href="06-arcade/index.html">
-          <div class="stage">
-            <img class="d" src="shots/06-arcade.webp" alt="Option 6, Insert coin, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/06-arcade-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">06</span><span class="mood">Dark, pixel</span></p>
-            <h2>Insert coin</h2>
-            <p class="line">An arcade cabinet. Your stats are the high scores, the games are the game select screen, and the arrow keys work.</p>
-            <p class="try"><span>Try</span>Press Start, then move through the games with the arrow keys.</p>
-            <span class="open">Open option 6<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a class="card" id="o7" href="07-galaxies/index.html">
-          <div class="stage">
-            <img class="d" src="shots/07-galaxies.webp" alt="Option 7, Through the galaxies, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/07-galaxies-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">07</span><span class="mood">Dark, playful</span></p>
-            <h2>Through the galaxies</h2>
-            <p class="line">A rocket flies from planet to planet as you scroll, the way it does in your own game. Each planet is a part of your work.</p>
-            <p class="try"><span>Try</span>Scroll, or press <b>Launch</b>, and the rocket flies to the next planet.</p>
-            <span class="open">Open option 7<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a class="card" id="o8" href="08-datasheet/index.html">
-          <div class="stage">
-            <img class="d" src="shots/08-datasheet.webp" alt="Option 8, The datasheet, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/08-datasheet-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">08</span><span class="mood">Light, print</span></p>
-            <h2>The datasheet</h2>
-            <p class="line">You, documented as an electronic component: pinout for the links, electrical characteristics for the stats, figures for the charts.</p>
-            <p class="try"><span>Try</span>Use the bookmarks and the zoom buttons, like in a real PDF viewer.</p>
-            <span class="open">Open option 8<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a class="card" id="o9" href="09-neoos/index.html">
-          <div class="stage">
-            <img class="d" src="shots/09-neoos.webp" alt="Option 9, NeoOS, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/09-neoos-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">09</span><span class="mood">Retro desktop</span></p>
-            <h2>NeoOS</h2>
-            <p class="line">A small operating system with draggable windows, a start menu, a games folder and a clock in the corner.</p>
-            <p class="try"><span>Try</span>Drag the windows around, open the N menu, and look in the Trash.</p>
-            <span class="open">Open option 9<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a class="card" id="o10" href="10-neo-brutal/index.html">
-          <div class="stage">
-            <img class="d" src="shots/10-neo-brutal.webp" alt="Option 10, Neo-brutal N, on a desktop screen" width="1200" height="750">
-            <img class="m" src="shots/10-neo-brutal-m.webp" alt="The same page on a phone" width="390" height="844">
-          </div>
-          <div class="body">
-            <p class="k"><span class="n">10</span><span class="mood">Light, loud</span></p>
-            <h2>Neo-brutal N</h2>
-            <p class="line">Your blue N logo turned up: thick outlines, hard green shadows, big type and a stats ticker. The one that is not a costume.</p>
-            <p class="try"><span>Try</span>Filter the small games by genre, and hover the release chart.</p>
-            <span class="open">Open option 10<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-      </li>
-    </ol>
+    <section class="round" id="round-2" aria-labelledby="r2-h">
+      <div class="rhead">
+        <div>
+          <p class="eyebrow"><span class="new">New</span>Round two &middot; 11 to 20</p>
+          <h2 id="r2-h">Modern samples</h2>
+        </div>
+        <p class="sub">Each one takes an idea from current sites and trend lists and fills it with your real content. Samples 18, 19 and 20 are in 3D.</p>
+      </div>
+      <ol class="grid" start="11">
+        <li>
+          <a class="card" id="o11" href="11-bento/index.html">
+            <div class="stage">
+              <img class="d" src="shots/11-bento.webp" alt="Option 11, Bento, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/11-bento-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">11</span></span><span class="mood">Dark, tiles</span></p>
+              <h3>Bento</h3>
+              <p class="line">The whole site on one screen, as a grid of live tiles: numbers that count up, a release chart, a games shelf, a clock on Amsterdam time and the links. Tiles glow under the cursor.</p>
+              <p class="try"><span>Try</span>Drag the accent slider in the <b>tweak me</b> tile, then switch the page to <b>Light</b>.</p>
+              <span class="open">Open option 11<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o12" href="12-glass/index.html">
+            <div class="stage">
+              <img class="d" src="shots/12-glass.webp" alt="Option 12, Liquid glass, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/12-glass-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">12</span></span><span class="mood">Light, glassy</span></p>
+              <h3>Liquid glass</h3>
+              <p class="line">Frosted glass panels floating over a slow colour field drawn by a shader, with a dock at the bottom that swells under the cursor.</p>
+              <p class="try"><span>Try</span>In the <b>Shader</b> panel in the top corner, try <b>Sunset</b> or <b>Night</b> and move the sliders.</p>
+              <span class="open">Open option 12<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o13" href="13-kinetic/index.html">
+            <div class="stage">
+              <img class="d" src="shots/13-kinetic.webp" alt="Option 13, Kinetic type, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/13-kinetic-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">13</span></span><span class="mood">Light, editorial</span></p>
+              <h3>Kinetic type</h3>
+              <p class="line">Big type that moves. The headline changes weight around the pointer, the marquee leans with your scroll speed, and game covers follow the cursor down the list.</p>
+              <p class="try"><span>Try</span>Move the pointer over the big headline, then play with the <b>type tester</b> under it.</p>
+              <span class="open">Open option 13<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o14" href="14-spotlight/index.html">
+            <div class="stage">
+              <img class="d" src="shots/14-spotlight.webp" alt="Option 14, Command palette, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/14-spotlight-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">14</span></span><span class="mood">Dark, keyboard</span></p>
+              <h3>Command palette</h3>
+              <p class="line">The site is one search box. Type to find a game, a link or a number, move with the arrow keys and press Enter.</p>
+              <p class="try"><span>Try</span>Type <code>flappy</code>, move with the arrow keys and press <kbd>Enter</kbd>.</p>
+              <span class="open">Open option 14<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o15" href="15-nodes/index.html">
+            <div class="stage">
+              <img class="d" src="shots/15-nodes.webp" alt="Option 15, Node graph, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/15-nodes-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">15</span></span><span class="mood">Dark, canvas</span></p>
+              <h3>Node graph</h3>
+              <p class="line">A node editor on an endless canvas. You, fl_chart, the games and the links are nodes wired together, and everything can be dragged.</p>
+              <p class="try"><span>Try</span>Drag a node by its title, zoom with <kbd>Ctrl</kbd> + scroll, then press <b>Tidy</b>.</p>
+              <span class="open">Open option 15<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o16" href="16-holo/index.html">
+            <div class="stage">
+              <img class="d" src="shots/16-holo.webp" alt="Option 16, Holo cards, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/16-holo-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">16</span></span><span class="mood">Dark, shiny</span></p>
+              <h3>Holo cards</h3>
+              <p class="line">Every part of the site is a collectible card with a holographic foil that tilts and shines under the cursor. Open a pack and get five games at random.</p>
+              <p class="try"><span>Try</span>Move the pointer over a card, flip the middle one, and <b>open a pack</b> in the games section.</p>
+              <span class="open">Open option 16<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o17" href="17-ascii/index.html">
+            <div class="stage">
+              <img class="d" src="shots/17-ascii.webp" alt="Option 17, ASCII engine, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/17-ascii-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">17</span></span><span class="mood">Text mode</span></p>
+              <h3>ASCII engine</h3>
+              <p class="line">A small real-time renderer that draws a 3D shape, the game covers and even a portrait with letters. The whole page is characters.</p>
+              <p class="try"><span>Try</span>Drag the shape to turn it, switch it to <b>portrait</b>, and change the characters to <b>blocks</b>.</p>
+              <span class="open">Open option 17<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o18" href="18-particles/index.html">
+            <div class="stage">
+              <img class="d" src="shots/18-particles.webp" alt="Option 18, Particle type, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/18-particles-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">18</span></span><span class="mood">Dark, 3D</span></p>
+              <h3>Particle type</h3>
+              <p class="line">Thousands of points that fly together into a new shape for every section: a planet, the release chart, a game pad and an at sign. Click and they scatter.</p>
+              <p class="try"><span>Try</span>Scroll and the points rearrange. Click anywhere to scatter them.</p>
+              <span class="open">Open option 18<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o19" href="19-exploded/index.html">
+            <div class="stage">
+              <img class="d" src="shots/19-exploded.webp" alt="Option 19, Exploded view, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/19-exploded-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">19</span><span class="pick">My pick</span></span><span class="mood">Light, 3D</span></p>
+              <h3>Exploded view</h3>
+              <p class="line">A phone in 3D that comes apart into seven layers as you scroll. Each layer is a part of the site, and the parts list brings a layer forward.</p>
+              <p class="try"><span>Try</span>Scroll to take the phone apart, hover a row in the parts list, and drag the phone to see its back.</p>
+              <span class="open">Open option 19<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o20" href="20-world/index.html">
+            <div class="stage">
+              <img class="d" src="shots/20-world.webp" alt="Option 20, Tiny world, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/20-world-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">20</span></span><span class="mood">Playful, 3D</span></p>
+              <h3>Tiny world</h3>
+              <p class="line">A small low-poly island you can spin. The towers are the fl_chart releases, the arcade holds the games and the signpost has the links. It has a day and a night.</p>
+              <p class="try"><span>Try</span>Click the arcade, hover a chart tower, and switch to night with the button in the top corner.</p>
+              <span class="open">Open option 20<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+      </ol>
+    </section>
+
+    <section class="round" id="round-1" aria-labelledby="r1-h">
+      <div class="rhead">
+        <div>
+          <p class="eyebrow">Round one &middot; 01 to 10</p>
+          <h2 id="r1-h">Geeky, built around you</h2>
+        </div>
+        <p class="sub">The first ten. Each design is a different way to read you and your work, from a terminal to a datasheet.</p>
+      </div>
+      <ol class="grid">
+        <li>
+          <a class="card" id="o1" href="01-terminal/index.html">
+            <div class="stage">
+              <img class="d" src="shots/01-terminal.webp" alt="Option 1, The riced terminal, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/01-terminal-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">01</span></span><span class="mood">Dark, warm</span></p>
+              <h3>The riced terminal</h3>
+              <p class="line">A tiling desktop of terminal panes. Everything is readable at a glance, and the shell at the bottom really takes commands.</p>
+              <p class="try"><span>Try</span>Type <code>help</code> in the shell at the bottom. <code>play trickle</code> and <code>theme tokyo</code> work too.</p>
+              <span class="open">Open option 1<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o2" href="02-matrix/index.html">
+            <div class="stage">
+              <img class="d" src="shots/02-matrix.webp" alt="Option 2, Wake up, Neo, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/02-matrix-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">02</span></span><span class="mood">Dark, green</span></p>
+              <h3>Wake up, Neo</h3>
+              <p class="line">Digital rain, a red pill for the games and a blue pill for the code. Built on the nickname you picked before you saw the film.</p>
+              <p class="try"><span>Try</span>Take a pill. The red one goes to the games, the blue one to the code.</p>
+              <span class="open">Open option 2<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o3" href="03-charts/index.html">
+            <div class="stage">
+              <img class="d" src="shots/03-charts.webp" alt="Option 3, Life in charts, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/03-charts-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">03</span></span><span class="mood">Dark, neon</span></p>
+              <h3>Life in charts</h3>
+              <p class="line">The site as a dashboard in the fl_chart sample app's own colours. Every section is a chart you can touch, drawn from real numbers.</p>
+              <p class="try"><span>Try</span>Hover any chart, and switch the big one to <b>per year</b>.</p>
+              <span class="open">Open option 3<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o4" href="04-package/index.html">
+            <div class="stage">
+              <img class="d" src="shots/04-package.webp" alt="Option 4, The package page, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/04-package-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">04</span></span><span class="mood">Light</span></p>
+              <h3>The package page</h3>
+              <p class="line">You, published as a package: Readme, Changelog, Example, Installing, Versions and Scores tabs, with a score box on the side.</p>
+              <p class="try"><span>Try</span>Open the <b>Versions</b> and <b>Scores</b> tabs.</p>
+              <span class="open">Open option 4<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o5" href="05-main-dart/index.html">
+            <div class="stage">
+              <img class="d" src="shots/05-main-dart.webp" alt="Option 5, main.dart, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/05-main-dart-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">05</span><span class="pick">Round one pick</span></span><span class="mood">Dark IDE, light app</span></p>
+              <h3>main.dart</h3>
+              <p class="line">An IDE on the left, a phone on the right. The Dart code builds the app you are looking at, and hot reload really reloads it.</p>
+              <p class="try"><span>Try</span>Press <kbd>R</kbd> for hot reload, or turn on <b>Select widget</b> and click something in the app.</p>
+              <span class="open">Open option 5<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o6" href="06-arcade/index.html">
+            <div class="stage">
+              <img class="d" src="shots/06-arcade.webp" alt="Option 6, Insert coin, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/06-arcade-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">06</span></span><span class="mood">Dark, pixel</span></p>
+              <h3>Insert coin</h3>
+              <p class="line">An arcade cabinet. Your stats are the high scores, the games are the game select screen, and the arrow keys work.</p>
+              <p class="try"><span>Try</span>Press Start, then move through the games with the arrow keys.</p>
+              <span class="open">Open option 6<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o7" href="07-galaxies/index.html">
+            <div class="stage">
+              <img class="d" src="shots/07-galaxies.webp" alt="Option 7, Through the galaxies, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/07-galaxies-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">07</span></span><span class="mood">Dark, playful</span></p>
+              <h3>Through the galaxies</h3>
+              <p class="line">A rocket flies from planet to planet as you scroll, the way it does in your own game. Each planet is a part of your work.</p>
+              <p class="try"><span>Try</span>Scroll, or press <b>Launch</b>, and the rocket flies to the next planet.</p>
+              <span class="open">Open option 7<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o8" href="08-datasheet/index.html">
+            <div class="stage">
+              <img class="d" src="shots/08-datasheet.webp" alt="Option 8, The datasheet, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/08-datasheet-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">08</span></span><span class="mood">Light, print</span></p>
+              <h3>The datasheet</h3>
+              <p class="line">You, documented as an electronic component: pinout for the links, electrical characteristics for the stats, figures for the charts.</p>
+              <p class="try"><span>Try</span>Use the bookmarks and the zoom buttons, like in a real PDF viewer.</p>
+              <span class="open">Open option 8<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o9" href="09-neoos/index.html">
+            <div class="stage">
+              <img class="d" src="shots/09-neoos.webp" alt="Option 9, NeoOS, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/09-neoos-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">09</span></span><span class="mood">Retro desktop</span></p>
+              <h3>NeoOS</h3>
+              <p class="line">A small operating system with draggable windows, a start menu, a games folder and a clock in the corner.</p>
+              <p class="try"><span>Try</span>Drag the windows around, open the N menu, and look in the Trash.</p>
+              <span class="open">Open option 9<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" id="o10" href="10-neo-brutal/index.html">
+            <div class="stage">
+              <img class="d" src="shots/10-neo-brutal.webp" alt="Option 10, Neo-brutal N, on a desktop screen" width="1200" height="750">
+              <img class="m" src="shots/10-neo-brutal-m.webp" alt="The same page on a phone" width="390" height="844">
+            </div>
+            <div class="body">
+              <p class="k"><span class="kl"><span class="n">10</span></span><span class="mood">Light, loud</span></p>
+              <h3>Neo-brutal N</h3>
+              <p class="line">Your blue N logo turned up: thick outlines, hard green shadows, big type and a stats ticker. The one that is not a costume.</p>
+              <p class="try"><span>Try</span>Filter the small games by genre, and hover the release chart.</p>
+              <span class="open">Open option 10<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </li>
+      </ol>
+    </section>
     <p class="tip">Inside each option there is a small pill in the corner that steps to the next one or brings you back here. It belongs to this preview, not to the designs.</p>
 
     <section class="notes" aria-label="Notes">
-      <div class="panel">
+      <div class="panel wide">
         <h2>If you want my opinion</h2>
-        <p class="sub">You asked for geeky, so that is how I ranked them.</p>
-        <ul>
-          <li><span class="n">05</span><b>main.dart is the one I would build.</b> It is geeky in the way that is most yours: Dart on the left, the running app on the right, and hot reload that works. On a phone it simply becomes the app.</li>
-          <li><span class="n">03</span><b>Life in charts, if fl_chart should lead.</b> The whole site is drawn in the colours of your own sample app, and every section is a chart you can touch.</li>
-          <li><span class="n">10</span><b>Neo-brutal N, if it should still feel right in three years.</b> It grows out of your logo instead of putting on a costume.</li>
-          <li><span class="n">+</span><b>Mixing is fine.</b> For example option 10 as the base, with the chart section from option 3.</li>
+        <p class="sub">My overall pick is 19. These are the three I would look at first in each round, and why.</p>
+        <div class="cols">
+          <div>
+            <h3 class="mini">Round two</h3>
+            <ul>
+              <li><span class="n">19</span><b>Exploded view is the one I would build.</b> A phone that comes apart says mobile engineer before anyone reads a word. If you only scroll, it still reads like a normal page, and where 3D is missing it becomes one. The price is one 3D library, about 170 KB to download.</li>
+              <li><span class="n">11</span><b>Bento, if it should be fast and simple.</b> Everything sits on one screen with no engine behind it, and adding a tile later is easy.</li>
+              <li><span class="n">20</span><b>Tiny world, if it should be remembered.</b> It is a toy people spin and poke at, and the chart towers are your real release counts. It is also the least like a normal website.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="mini">Round one</h3>
+            <ul>
+              <li><span class="n">05</span><b>main.dart is still my pick of the first ten.</b> It is geeky in the way that is most yours: Dart on the left, the running app on the right, and hot reload that works.</li>
+              <li><span class="n">03</span><b>Life in charts, if fl_chart should lead.</b> The whole site is drawn in the colours of your own sample app, and every section is a chart you can touch.</li>
+              <li><span class="n">10</span><b>Neo-brutal N, if it should still feel right in three years.</b> It grows out of your logo instead of putting on a costume.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="mix"><b>Mixing works across rounds.</b> For example Bento as the base, with the exploded phone in its biggest tile.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Where the ideas came from</h2>
+        <p class="sub">You asked me to look around first. These are the pages I read, and what each one turned into.</p>
+        <ul class="src">
+          <li><a class="x" href="https://www.utsubo.com/blog/best-threejs-websites-2026" target="_blank" rel="noopener"><cite>8 Best Three.js Websites of 2026</cite>, Utsubo</a><span>One object with real weight and scrolling as the story became 19. A landscape to explore became 20. Type that breaks into particles became 18.</span></li>
+          <li><a class="x" href="https://www.designrush.com/agency/website-design-development/trends/web-design-trends" target="_blank" rel="noopener"><cite>17 Web Design Trends for 2026</cite>, DesignRush</a><span>Bento grids became 11, glass in the style of Apple's Liquid Glass became 12, kinetic typography became 13, and gamification is behind the card packs in 16.</span></li>
+          <li><a class="x" href="https://www.b12.io/resource-center/website-design/web-design-guide-bento-grids-and-kinetic-typography" target="_blank" rel="noopener"><cite>Bento grids and kinetic typography</cite>, B12</a><span>The house rules for 11 and 13: every tile has one job, headings move and body text does not, and motion is turned down for people who ask for less.</span></li>
+          <li><a class="x" href="https://www.wearedevelopers.com/en/magazine/644/five-nostalgic-developer-portfolios-for-inspiration-644" target="_blank" rel="noopener"><cite>Five nostalgic developer portfolios</cite>, WeAreDevelopers</a><span>A whole site as one single interface. That thought became 14, where the site is a search box, and 17, where it is all characters.</span></li>
+          <li>The rest is from tools and demos I already knew: the command menus of developer tools (14), node editors (15), holographic trading cards (16) and ASCII renderers (17).</li>
         </ul>
       </div>
+
       <div class="panel">
         <h2>Good to know</h2>
-        <p class="sub">The small print behind all ten.</p>
+        <p class="sub">The small print behind all twenty.</p>
         <ul class="facts">
           <li>The fl_chart numbers are a snapshot from 17 November 2026: 7.6k stars, 2.3M downloads a month, 7,209 likes. The real site will refresh them from GitHub and pub.dev on its own.</li>
           <li>The game links point to games.imanneo.dev, so they start working once the games site has moved there.</li>
-          <li class="ask"><b>One link needs your yes.</b> I could not confirm the mailing list link (iman-khoshabi.kit.com/profile). It is not on your current site and the page would not open for me. Tell me if it is right, or I will take it out.</li>
+          <li>Samples 19 and 20 run on Three.js, which sits in the folder next to the pages. Sample 18 draws with WebGL directly. All three turn into a plain page where 3D is not available.</li>
+          <li class="ask"><b>One link still needs your yes.</b> I could not confirm the mailing list link (iman-khoshabi.kit.com/profile). Round one shows it and round two leaves it out. Tell me if it is right.</li>
           <li>Your current site has the contact email with the domain written twice in <code>hugo.yaml</code>. The new build fixes that.</li>
           <li>Nothing on the live site changes until you pick.</li>
         </ul>
@@ -294,7 +525,7 @@
     </section>
 
     <div class="next">
-      <p><b>Next step:</b> reply with a number. I will build that one into the real Hugo site and open a pull request for you to review.</p>
+      <p><b>Next step:</b> reply with a number from either round. I will build that one into the real Hugo site and open a pull request for you to review.</p>
     </div>
   </main>
 
@@ -302,6 +533,18 @@
     <p>The previews live in the <code>design-options</code> folder on the branch <code>claude/project-thread-ral3e3</code> of imaNNeo/imanneo.dev. Hugo does not publish that folder.</p>
   </footer>
 </div>
+<script>
+/* Jump links scroll inside the page, so they work wherever the gallery is shown. */
+document.addEventListener("click", function (e) {
+  var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+  if (!a) return;
+  var t = document.getElementById(a.getAttribute("href").slice(1));
+  if (!t) return;
+  e.preventDefault();
+  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  t.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" });
+});
+</script>
 
 </body>
 </html>
