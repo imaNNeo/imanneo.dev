@@ -86,7 +86,7 @@ params:
       - title: "UI implementation"
         text: "I'm picky about the details."
       - title: "Games on the side"
-        text: "Godot, Cocos Creator and Flame."
+        text: "Small ones, just for fun."
     stackTitle: "Stack"
     stack: ["Flutter", "Dart", "Android", "Kotlin", "Java"]
     domainsTitle: "Worked in"
@@ -127,7 +127,7 @@ params:
   games:
     menu: "Games"
     title: "Games, on the side"
-    lead: "I make small games for fun, with Godot, Cocos Creator and Flame. These are the four main ones."
+    lead: "I make small games for fun, some of them with the help of AI. These are the four main ones."
     # Each game opens at <site>play/<id>/ and its cover is static/images/games/<id>.webp.
     site: "https://games.imanneo.dev/"
     more: "And 20 small browser games"
