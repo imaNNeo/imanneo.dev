@@ -19,13 +19,17 @@ Every text, link and list on the page lives in [`hugo.yaml`](hugo.yaml). Change 
 | Pictures | `static/images/` (the cover of a game is `static/images/games/<id>.webp`) |
 | The page and the page for wrong addresses | `layouts/` |
 | Colours and layout | `assets/css/main.css` |
-| The moving background and the copy buttons | `assets/js/main.js` |
+| The moving background and the email button | `assets/js/main.js` |
 
 The colours follow the device: light on a light device, dark on a dark one.
 
 #### The fl_chart numbers
 
 The stars, downloads and releases of fl_chart are asked from GitHub and pub.dev every time the site builds, and the workflow builds once a day, so they stay current. When GitHub or pub.dev does not answer, the numbers saved in `data/fl_chart.yaml` are shown instead.
+
+#### The email address
+
+The page never contains the email address as text, so that robots that collect addresses for spam do not find it. `hugo.yaml` holds it in two parts (`emailName` and `emailHost`), the build writes it into the page in an encoded form, and the button under "Say hi" puts it together in the visitor's browser when they press it.
 
 #### Running it locally
 

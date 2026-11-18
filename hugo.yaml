@@ -37,7 +37,12 @@ params:
   aka: "imaN Neo"
   handle: "imaNNeo"
   jobTitle: "Senior software engineer"
-  email: "iman.neofight@gmail.com"
+  # The contact address, in two parts: the name before the @ and the host after it.
+  # It is kept out of sight of robots that collect addresses for spam. It is not written as one
+  # piece here, and the page never contains it as text: under "Say hi" a button puts it together
+  # in the visitor's browser when they ask for it.
+  emailName: "iman.neofight"
+  emailHost: "gmail.com"
   # The picture that shows when the site is shared in a chat or on social media, 1200 by 630.
   shareImage: "images/og.jpg"
   shareImageAlt: "Hi, I'm Iman. A photo of Iman Khoshabi, a.k.a. imaN Neo, next to the address imanneo.dev."
@@ -53,18 +58,18 @@ params:
     photo: "images/me.jpg"
     photoAlt: "Iman in a yellow T-shirt on a sunny terrace, pointing at the camera"
 
-  # The round buttons under the first text, and again under "Say hi".
-  # The page adds the Email button itself. Icons: youtube, github, linkedin, x, blog.
+  # The round buttons under the first text, and again under "Say hi", in this order.
+  # Icons: youtube, github, linkedin, x, blog.
   socials:
-    - icon: youtube
-      label: "YouTube"
-      url: "https://www.youtube.com/@imaNNeO"
     - icon: github
       label: "GitHub"
       url: "https://github.com/imaNNeo"
     - icon: linkedin
       label: "LinkedIn"
       url: "https://www.linkedin.com/in/iman-khoshabi-7782a9114"
+    - icon: youtube
+      label: "YouTube"
+      url: "https://www.youtube.com/@imaNNeO"
     - icon: x
       label: "X"
       url: "https://twitter.com/iman__neo"
@@ -153,3 +158,6 @@ params:
     menu: "Contact"
     title: "Say hi"
     lead: "My inbox is always open. Whether you have a question or just want to say hi, I'll try my best to get back to you."
+    # The button that shows the email address, and the line a visitor without JavaScript sees instead.
+    show: "Show my email"
+    noScript: "My email address shows when JavaScript is on. The links below work without it."

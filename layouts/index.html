@@ -22,7 +22,7 @@
       <p class="role">{{ $p.hero.line }}</p>
       <p class="bio">{{ $p.hero.text }}</p>
       <ul class="soc">
-        {{- partial "socials.html" (dict "mail" true) }}
+        {{- partial "socials.html" . }}
       </ul>
     </div>
     {{- with resources.Get $p.hero.photo }}
@@ -106,11 +106,19 @@
         <header><span class="sec-k">04</span><h2 id="h-contact">{{ $p.contact.title }}</h2></header>
         <div class="sec-b">
           <p class="lead">{{ $p.contact.lead }}</p>
-          {{- with $p.email }}
-          <p class="mail"><a class="mail-a" id="mail-a" href="mailto:{{ . }}">{{ . }}</a><button type="button" class="mail-b" data-copy="{{ . }}" data-from="mail-a" data-said="The email address is copied.">{{ partial "icon.html" "copy" }}<span data-t>Copy</span><span class="vh"> the email address</span></button></p>
+          {{- if and $p.emailName $p.emailHost }}
+          {{- /*
+            The email address is never written into the page, so that robots that collect addresses
+            for spam do not find it. It sits in data-mail, backwards and base64-encoded. The script
+            shows the button, and the button first shows the address and from then on copies it.
+            Without JavaScript the note inside noscript shows instead.
+          */}}
+          {{- $back := "" }}
+          {{- range split (printf "%s@%s" $p.emailName $p.emailHost) "" }}{{ $back = print . $back }}{{ end }}
+          <p class="mail" id="mail" data-mail="{{ $back | base64Encode }}"><button type="button" class="mail-b" id="mail-b" hidden><span class="mail-i" data-on="hidden">{{ partial "icon.html" "mail" }}</span><span class="mail-i" data-on="shown" hidden>{{ partial "icon.html" "copy" }}</span><span data-t>{{ $p.contact.show }}</span><span class="vh" data-on="shown" hidden> the email address</span></button><noscript><span class="mail-n">{{ $p.contact.noScript }}</span></noscript></p>
           {{- end }}
           <ul class="soc list">
-            {{- partial "socials.html" (dict "mail" false) }}
+            {{- partial "socials.html" . }}
           </ul>
         </div>
       </section>

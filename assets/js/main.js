@@ -1,6 +1,6 @@
 /*
- * imanneo.dev: the copy buttons, a little film grain, and the moving background.
- * The page is complete without this file. It only adds the motion and the copying.
+ * imanneo.dev: the email button, a little film grain, and the moving background.
+ * Without this file the page still reads the same. It adds the motion and the button that shows the email address.
  */
 (function () {
   "use strict";
@@ -8,38 +8,47 @@
   var root = document.documentElement;
   var $ = function (id) { return document.getElementById(id); };
 
-  /* ---------- Copy buttons ----------
-   * A button with data-copy copies that text. Its label (the child marked data-t) says "Copied" for a moment,
-   * and the line with id "said" tells a screen reader the same (the text in data-said, when there is one).
-   * If the clipboard is closed, the element named by data-from is brought into view and selected instead.
+  /* ---------- The email address ----------
+   * The page does not contain the address as text, so that robots that collect addresses for spam do not
+   * find it. It sits in data-mail on the line with id "mail", written backwards and base64-encoded.
+   * The button on that line is hidden until this script runs. Its first press shows the address, as a link
+   * that opens the mail app. Every press after that copies it: the label says "Copied" for a moment, and the
+   * line with id "said" tells a screen reader what happened. If the clipboard is closed, the address is
+   * selected instead, ready to copy by hand.
    */
-  var said = $("said");
-  function copy(btn) {
-    var text = btn.getAttribute("data-copy"), from = btn.getAttribute("data-from"), node = from ? $(from) : null;
-    var label = btn.querySelector("[data-t]") || btn;
-    if (!btn.hasAttribute("data-was")) btn.setAttribute("data-was", label.textContent);
-    function show(msg, tell) {
-      label.textContent = msg; btn.classList.add("did");
-      if (said) said.textContent = tell || msg;
-      clearTimeout(btn._t);
-      btn._t = setTimeout(function () {
-        label.textContent = btn.getAttribute("data-was"); btn.classList.remove("did");
-        if (said) said.textContent = "";
-      }, 1800);
-    }
-    function select() {
-      if (node && window.getSelection && document.createRange) {
-        var r = document.createRange(); r.selectNodeContents(node);
+  var said = $("said"), box = $("mail"), btn = $("mail-b");
+  if (box && btn) {
+    var label = btn.querySelector("[data-t]") || btn, link = null, timer = 0;
+    var tell = function (msg) { if (said) said.textContent = msg; };
+    var flash = function (msg, told) {
+      label.textContent = msg; btn.classList.add("did"); tell(told || msg);
+      clearTimeout(timer);
+      timer = setTimeout(function () { label.textContent = "Copy"; btn.classList.remove("did"); tell(""); }, 1800);
+    };
+    var select = function () {
+      if (window.getSelection && document.createRange) {
+        var r = document.createRange(); r.selectNodeContents(link);
         var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-        if (node.scrollIntoView) node.scrollIntoView({ block: "center" });
-        show("Selected", "The address is selected, ready to copy.");
-      } else show("Copy it by hand");
-    }
-    try { navigator.clipboard.writeText(text).then(function () { show("Copied", btn.getAttribute("data-said")); }, select); } catch (e) { select(); }
+        flash("Selected", "The address is selected, ready to copy.");
+      } else flash("Copy it by hand");
+    };
+    btn.hidden = false;
+    btn.addEventListener("click", function () {
+      var address = "";
+      try { address = atob(box.getAttribute("data-mail")).split("").reverse().join(""); } catch (e) {}
+      if (!address) return;
+      if (!link) {
+        link = document.createElement("a");
+        link.className = "mail-a"; link.id = "mail-a"; link.href = "mailto:" + address; link.textContent = address;
+        box.insertBefore(link, btn);
+        label.textContent = "Copy";
+        Array.prototype.forEach.call(btn.querySelectorAll("[data-on]"), function (n) { n.hidden = n.getAttribute("data-on") !== "shown"; });
+        tell("The email address is shown: " + address);
+        return;
+      }
+      try { navigator.clipboard.writeText(address).then(function () { flash("Copied", "The email address is copied."); }, select); } catch (e) { select(); }
+    });
   }
-  Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"), function (b) {
-    b.addEventListener("click", function () { copy(b); });
-  });
 
   /* ---------- Grain ----------
    * A little film grain over the colour, drawn once.

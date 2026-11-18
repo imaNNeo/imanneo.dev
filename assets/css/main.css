@@ -7,7 +7,6 @@
   --bg:#f6f8fb; --ink:#0b1220; --mut:#475467; --dim:#667085; --line:rgba(11,18,32,.1); --glass:rgba(255,255,255,.66); --solid:#fff;
   --acc:#0b6bcb; --acc-2:#0a8f5a; --au-a:#9ccbff; --au-b:#9aecc4;
   --sans:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --gut:clamp(20px,5vw,56px);
   color-scheme:light;
 }
@@ -73,8 +72,6 @@ h1 span{background:linear-gradient(100deg,var(--acc) 10%,var(--acc-2) 90%);-webk
 .soc-a:hover{transform:translateY(-2px);border-color:var(--acc)}
 .soc-a:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
 .soc-i{display:inline-flex;font-size:16px;color:var(--acc)}
-.soc-e{font:600 11px/1 var(--mono);color:var(--mut);padding-left:9px;border-left:1px solid var(--line)}
-.soc-mail.did .soc-e{color:var(--acc-2)}
 
 .photo{margin:0;justify-self:center;width:min(100%,380px);padding:10px 10px 0;border-radius:32px;transform:rotate(2.2deg);box-shadow:0 30px 70px -30px rgba(10,30,70,.45)}
 .photo img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:23px}
@@ -135,6 +132,8 @@ h3{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.02em;color:var
 .mail-b{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 15px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:14px;font-weight:700}
 .mail-b:hover,.mail-b.did{background:var(--acc)}
 .mail-b:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.mail-i{display:inline-flex}
+.mail-n{color:var(--mut);font-size:15px}
 .list{display:flex;flex-wrap:wrap;gap:8px}
 .list .soc-a{background:var(--solid);-webkit-backdrop-filter:none;backdrop-filter:none;height:40px}
 
