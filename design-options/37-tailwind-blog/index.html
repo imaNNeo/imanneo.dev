@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam. Mobile apps, open source and small games.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#030712" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../shared/img/n.png">
+<script>try{var t=localStorage.getItem("s37-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/*
+ * Sample 37, in the style of the Tailwind Next.js Starter Blog: Space Grotesk, a wide white page,
+ * very large headings with a hairline under them, the author block with a round photo, bordered
+ * project cards, rows with a side column like the template's post list, and pink links.
+ */
+:root{
+  --bg:#fff; --ink:#111827; --body:#374151; --mut:#6b7280; --line:#e5e7eb; --card-line:rgba(229,231,235,.6); --icon:#374151;
+  --pri:#db2777; --pri-h:#be185d;
+  --sans:"Space Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --gut:16px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#030712; --ink:#f3f4f6; --body:#d1d5db; --mut:#9ca3af; --line:#374151; --card-line:#374151; --icon:#e5e7eb; --pri:#f472b6; --pri-h:#f9a8d4; color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#030712; --ink:#f3f4f6; --body:#d1d5db; --mut:#9ca3af; --line:#374151; --card-line:#374151; --icon:#e5e7eb; --pri:#f472b6; --pri-h:#f9a8d4; color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body.nav-open{overflow:hidden}
+h1,h2,h3,p,ul,dl,dd{margin:0;padding:0}
+ul{list-style:none}
+img{display:block;max-width:100%}
+svg{width:1em;height:1em;flex:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--pri);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;z-index:100;background:var(--pri);color:#fff;padding:6px 12px;border-radius:6px;font-weight:500}
+.skip:focus{left:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{width:100%;max-width:calc(768px + 2 * var(--gut));margin-inline:auto;padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+.pink{color:var(--pri);font-weight:500;line-height:1.5}
+.pink:hover{color:var(--pri-h)}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;padding-block:calc(40px + env(safe-area-inset-top,0px)) 40px}
+.brand{display:flex;align-items:center;justify-content:space-between}
+.brand img{width:34px;height:34px;margin-right:12px}
+.brand span{display:none;font-size:24px;font-weight:600;line-height:1}
+.nav{display:flex;align-items:center;gap:16px;line-height:1.25}
+.nav > a{display:none;font-weight:500;color:var(--ink)}
+.nav > a:hover{color:var(--pri)}
+.icon-btn{display:grid;place-items:center;width:32px;height:32px;font-size:23px;color:var(--ink)}
+.icon-btn:hover{color:var(--pri)}
+.toggle span{display:none}
+.toggle[data-now="light"] .i-moon,.toggle[data-now="dark"] .i-sun{display:block}
+.mobile{position:fixed;inset:0;z-index:20;background:var(--bg);opacity:.98;transform:translateX(100%);visibility:hidden;transition:transform .3s ease-in-out,visibility .3s}
+.nav-open .mobile{transform:none;visibility:visible}
+.mobile .close{display:flex;justify-content:flex-end;padding:calc(40px + env(safe-area-inset-top,0px)) max(var(--gut),env(safe-area-inset-right,0px)) 0}
+.mobile .close button{font-size:32px;width:40px;height:40px}
+.mobile nav{margin-top:32px}
+.mobile nav a{display:block;padding:16px 48px;font-size:24px;font-weight:700;letter-spacing:.1em;color:var(--ink)}
+.mobile nav a:hover{color:var(--pri)}
+
+/* A section: a very large heading, a hairline, then the content */
+.sec{border-bottom:0}
+.sec + .sec{margin-top:24px}
+.sec-head{padding:24px 0 32px;border-bottom:1px solid var(--line)}
+.sec-head h1,.sec-head h2{font-size:30px;font-weight:800;line-height:36px;letter-spacing:-.025em;color:var(--ink)}
+.sec-head p{margin-top:8px;font-size:18px;line-height:28px;color:var(--mut)}
+.prose{color:var(--body);font-size:16px;line-height:1.75}
+.prose p + p{margin-top:1.25em}
+.prose a{color:var(--pri);font-weight:500;text-decoration:underline}
+
+/* About: the author block */
+.author{display:block}
+.who{display:flex;flex-direction:column;align-items:center;padding-top:32px;text-align:center}
+.who img{width:192px;height:192px;border-radius:50%}
+.who h3{padding:16px 0 8px;font-size:24px;font-weight:700;line-height:32px;letter-spacing:-.025em}
+.who div{color:var(--mut)}
+.who .soc{display:flex;gap:12px;padding-top:24px}
+.soc a,.soc button{display:grid;place-items:center;width:28px;height:28px;font-size:24px;color:var(--icon)}
+.soc a:hover,.soc button:hover,.soc button.did{color:var(--pri)}
+.author .prose{padding:32px 0}
+
+/* Project cards */
+.cards{display:flex;flex-wrap:wrap;margin:-16px;padding:48px 0}
+.cards > li{width:100%;max-width:544px;padding:16px}
+.card{height:100%;overflow:hidden;border-radius:6px;border:2px solid var(--card-line)}
+.card .pic{display:block;aspect-ratio:16/9;overflow:hidden;background:#f3f4f6}
+.card .pic svg.fl-art{display:block;width:100%;height:100%}
+.fa-bg{fill:#fdf2f8} .fa-bar{fill:#db2777} .fa-t,.fa-l{fill:#111827} .fa-s{fill:#6b7280} .fa-ax{stroke:#f9a8d4}
+.tile{display:grid;place-items:center;align-content:center;gap:8px;width:100%;height:100%;color:#111827}
+.tile img{width:76px;height:76px;border-radius:16px}
+.tile svg{font-size:76px}
+.tile b{font-size:19px;line-height:1.2}
+.tile.t-blog{background:#e0f2fe} .tile.t-yt{background:#fee2e2} .tile.t-yt svg{color:#dc2626}
+.card .in{padding:24px}
+.card h3{margin-bottom:12px;font-size:24px;font-weight:700;line-height:32px;letter-spacing:-.025em}
+.card p{margin-bottom:12px;color:var(--mut);line-height:1.75}
+
+/* Rows with a side column, like the post list */
+.rows > li{padding:48px 0;border-bottom:1px solid var(--line)}
+.rows .side{font-weight:500;line-height:24px;color:var(--mut);margin-bottom:8px}
+.rows h3{font-size:24px;font-weight:700;line-height:32px;letter-spacing:-.025em}
+.rows h3 a{color:var(--ink)}
+.rows .tags{display:flex;flex-wrap:wrap}
+.rows .tags span{margin-right:12px;font-size:14px;font-weight:500;text-transform:uppercase;color:var(--pri);line-height:20px}
+.rows .sum{margin-top:24px;color:var(--mut);line-height:1.75}
+.rows .more{margin-top:20px}
+.all{display:flex;justify-content:flex-end;padding-top:24px}
+
+/* Contact */
+.contact{padding:32px 0 8px}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:20px}
+.mail span{font-size:20px;font-weight:600;overflow-wrap:anywhere}
+
+footer{margin-top:64px;display:flex;flex-direction:column;align-items:center;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+footer .soc{display:flex;gap:16px;margin-bottom:12px}
+footer .line{display:flex;flex-wrap:wrap;justify-content:center;gap:0 8px;margin-bottom:8px;font-size:14px;color:var(--mut)}
+footer .line a:hover,footer .by a:hover{color:var(--ink)}
+footer .by{margin-bottom:8px;font-size:14px;color:var(--mut);text-align:center}
+footer .by a{text-decoration:underline}
+
+@media (min-width:640px){
+  :root{--gut:24px}
+  .brand span{display:block}
+  .nav{gap:24px}
+  .nav > a{display:block}
+  .burger{display:none}
+  .sec-head h1,.sec-head h2{font-size:36px;line-height:40px}
+}
+@media (min-width:768px){
+  .sec-head{padding:24px 0 32px}
+  .sec-head h1,.sec-head h2{font-size:60px;line-height:56px}
+  .sec-head p{margin-top:20px}
+  .cards > li{width:50%}
+}
+@media (min-width:1280px){
+  .wrap{max-width:calc(1024px + 2 * var(--gut))}
+  .cards > li{width:33.333%}
+  .author{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 32px;align-items:start}
+  .author .prose{grid-column:span 2}
+  .rows article{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:baseline}
+  .rows .main{grid-column:span 3}
+  .rows .side{margin-bottom:0}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mobile{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="header">
+    <a class="brand" href="#about" aria-label="Iman Khoshabi, home"><img src="../shared/img/n.png" alt="" width="256" height="256"><span>Iman Khoshabi</span></a>
+    <div class="nav">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#games">Games</a>
+      <a href="#contact">Contact</a>
+      <button type="button" class="icon-btn toggle" id="toggle"></button>
+      <button type="button" class="icon-btn burger" id="burger" aria-label="Open the menu" aria-expanded="false" aria-controls="mobile"></button>
+    </div>
+  </header>
+</div>
+<div class="mobile" id="mobile" aria-hidden="true">
+  <div class="close"><button type="button" id="close" aria-label="Close the menu"></button></div>
+  <nav aria-label="Menu">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#games">Games</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</div>
+
+<main id="main" class="wrap">
+  <section class="sec" id="about">
+    <div class="sec-head"><h1>About</h1></div>
+    <div class="author">
+      <div class="who">
+        <img src="../shared/img/me-face.jpg" alt="Iman Khoshabi" width="192" height="192">
+        <h3>Iman Khoshabi</h3>
+        <div>Senior mobile engineer</div>
+        <div>Amsterdam, the Netherlands</div>
+        <div class="soc" id="soc"></div>
+      </div>
+      <div class="prose">
+        <p data-say="me.bio"></p>
+        <p data-say="me.bio2"></p>
+        <p>My Android background covers maps and navigation, social media, shopping, fintech and e-commerce. On the side I make small games with Godot, Cocos Creator and Flame.</p>
+        <p data-say="me.fun"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="projects">
+    <div class="sec-head"><h2>Projects</h2><p>Open source, writing and videos.</p></div>
+    <ul class="cards" id="cards"></ul>
+  </section>
+
+  <section class="sec" id="games">
+    <div class="sec-head"><h2>Games</h2><p id="games-sub"></p></div>
+    <ul class="rows" id="rows"></ul>
+    <div class="all"><a class="pink" id="all-games">All games →</a></div>
+  </section>
+
+  <section class="sec" id="contact">
+    <div class="sec-head"><h2>Contact</h2></div>
+    <div class="contact prose">
+      <p data-say="me.contact"></p>
+      <div class="mail"><span id="mail-a" data-say="me.email"></span><button type="button" class="pink" id="copy" data-from="mail-a"><span data-t>Copy the address →</span></button></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="soc" id="foot-soc"></div>
+  <div class="line"><div>Iman Khoshabi</div><div>•</div><div>© 2026</div><div>•</div><a href="#about">imaN Neo</a></div>
+  <div class="by">A sample in the style of the <a href="https://github.com/timlrx/tailwind-nextjs-starter-blog" target="_blank" rel="noopener">Tailwind Nextjs Theme</a> by Timothy Lin</div>
+</footer>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/icons.js"></script>
+<script src="../shared/kit.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.SITE, K = window.KIT, F = S.fl, $ = function (id) { return document.getElementById(id); };
+  var ext = ' target="_blank" rel="noopener"';
+  $("copy").setAttribute("data-copy", S.me.email);
+  K.fill();
+
+  var tg = $("toggle");
+  tg.innerHTML = '<span class="i-moon">' + K.icon("moon") + '</span><span class="i-sun">' + K.icon("sun") + "</span>";
+  K.theme(tg, "s37-theme");
+  $("burger").innerHTML = K.icon("menu"); $("close").innerHTML = K.icon("close");
+
+  var order = ["mail", "github", "youtube", "linkedin", "x", "blog"];
+  var icons = order.map(function (id) {
+    var s = S.socials.filter(function (x) { return x.id === id; })[0];
+    return id === "mail" ? '<button type="button" data-copy="' + K.esc(S.me.email) + '" aria-label="Copy the email address" title="Copy the email address">' + K.icon("mail") + "</button>"
+      : '<a href="' + s.url + '"' + ext + ' aria-label="' + K.esc(s.label) + '" title="' + K.esc(s.label) + '">' + K.icon(id) + "</a>";
+  }).join("");
+  $("soc").innerHTML = icons; $("foot-soc").innerHTML = icons;
+  K.copies($("soc")); K.copies($("foot-soc"));
+
+  /* Project cards with a 16 by 9 picture. */
+  $("cards").innerHTML = [
+    { title: F.name, text: F.tagline + " " + F.starsLabel + " stars on GitHub, " + F.downloadsLabel + " downloads a month on pub.dev and " + F.releases + " releases since " + F.since + ".", url: F.repo, pic: K.html.art(), more: "Open on GitHub" },
+    { title: "Flutter 4 Fun", text: "A blog where I solve UI challenges in Flutter.", url: S.links.blog, pic: '<span class="tile t-blog"><img src="../shared/img/flutter4fun.png" alt="" width="256" height="256"><b>flutter4fun.com</b></span>', more: "Read the blog" },
+    { title: "YouTube", text: "Videos about Flutter and game development.", url: S.links.youtube, pic: '<span class="tile t-yt">' + K.icon("youtube") + "<b>@imaNNeO</b></span>", more: "Watch the channel" }
+  ].map(function (c) {
+    return '<li><div class="card"><a class="pic" href="' + c.url + '"' + ext + ' tabindex="-1" aria-hidden="true">' + c.pic + '</a><div class="in"><h3><a href="' + c.url + '"' + ext + ">" + K.esc(c.title) + "</a></h3><p>" + K.esc(c.text) + '</p><a class="pink" href="' + c.url + '"' + ext + ' aria-label="' + c.more + ": " + K.esc(c.title) + '">' + c.more + " →</a></div></div></li>";
+  }).join("");
+  var art = document.querySelector(".card svg.fl-art"); if (art) art.setAttribute("preserveAspectRatio", "xMidYMid slice");
+
+  /* The main games as rows: genre in the side column, tags in pink. */
+  $("games-sub").textContent = S.games.length + " small games you can play in the browser. These are the main four.";
+  $("rows").innerHTML = S.games.filter(function (g) { return g.featured; }).map(function (g) {
+    var u = S.gameUrl(g.id);
+    return '<li><article><dl><dt class="sr">Genre</dt><dd class="side">' + K.esc(g.genre) + '</dd></dl><div class="main"><h3><a href="' + u + '"' + ext + ">" + K.esc(g.title) + '</a></h3><div class="tags"><span>' + K.esc(g.tech) + "</span><span>" + K.esc(g.tag) + '</span></div><p class="sum">' + K.esc(g.blurb) + '</p><div class="more"><a class="pink" href="' + u + '"' + ext + ' aria-label="Play ' + K.esc(g.title) + '">Play it →</a></div></div></article></li>';
+  }).join("");
+  var ag = $("all-games"); ag.href = S.links.games; ag.target = "_blank"; ag.rel = "noopener";
+
+  /* The full screen menu on small screens. */
+  var mob = $("mobile"), burger = $("burger");
+  function nav(on) { document.body.classList.toggle("nav-open", on); mob.setAttribute("aria-hidden", !on); burger.setAttribute("aria-expanded", on); if (on) setTimeout(function () { $("close").focus(); }, 80); else burger.focus(); }
+  burger.addEventListener("click", function () { nav(true); });
+  $("close").addEventListener("click", function () { nav(false); });
+  mob.addEventListener("click", function (e) { if (e.target.closest("nav a")) nav(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && document.body.classList.contains("nav-open")) nav(false); });
+})();
+</script>
+<script src="../shared/switcher.js" data-n="37"></script>
+</body>
+</html>
