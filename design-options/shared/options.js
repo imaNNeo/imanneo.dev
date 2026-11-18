@@ -36,5 +36,6 @@ window.OPTIONS = [
   { n: 30, round: 3, slug: "30-halftone", name: "Halftone", mood: "Paper, red and black", line: "Your portrait printed in two halftone screens, red and black, like a newspaper. A lens near the pointer shows the photo, and the sections open as rows." },
 
   /* Round four: the most popular personal site templates, written from scratch in their style and filled with the same content. tpl, by, stars, repo and lic credit the template. */
-  { n: 31, round: 4, slug: "31-simplefolio", name: "Simplefolio", mood: "Light, teal", tpl: "Simplefolio", by: "cobiwave", stars: "14.2k", repo: "https://github.com/cobiwave/simplefolio", lic: "MIT", line: "The well-known one-page portfolio: a white hello screen, slanted teal bands for About and Contact, and project rows whose pictures lean towards the pointer." }
+  { n: 31, round: 4, slug: "31-simplefolio", name: "Simplefolio", mood: "Light, teal", tpl: "Simplefolio", by: "cobiwave", stars: "14.2k", repo: "https://github.com/cobiwave/simplefolio", lic: "MIT", line: "The well-known one-page portfolio: a white hello screen, slanted teal bands for About and Contact, and project rows whose pictures lean towards the pointer." },
+  { n: 32, round: 4, slug: "32-navy", name: "Brittany Chiang v4", mood: "Dark navy, green", tpl: "v4", by: "Brittany Chiang", stars: "8.2k", repo: "https://github.com/bchiang7/v4", lic: "MIT", line: "The developer portfolio that half the internet has forked: navy and mint green, numbered headings, a rail of links on each side, tabs, and projects with an overlapping text box." }
 ];
