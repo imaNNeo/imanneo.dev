@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iman Khoshabi · imaN Neo</title>
+<meta name="description" content="Iman Khoshabi (imaN Neo): senior mobile engineer in Amsterdam. Mobile apps, open source and small games.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#282a36" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../shared/img/n.png">
+<script>try{var t=localStorage.getItem("s36-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/*
+ * Sample 36, in the style of the Academic CV template of Hugo Blox (formerly Wowchemy, and before that
+ * the Academic theme): a white bar on top, a round photo with name, role and icons on the left and the
+ * biography on the right, then sections that alternate white and grey with the title in a left column.
+ */
+:root{
+  --primary:#1565c0; --primary-d:#0f4a8f; --text:rgba(0,0,0,.82); --head:#313131; --black:#000; --mut:#6b6b6b; --sub:#757575;
+  --bg:#fff; --odd:#fff; --even:rgb(247,247,247); --card:#fff; --line:rgba(0,0,0,.1); --nav:#fff; --nav-shadow:0 .125rem .25rem 0 rgba(0,0,0,.11);
+  --on-primary:#fff;
+  --head-font:"Montserrat",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --body-font:"Roboto",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --gut:15px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --primary:#7fb4f5; --primary-d:#a9cdf9; --text:rgb(232,232,226); --head:#f8f8f2; --black:#fff; --mut:#b4b6c2; --sub:#a9abb8;
+    --bg:#282a36; --odd:hsl(231,15%,18%); --even:hsl(231,15%,15%); --card:hsl(231,15%,22%); --line:rgba(255,255,255,.14); --nav:#282a36; --nav-shadow:0 .125rem .25rem 0 rgba(0,0,0,.4);
+    --on-primary:#10131c; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --primary:#7fb4f5; --primary-d:#a9cdf9; --text:rgb(232,232,226); --head:#f8f8f2; --black:#fff; --mut:#b4b6c2; --sub:#a9abb8;
+  --bg:#282a36; --odd:hsl(231,15%,18%); --even:hsl(231,15%,15%); --card:hsl(231,15%,22%); --line:rgba(255,255,255,.14); --nav:#282a36; --nav-shadow:0 .125rem .25rem 0 rgba(0,0,0,.4);
+  --on-primary:#10131c; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:16px;-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;padding-top:calc(70px + env(safe-area-inset-top,0px));background:var(--bg);color:var(--text);font:400 1.03rem/1.65 var(--body-font);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0 0 .5rem;font-family:var(--head-font);font-weight:400;line-height:1.25;color:var(--head)}
+p{margin:0 0 1rem}
+ul{margin:0;padding:0;list-style:none}
+img{max-width:100%;display:block}
+svg{width:1em;height:1em;flex:none}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--primary-d);text-decoration:underline}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:3px}
+.skip{position:absolute;left:-999px;top:8px;z-index:100;background:var(--primary);color:var(--on-primary);padding:6px 12px;border-radius:4px}
+.skip:focus{left:12px;color:var(--on-primary)}
+.container{width:100%;max-width:1140px;margin-inline:auto;padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+@keyframes intro{0%{opacity:0}100%{opacity:1}}
+
+/* Top bar */
+.navbar{position:fixed;inset:0 0 auto;z-index:30;background:var(--nav);box-shadow:var(--nav-shadow);padding-top:env(safe-area-inset-top,0px)}
+.navbar .container{display:flex;flex-wrap:wrap;align-items:center;min-height:70px}
+.navbar-brand{margin-right:1.25rem;font-size:1.2rem;font-weight:700;color:var(--head);white-space:nowrap}
+.navbar-brand:hover{color:var(--head);text-decoration:none}
+.nav-links{display:flex;align-items:center;flex:1}
+.nav-links a{display:block;padding:.5rem .65rem;color:var(--text);white-space:nowrap}
+.nav-links a:hover{color:var(--primary);text-decoration:none}
+.nav-links a.active{color:var(--primary);font-weight:700}
+.nav-icons{display:flex;align-items:center;margin-left:auto}
+.toggle{display:grid;place-items:center;width:40px;height:40px;font-size:1.1rem;border-radius:50%}
+.toggle:hover{color:var(--primary)}
+.toggle span{display:none}
+.toggle[data-now="light"] .i-moon,.toggle[data-now="dark"] .i-sun{display:block}
+.toggler{display:none;width:44px;height:44px;margin-left:-10px;font-size:1.5rem;place-items:center}
+
+/* Sections */
+.home-section{padding:100px 0;background:var(--odd);animation:intro .3s both .15s}
+.home-section:first-of-type{padding-top:50px}
+.home-section:nth-of-type(even){background:var(--even)}
+.row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:0 30px}
+.section-heading h2{margin:0 0 10px;font-size:2.25rem}
+.section-heading p{font-size:1.1rem;color:var(--sub)}
+
+/* About */
+#profile{text-align:center;padding:30px 10px}
+#profile .avatar{width:270px;height:270px;max-width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;margin-inline:auto}
+.portrait-title h1{margin:20px 0 10px;font-size:1.75rem;font-weight:400;color:var(--black)}
+.portrait-title p{margin:0 0 10px;font-size:1rem;color:var(--mut)}
+.network-icon{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px 10px;margin-top:14px}
+.network-icon a,.network-icon button{display:grid;place-items:center;width:44px;height:44px;font-size:1.9rem;color:var(--primary);transition:transform .15s}
+.network-icon a:hover,.network-icon button:hover,.network-icon button.did{transform:scale(1.2);color:var(--primary-d)}
+.bio h2{font-size:2.25rem;margin-bottom:.9rem}
+.cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:1.25rem 30px;margin-top:1.5rem}
+.section-subheading{margin-bottom:10px;font-family:var(--head-font);font-size:1.15rem;color:var(--head)}
+.ul-interests{list-style:disc;padding-left:1.2rem}
+.ul-interests li{font-size:.92rem;margin-bottom:2px}
+.ul-edu li{position:relative;display:flex;gap:.7rem;padding:0 15px 8px 0}
+.ul-edu svg{margin-top:.32rem;font-size:1rem;color:var(--text)}
+.ul-edu p{margin:0}
+.ul-edu .course{font-size:.92rem}
+.ul-edu .institution{font-size:.78rem;color:var(--mut)}
+
+/* Focus */
+.featurettes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.25rem 30px;text-align:center}
+.featurette-icon{display:block;font-size:3rem;line-height:1;color:var(--primary);margin-bottom:.9rem}
+.featurettes h3{font-size:1.2rem;margin-bottom:.35rem}
+.featurettes p{margin:0;color:var(--mut);font-size:.95rem}
+
+/* fl_chart, shown like a featured publication */
+.card-simple{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:1.5rem;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.card-simple .img{border-radius:3px;overflow:hidden}
+.card-simple svg.fl-art{display:block;width:100%;height:auto}
+.fa-bg{fill:#f1f4f8} .fa-bar{fill:#1565c0} .fa-t,.fa-l{fill:#313131} .fa-s{fill:#6b6b6b} .fa-ax{stroke:#c4cad3}
+.article-title{font-size:1.5rem;margin-bottom:.4rem}
+.article-title a{color:var(--head)}
+.article-metadata{margin:0 0 .8rem;font-size:.85rem;color:var(--mut)}
+.stats{display:flex;flex-wrap:wrap;gap:.4rem 1.75rem;margin:0 0 1rem}
+.stats b{display:block;font-family:var(--head-font);font-size:1.5rem;line-height:1.2;color:var(--head)}
+.stats span{font-size:.82rem;color:var(--mut)}
+.btn-links{display:flex;flex-wrap:wrap;gap:.4rem}
+.btn-o{display:inline-block;padding:.2rem .7rem;border:1px solid var(--primary);border-radius:.2rem;color:var(--primary);font-size:.82rem;line-height:1.6;transition:background .15s,color .15s}
+.btn-o:hover,.btn-o.did{background:var(--primary);color:var(--on-primary);text-decoration:none}
+
+/* Games, with the filter bar */
+.toolbar{display:flex;flex-wrap:wrap;gap:1px;margin-bottom:.6rem;border-radius:.3rem;overflow:hidden;width:max-content;max-width:100%}
+.toolbar button{padding:.5rem 1rem;background:var(--primary);color:var(--on-primary);font-size:1rem;line-height:1.5;transition:background .15s}
+.toolbar button:hover{background:var(--primary-d)}
+.toolbar button[aria-pressed="true"]{background:var(--primary-d);box-shadow:inset 0 3px 5px rgba(0,0,0,.2)}
+.count{margin:0 0 1.2rem;font-size:.85rem;color:var(--mut)}
+.projects{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.card{display:block;height:100%;background:var(--card);box-shadow:0 2px 4px 0 rgba(0,0,0,.2);overflow:hidden;transition:box-shadow .2s ease-out,transform .2s ease-out;color:inherit;animation:intro .3s both}
+.card:hover{box-shadow:0 8px 16px 0 rgba(0,0,0,.2);text-decoration:none;color:inherit}
+.card img{width:100%;height:auto;aspect-ratio:1}
+.card-text{padding:.7rem .85rem .8rem}
+.card h3{margin:0;font-family:var(--body-font);font-size:.82rem;font-weight:700;line-height:1.4;text-transform:uppercase;color:var(--black)}
+.card p{margin:.15rem 0 0;color:var(--mut);font-size:.75rem;line-height:1.4}
+
+/* Writing, as compact list items */
+.stream-item{display:flex;gap:1rem;align-items:flex-start;padding:0 0 1.5rem;margin-bottom:1.5rem;border-bottom:1px solid var(--line)}
+.stream-item:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.stream-item .body{flex:1;min-width:0}
+.stream-item .section-subheading{margin-bottom:.2rem}
+.stream-item .summary{color:var(--text);margin:0 0 .3rem}
+.stream-item .thumb{flex:none;display:grid;place-items:center;width:110px;height:110px;border-radius:4px;background:var(--even);font-size:3rem;color:#d62d20;overflow:hidden}
+.home-section:nth-of-type(even) .stream-item .thumb{background:var(--odd)}
+.stream-item .thumb img{width:64%;height:auto}
+
+/* Contact */
+.contact p.lead{margin-bottom:1.2rem}
+.contact-list li{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:.8rem}
+.contact-list svg{margin-top:.3rem;font-size:1.15rem;color:var(--text)}
+.contact-list .mail{overflow-wrap:anywhere}
+.contact-list .btn-o{margin-left:.6rem;padding:.05rem .55rem;font-size:.78rem}
+
+.site-footer{margin:0;padding:2.5rem 0 calc(2.5rem + 64px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.78rem;color:var(--mut);background:var(--bg);border-top:1px solid var(--line)}
+.site-footer p{margin:0 0 .3rem}
+
+@media (max-width:1199px){.projects{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:991px){
+  .row{grid-template-columns:minmax(0,1fr)}
+  .section-heading{margin-bottom:1.25rem}
+  .home-section{padding:70px 0}
+  #profile{padding-top:10px}
+  .toggler{display:grid}
+  .navbar-brand{margin:0 auto}
+  .nav-links{order:5;flex-basis:100%;flex-direction:column;align-items:flex-start;display:none;padding-bottom:.75rem}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:.45rem 0;width:100%}
+  .nav-icons{margin-left:0}
+}
+@media (max-width:767px){
+  .featurettes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card-simple{grid-template-columns:minmax(0,1fr);padding:1.1rem}
+  .projects{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .section-heading h2,.bio h2{font-size:1.9rem}
+}
+@media (max-width:480px){
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .home-section{padding:56px 0}
+  .stream-item .thumb{width:76px;height:76px;font-size:2.2rem}
+  .toolbar button{padding:.4rem .75rem;font-size:.92rem}
+  #profile .avatar{width:220px;height:220px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.home-section,.card{animation:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="navbar" aria-label="Main">
+  <div class="container">
+    <button type="button" class="toggler" id="toggler" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-links"></button>
+    <a class="navbar-brand" href="#about">Iman Khoshabi</a>
+    <div class="nav-links" id="nav-links">
+      <a href="#about" class="active">Home</a>
+      <a href="#focus">Focus</a>
+      <a href="#open-source">Open source</a>
+      <a href="#games">Games</a>
+      <a href="#writing">Writing</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-icons"><button type="button" class="toggle" id="toggle"></button></div>
+  </div>
+</nav>
+
+<main id="main">
+  <section id="about" class="home-section">
+    <div class="container">
+      <div class="row">
+        <div>
+          <div id="profile">
+            <img class="avatar" src="../shared/img/me.jpg" alt="Iman Khoshabi" width="640" height="640">
+            <div class="portrait-title">
+              <h1>Iman Khoshabi</h1>
+              <p>Senior mobile engineer</p>
+              <p>Amsterdam, the Netherlands</p>
+            </div>
+            <ul class="network-icon" id="net"></ul>
+          </div>
+        </div>
+        <div class="bio">
+          <h2>Biography</h2>
+          <p data-say="me.bio"></p>
+          <p data-say="me.bio2"></p>
+          <p data-say="me.fun"></p>
+          <div class="cols">
+            <div>
+              <div class="section-subheading">Apps I have worked on</div>
+              <ul class="ul-interests" id="domains"></ul>
+            </div>
+            <div>
+              <div class="section-subheading">Stack</div>
+              <ul class="ul-edu" id="stack"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="focus" class="home-section">
+    <div class="container">
+      <div class="row">
+        <div class="section-heading"><h2>Focus</h2><p>What I work on</p></div>
+        <div><div class="featurettes" id="feat"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="open-source" class="home-section">
+    <div class="container">
+      <div class="row">
+        <div class="section-heading"><h2>Open source</h2><p>A chart library for Flutter</p></div>
+        <div>
+          <div class="card-simple">
+            <a class="img" id="art" aria-label="fl_chart on GitHub"></a>
+            <div>
+              <h3 class="article-title"><a id="fl-title">fl_chart</a></h3>
+              <p class="article-metadata">Iman Khoshabi and contributors · since <span data-say="fl.since"></span> · <span data-say="fl.license"></span> license</p>
+              <p><span data-say="fl.tagline"></span> It draws line, bar, pie, scatter, radar and candlestick charts on six platforms.</p>
+              <p class="stats"><span><b data-say="fl.starsLabel"></b>GitHub stars</span><span><b data-say="fl.downloadsLabel"></b>downloads a month</span><span><b data-say="fl.releases"></b>releases</span></p>
+              <div class="btn-links" id="fl-links"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="games" class="home-section">
+    <div class="container">
+      <div class="row">
+        <div class="section-heading"><h2>Games</h2><p id="games-sub"></p></div>
+        <div>
+          <div class="toolbar" id="toolbar" role="group" aria-label="Filter the games by genre"></div>
+          <p class="count" id="count" aria-live="polite"></p>
+          <ul class="projects" id="projects"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="writing" class="home-section">
+    <div class="container">
+      <div class="row">
+        <div class="section-heading"><h2>Writing and videos</h2></div>
+        <div id="stream"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="home-section contact">
+    <div class="container">
+      <div class="row">
+        <div class="section-heading"><h2>Contact</h2></div>
+        <div>
+          <p class="lead" data-say="me.contact"></p>
+          <ul class="contact-list" id="contact-list"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>© 2026 Iman Khoshabi</p>
+    <p>A sample in the style of the Academic CV template of <a href="https://github.com/HugoBlox/hugo-blox-builder" target="_blank" rel="noopener">Hugo Blox</a> (formerly Wowchemy) by George Cushen.</p>
+  </div>
+</footer>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/icons.js"></script>
+<script src="../shared/kit.js"></script>
+<script src="../shared/options.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.SITE, K = window.KIT, F = S.fl, $ = function (id) { return document.getElementById(id); };
+  var ext = ' target="_blank" rel="noopener"';
+  K.fill();
+
+  var tg = $("toggle");
+  tg.innerHTML = '<span class="i-moon">' + K.icon("moon") + '</span><span class="i-sun">' + K.icon("sun") + "</span>";
+  K.theme(tg, "s36-theme");
+  $("toggler").innerHTML = K.icon("menu");
+
+  $("net").innerHTML = S.socials.map(function (s) {
+    return s.id === "mail" ? '<li><button type="button" data-copy="' + K.esc(S.me.email) + '" aria-label="Copy the email address" title="Copy the email address">' + K.icon("mail") + "</button></li>"
+      : '<li><a href="' + s.url + '"' + ext + ' aria-label="' + K.esc(s.label) + '" title="' + K.esc(s.label) + '">' + K.icon(s.id) + "</a></li>";
+  }).join("");
+  K.copies($("net"));
+
+  $("domains").innerHTML = K.html.chips(S.me.domains);
+  $("stack").innerHTML = [["Flutter", "Dart"], ["Android", "Kotlin and Java"], ["Games on the side", "Godot, Cocos Creator and Flame"]].map(function (r) {
+    return "<li>" + K.icon("code") + '<div><p class="course">' + r[0] + '</p><p class="institution">' + r[1] + "</p></div></li>";
+  }).join("");
+
+  var icons = ["phone", "code", "check", "sliders", "game"];
+  $("feat").innerHTML = S.me.focus.map(function (f, i) {
+    return '<div><span class="featurette-icon">' + K.icon(icons[i]) + "</span><h3>" + K.esc(f.t) + "</h3><p>" + K.esc(f.d) + "</p></div>";
+  }).join("");
+
+  /* fl_chart */
+  var art = $("art"); art.href = F.repo; art.target = "_blank"; art.rel = "noopener"; art.innerHTML = K.html.art();
+  var ft = $("fl-title"); ft.href = F.repo; ft.target = "_blank"; ft.rel = "noopener";
+  $("fl-links").innerHTML = [["Code", F.repo], ["pub.dev", F.pub], ["Docs", F.docs], ["Demo", F.demo], ["Sponsor", S.links.sponsor]].map(function (l) { return '<a class="btn-o" href="' + l[1] + '"' + ext + ">" + l[0] + "</a>"; }).join("");
+
+  /* Games with the template's filter bar. Genres with one game share "Other". */
+  var n = {}; S.games.forEach(function (g) { n[g.genre] = (n[g.genre] || 0) + 1; });
+  var genres = Object.keys(n).filter(function (k) { return n[k] > 1; }), other = S.games.some(function (g) { return n[g.genre] === 1; });
+  function key(g) { return n[g.genre] > 1 ? g.genre : "Other"; }
+  $("games-sub").textContent = S.games.length + " small games you can play in the browser";
+  $("toolbar").innerHTML = ["All"].concat(genres, other ? ["Other"] : []).map(function (k, i) { return '<button type="button" data-f="' + k + '" aria-pressed="' + (i === 0) + '">' + k + "</button>"; }).join("");
+  $("projects").innerHTML = S.games.map(function (g) {
+    return '<li data-g="' + key(g) + '"><a class="card" href="' + S.gameUrl(g.id) + '"' + ext + ' title="' + K.esc(g.blurb) + '"><img src="' + S.gameImg(g.id) + '" alt="" width="320" height="320" loading="lazy"><div class="card-text"><h3>' + K.esc(g.title) + "</h3><p>" + K.esc(g.genre + (g.tag ? " · " + g.tag : "")) + "</p></div></a></li>";
+  }).join("");
+  function filter(k) {
+    var shown = 0;
+    Array.prototype.forEach.call($("projects").children, function (li) { var on = k === "All" || li.getAttribute("data-g") === k; li.hidden = !on; if (on) shown++; });
+    Array.prototype.forEach.call($("toolbar").children, function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-f") === k); });
+    $("count").textContent = k === "All" ? "Showing all " + shown + " games" : "Showing " + shown + " of " + S.games.length + " games";
+  }
+  $("toolbar").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) filter(b.getAttribute("data-f")); });
+  filter("All");
+
+  $("stream").innerHTML = [["Flutter 4 Fun", S.links.blog, "A blog where I solve UI challenges in Flutter.", "flutter4fun.com", '<img src="../shared/img/flutter4fun.png" alt="" width="256" height="256">'],
+    ["YouTube", S.links.youtube, "Videos about Flutter and game development.", "@imaNNeO", K.icon("youtube")]].map(function (m) {
+    return '<div class="stream-item"><div class="body"><div class="section-subheading"><a href="' + m[1] + '"' + ext + ">" + m[0] + '</a></div><p class="summary">' + m[2] + '</p><p class="article-metadata">' + m[3] + '</p></div><a class="thumb" href="' + m[1] + '"' + ext + ' tabindex="-1" aria-hidden="true">' + m[4] + "</a></div>";
+  }).join("");
+
+  var soc = function (id) { return S.socials.filter(function (s) { return s.id === id; })[0]; };
+  $("contact-list").innerHTML = '<li>' + K.icon("mail") + '<div><span class="mail" id="mail-a">' + K.esc(S.me.email) + '</span><button type="button" class="btn-o" data-copy="' + K.esc(S.me.email) + '" data-from="mail-a"><span data-t>Copy</span></button></div></li>' +
+    "<li>" + K.icon("pin") + "<div>Amsterdam, the Netherlands</div></li>" +
+    [["x", "DM me"], ["linkedin", "Connect on LinkedIn"], ["github", "Find me on GitHub"], ["youtube", "Watch on YouTube"]].map(function (r) { return "<li>" + K.icon(r[0]) + '<div><a href="' + soc(r[0]).url + '"' + ext + ">" + r[1] + "</a></div></li>"; }).join("");
+  K.copies($("contact-list"));
+
+  /* The menu on small screens, and the current section in the bar. */
+  var tgl = $("toggler"), links = $("nav-links");
+  tgl.addEventListener("click", function () { var on = !links.classList.contains("open"); links.classList.toggle("open", on); tgl.setAttribute("aria-expanded", on); });
+  links.addEventListener("click", function (e) { if (e.target.closest("a")) { links.classList.remove("open"); tgl.setAttribute("aria-expanded", "false"); } });
+  var as = Array.prototype.slice.call(links.querySelectorAll("a")), secs = as.map(function (a) { return document.querySelector(a.getAttribute("href")); }), tick = false;
+  function spy() {
+    var cur = 0;
+    secs.forEach(function (s, i) { if (s.getBoundingClientRect().top <= 120) cur = i; });
+    if ((window.innerHeight + window.pageYOffset) >= document.documentElement.scrollHeight - 4) cur = secs.length - 1;
+    as.forEach(function (a, i) { a.classList.toggle("active", i === cur); });
+    tick = false;
+  }
+  window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(spy); } }, { passive: true });
+  spy();
+})();
+</script>
+<script src="../shared/switcher.js" data-n="36"></script>
+</body>
+</html>
